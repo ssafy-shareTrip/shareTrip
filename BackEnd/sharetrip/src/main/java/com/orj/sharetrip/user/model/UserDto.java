@@ -1,0 +1,41 @@
+package com.orj.sharetrip.user.model;
+
+import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
+
+@Data
+public class UserDto {
+
+	@ApiModelProperty(value = "아이디")
+	private String id;
+	@ApiModelProperty(value = "이름")
+	private String name;
+	@ApiModelProperty(value = "비밀번호")
+	private String password;
+	@ApiModelProperty(value = "이메일 아이디")
+	private String emailId;
+	@ApiModelProperty(value = "이메일 도메인")
+	private String emailDomain;
+	@ApiModelProperty(value = "가입일")
+	private String joinDate;
+	@ApiModelProperty(value = "태어난 연도")
+	private String birth;
+	@ApiModelProperty(value = "성별")
+	private String gender;
+	@ApiModelProperty(value = "프로필 이미지")
+	private String profile_image;
+	@ApiModelProperty(value = "refreshToken")
+	private String token;
+	
+	
+}
+
+//password varchar(45) 
+//name varchar(45) 
+//email_id varchar(45) 
+//email_domain varchar(45) 
+//join_date datetime 
+//birth date 
+//gender varchar(20) 
+//profile_image longtext 
+//token
