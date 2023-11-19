@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.orj.sharetrip.user.model.mapper.UserMapper">
+
+	<resultMap type="userDto" id="user">
+		<result column="id" property="id"/>
+		<result column="name" property="name"/>
+		<result column="password" property="password"/>
+		<result column="email_id" property="emailId"/>
+		<result column="email_domain" property="emailDomain"/>
+		<result column="join_date" property="joinDate"/>
+		<result column="token" property="Token"/>
+	</resultMap>
+
+	<insert id="joinUser" parameterType="userDto" >
+		insert into user
+		values (#{id},#{password},#{name},#{emailId},#{emailDomain},now(),null,null,null,null);
+	</insert>
+
+	<select id="login" parameterType="map" resultMap="user">
+		select id, name, token
+		from user
+		where id = #{id} and password = #{password}
+	</select>
+	
+	<select id="userInfo" parameterType="string" resultMap="user">
+		select name, id, email_id, email_domain, join_date
+		from user
+		where id = #{id}
+	</select>
+	
+	<update id="saveRefreshToken" parameterType="map">
+		update user
+		set token = #{token}
+		where id = #{id}
+	</update>
+	
+	<select id="getRefreshToken" parameterType="string" resultType="string">
+		select token
+		from user
+		where id = #{id}
+	</select>
+	
+	<update id="deleteRefreshToken" parameterType="map">
+		update user
+		set token = #{token, jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+	
+</mapper>
