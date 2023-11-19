@@ -1,4 +1,4 @@
-package com.orj.sharetrip.comm.model;
+package com.orj.sharetrip.memo.model;
 
 import lombok.Data;
 
