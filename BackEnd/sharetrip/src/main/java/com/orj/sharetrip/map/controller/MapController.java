@@ -85,9 +85,10 @@ public class MapController {
 	public ResponseEntity<Map<String, Object>> getAttrList(
 			@RequestParam(name = "sido", required = false) @ApiParam(value = "시도코드.") String sidoCode,
 			@RequestParam(name = "gugun", required = false) @ApiParam(value = "구군코드.") String gugunCode,
-			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광지 타입.") String contentTypeId) throws Exception {
+			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광지 타입.") String contentTypeId,
+			@RequestParam(name = "keyword", required = false) @ApiParam(value = "검색 키워드.") String keyword) throws Exception {
 		log.info("관광지 조회");
-		log.debug(" info : {}, {}, {}",sidoCode,gugunCode,contentTypeId);
+		log.debug(" info : {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -117,14 +118,14 @@ public class MapController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		List<AttractionDto> list = null;
 		try {
 			AttractionDto attr = MapService.getAttrInfo(contentId);
 			resultMap.put("data", attr);
 			resultMap.put("message", "상세 조회 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
-			log.debug("회원가입 에러 발생 : {}", e);
+			log.debug("상세 조화 에러 발생 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -132,5 +133,32 @@ public class MapController {
 		resultMap.put("status", status);
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+
+	
+	@ApiOperation(value = "요약 정보", notes = "상세 정보", response = Map.class)
+	@GetMapping("url")
+	public ResponseEntity<Map<String, Object>> temp( ) throws Exception {
+		log.info("메소드 설명");
+		log.debug(" info : {}");
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			resultMap.put("data", null);
+			resultMap.put("message", "상세 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	
 	
 }

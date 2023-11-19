@@ -1,0 +1,115 @@
+package com.orj.sharetrip.fav.controller;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.orj.sharetrip.fav.model.FavoriteDto;
+import com.orj.sharetrip.fav.model.service.FavService;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import lombok.extern.slf4j.Slf4j;
+
+@RestController
+@RequestMapping("/fav")
+@Api("Fav 컨트롤러  API V1")
+@Slf4j
+public class FavController {
+
+	private FavService FavService;
+	
+	public FavController(com.orj.sharetrip.fav.model.service.FavService favService) {
+		super();
+		FavService = favService;
+	}
+
+
+	@ApiOperation(value = "관광지 좋아요 상태 조회", notes = "유저가 좋아요 또는 북마크한 관광지 정보를 가져온다.", response = Map.class)
+	@GetMapping("/attr/{userId}")
+	public ResponseEntity<Map<String, Object>> getAttrFav(
+			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId) throws Exception {
+		log.info("관광지 좋아요 상태  조회");
+		log.debug(" info : {}", userId);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		List<FavoriteDto> list = null;
+		
+		try {
+			list = FavService.getAttrFav(userId);
+			resultMap.put("data", list);
+			resultMap.put("message", "관광지 좋아요 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "관광지 좋아요 상태 등록", notes = "유저가 좋아요 또는 북마크한 관광지 정보를 가져온다.", response = Map.class)
+	@PostMapping("/attr/{userId}")
+	public ResponseEntity<Map<String, Object>> registAttrFav(
+			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
+			@RequestBody Map<String, Object> map) throws Exception {
+		log.info("관광지 좋아요 상태 등록");
+		log.debug(" info : {}", map);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			FavService.registAttrFav(map);
+			resultMap.put("message", "관광지 좋아요 정보 등록 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "관광지 좋아요 상태 삭제", notes = "유저가 좋아요 또는 북마크한 관광지 정보를 삭제한다.", response = Map.class)
+	@DeleteMapping("/attr/{userId}")
+	public ResponseEntity<Map<String, Object>> deleteAttrFav(
+			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
+			@RequestBody Map<String, Object> map) throws Exception {
+		log.info("관광지 좋아요 상태 삭제");
+		log.debug(" info : {}", map);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			FavService.deleteAttrFav(map);
+			resultMap.put("message", "관광지 좋아요 정보 삭제 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+}

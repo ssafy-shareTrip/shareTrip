@@ -2,7 +2,7 @@ package com.orj.sharetrip.map.model;
 
 import java.util.List;
 
-import com.orj.sharetrip.comm.model.MemoDto;
+import com.orj.sharetrip.memo.model.MemoDto;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
