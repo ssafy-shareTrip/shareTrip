@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        게시판 페이지
+        로그인 페이지
     </div>
 </template>
 

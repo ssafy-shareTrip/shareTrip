@@ -1,72 +1,83 @@
-<script setup></script>
+<script setup="setup"></script>
 
 <template>
-  <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-top">
-    <div class="container-fluid">
-      <router-link :to="{ name: 'main' }" class="navbar-brand">
-        <img src="@/assets/ssafy_logo.png" class="rounded mx-auto d-block" alt="..." />
-      </router-link>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarScroll"
-        aria-controls="navbarScroll"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarScroll">
-        <ul
-          class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll"
-          style="--bs-scroll-height: 100px"
-        >
-          <li class="nav-item">
-            <a class="nav-link" href="#">마이캠퍼스</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">강의실</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">커뮤니티</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              HELP DESK
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">공지사항</a></li>
-              <li><a class="dropdown-item" href="#">FAQ</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">학사규정</a></li>
-            </ul>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'board' }" class="nav-link">게시판</router-link>
-          </li>
-          <li class="nav-item">
-            <router-link :to="{ name: 'estations' }" class="nav-link">전기차충전소</router-link>
-          </li>
-        </ul>
-        <form class="d-flex" role="search">
-          <input
-            class="form-control me-2"
-            type="search"
-            placeholder="검색..."
-            aria-label="Search"
-          />
-          <button class="btn btn-outline-success" type="button">search</button>
-        </form>
-      </div>
-    </div>
-  </nav>
-</template>
+    <header>
+        <!-- 네비게이션 바 영역 -->
 
-<style scoped></style>
+        <nav
+            class="navbar navbar-expand-sm"
+            style="background-color: rgb(255, 239, 215)">
+            <div class="container-fluid">
+                <router-link :to="{name : 'main'}">
+                    <img
+                        src="@/assets/img/logo.png"
+                        style="width: 200px; height: 70px; margin-left: 15px; margin-top: 10px">
+					</router-link>
+
+                    <ul class="navbar-nav ms-auto">
+
+                        <li class="nav-item">
+
+                            <router-link
+                                :to="{name : 'attraction'}"
+                                class="btn btn-outline-info"
+                                style="font-size: 15px; font-weight: 550; margin-top: 6px; margin-right: 10px">
+                                관광지
+                            </router-link>
+                        </li>
+
+                        <li class="nav-item">
+                            <router-link
+                                :to="{name : 'board'}"
+                                class="btn btn-outline-info"
+                                style="font-size: 15px; font-weight: 550; margin-top: 6px; margin-right: 10px">
+                                게시판</router-link>
+                        </li>
+
+                        <!-- <c:if test="${empty userinfo }"> -->
+                        <li class="nav-item" id="login">
+                            <router-link
+                                :to="{name : 'login'}"
+                                class="btn btn-outline-info"
+                                data-bs-toggle="modal"
+                                data-bs-target="#loginModal"
+                                style="font-size: 15px; font-weight: 550; margin-top: 6px; margin-right: 10px">
+                                로그인</router-link>
+                        </li>
+
+                        <li class="nav-item" style="margin-right: 15px;" id="register">
+                            <router-link
+                                :to="{name: 'join'}"
+                                type="button"
+                                class="btn btn-outline-info"
+                                style="font-size: 15px; font-weight: 550; margin-top: 6px">
+                                회원가입</router-link>
+                        </li>
+                        <!-- </c:if> -->
+                        <!-- <c:if test="${!empty userinfo }"> -->
+                        <li class="nav-item" id="mypage">
+                            <router-link
+                                :to="{name: 'mypage'}"
+                                class="btn btn-outline-info"
+                                style="font-size: 15px; font-weight: 550; margin-top: 6px; margin-right: 10px">
+                                마이페이지</router-link>
+                        </li>
+                        <li class="nav-item" id="logout">
+                            <router-link
+                                :to="{name: 'logout'}"
+                                class="btn btn-outline-info"
+                                style="font-size: 15px; font-weight: 550; margin-top: 6px; margin-right: 10px">
+                                로그아웃</router-link>
+                        </li>
+                        <!-- </c:if> -->
+
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        <div
+            class="position-absolute w-100"
+            style="height: 60%; background-color: rgb(255, 239, 215); z-index: -1"></div>
+    </template>
+
+    <style scoped="scoped"></style>

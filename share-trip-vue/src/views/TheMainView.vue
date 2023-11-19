@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        게시판 페이지
+        메인페이지
     </div>
 </template>
 

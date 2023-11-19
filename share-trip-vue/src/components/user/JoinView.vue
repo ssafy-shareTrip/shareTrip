@@ -4,7 +4,7 @@
 
 <template>
     <div>
-        게시판 페이지
+        회원가입
     </div>
 </template>
 

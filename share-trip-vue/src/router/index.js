@@ -1,22 +1,59 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import TheMainView from "@/views/TheMainView.vue"
+import TheAttractionView from "@/views/TheAttractionView.vue"
+import TheBoardView from "@/views/TheBoardView.vue"
+import LoginView from "@/components/user/LoginView.vue"
+import JoinView from "@/components/user/JoinView.vue"
+import TheMypageView from "@/views/TheMypageView.vue"
 
+//찬혁이한테 api받으면 path 수정해야함
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+
+    //로고 누르면 메인페이지로 이동
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+      path: '/main',
+      name: 'main',
+      component: TheMainView
     },
+
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
-    }
+      path: '/attraction',
+      name: 'attraction',
+      component: TheAttractionView
+    },
+
+    {
+      path: '/board',
+      name: 'board',
+      component: TheBoardView
+    },
+
+    {
+      path: '/login',
+      name: 'login',
+      component: LoginView
+    },
+
+    {
+      path: '/join',
+      name: 'join',
+      component: JoinView
+    },
+
+    {
+      path: '/mypage',
+      name: 'mypage',
+      component: TheMypageView
+    },
+
+    {
+      path: '/logout',
+      name: 'logout',
+      component: TheMainView
+    },
+
   ]
 })
 
