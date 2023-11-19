@@ -88,14 +88,14 @@ public class MapController {
 			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광지 타입.") String contentTypeId,
 			@RequestParam(name = "keyword", required = false) @ApiParam(value = "검색 키워드.") String keyword) throws Exception {
 		log.info("관광지 조회");
-		log.debug(" info : {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword);
+		log.debug(" info : {}, {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		List<AttractionDto> list = null;
 		
 		try {
-			list = MapService.getAttrList(sidoCode, gugunCode,contentTypeId);
+			list = MapService.getAttrList(sidoCode, gugunCode,contentTypeId, keyword);
 			resultMap.put("data", list);
 			resultMap.put("message", "조회 성공");
 			status = HttpStatus.OK;

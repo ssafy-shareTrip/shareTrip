@@ -38,8 +38,8 @@ public class UserController {
 
 	@ApiOperation(value = "회원가입", notes = "사용자가 입력한 정보를 이용하여 로그인 처리.")
 	@PostMapping("/join")
-	public  ResponseEntity<Map<String, Object>> join(
-			@RequestBody @ApiParam(value = "회원가입 시 필요한 회원정보(아이디, 비밀번호, 이름, 이메일).", required = true) UserDto UserDto) {
+	public ResponseEntity<Map<String, Object>> join(
+			@RequestBody @ApiParam(value = "회원가입 시 필요한 회원정보(아이디, 비밀번호, 이름, 이메일id, 이메일domain).", required = true) UserDto UserDto) {
 		log.debug("User info : {}", UserDto);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -90,7 +90,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
 
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
 	@GetMapping("/info/{userId}")
