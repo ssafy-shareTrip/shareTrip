@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.orj.sharetrip.fav.model.mapper.FavMapper">
+
+	<select id="getAttrFav" parameterType="string" resultType="favoriteDto">
+		select content_id as favId, category
+		from attraction_fav
+		where user_id = #{userId};
+	</select>
+	
+	<insert id="registAttrFav" parameterType="map">
+		insert into attraction_fav (content_id, user_id, category, like_time)
+		values (#{contentId}, #{userId}, #{category}, now())
+	</insert>
+	
+	<delete id="deleteAttrFav" parameterType="map">
+		delete from attraction_fav
+		where 1=1
+		and user_id = #{userId}
+		and content_id = #{contentId}
+	</delete>
+	
+<!-- 	<select id="getBoardFav" parameterType="string" resultType="favoriteDto">
+		select board_no as favId, category
+		from board_fav
+		where user_id = #{userId};
+	</select>
+	
+	<delete id="deleteBoardFav" parameterType="map">
+		delete from attraction_fav
+		where 1=1
+		and user_id = #{userId}
+		and board_no = #{boardNo}
+	</delete>
+	
+	<select id="getTripFav" parameterType="string" resultType="favoriteDto">
+		select trip_no as favId, category
+		from attraction_fav
+		where user_id = #{userId};
+	</select>
+	
+	<delete id="deleteTripFav" parameterType="map">
+		delete from attraction_fav
+		where 1=1
+		and user_id = #{userId}
+		and trip_no = #{tripNo}
+	</delete> -->
+</mapper>

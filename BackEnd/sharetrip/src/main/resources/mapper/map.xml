@@ -63,6 +63,9 @@
 		<if test="contentTypeId != null">
 			and content_type_id = #{contentTypeId}
 		</if>
+		<if test="keyword != null">
+			and title like concat('%',#{keyword},'%')
+		</if>
 		limit 30;
 	</select>
 	
@@ -77,6 +80,12 @@
 		from attraction_memo
 		where content_id = #{contentId}
 		order by regist_time desc;
+	</select>
+	
+	<select id="getAttrFav" parameterType="string" resultType="int">
+		select content_id, category
+		from attraction_fav
+		where user_id = #{userId};
 	</select>
 	
 </mapper>

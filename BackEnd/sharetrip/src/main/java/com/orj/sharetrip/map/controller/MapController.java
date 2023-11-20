@@ -1,5 +1,6 @@
 package com.orj.sharetrip.map.controller;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -85,16 +86,27 @@ public class MapController {
 	public ResponseEntity<Map<String, Object>> getAttrList(
 			@RequestParam(name = "sido", required = false) @ApiParam(value = "시도코드.") String sidoCode,
 			@RequestParam(name = "gugun", required = false) @ApiParam(value = "구군코드.") String gugunCode,
-			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광지 타입.") String contentTypeId) throws Exception {
+			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광타입(12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점) ID.") String contentTypeId,
+			@RequestParam(name = "keyword", required = false) @ApiParam(value = "검색 키워드.") String keyword,
+			@RequestParam(name = "mapX", required = false) @ApiParam(value = "GPS X좌표(WGS84 경도좌표).") Double mapX,
+			@RequestParam(name = "mapY", required = false) @ApiParam(value = "GPS Y좌표(WGS84 위도좌표).") Double mapY) throws Exception {
 		log.info("관광지 조회");
-		log.debug(" info : {}, {}, {}",sidoCode,gugunCode,contentTypeId);
+		log.debug(" info : {}, {}, {}, {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword, mapX, mapY);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		List<AttractionDto> list = null;
 		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("sidoCode", sidoCode);
+		map.put("gugunCode", gugunCode);
+		map.put("contentTypeId", contentTypeId);
+		map.put("keyword", keyword);
+		map.put("mapX", mapX);
+		map.put("mapY", mapY);
+		
 		try {
-			list = MapService.getAttrList(sidoCode, gugunCode,contentTypeId);
+			list = MapService.getAttrList(map);
 			resultMap.put("data", list);
 			resultMap.put("message", "조회 성공");
 			status = HttpStatus.OK;
@@ -117,14 +129,14 @@ public class MapController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		List<AttractionDto> list = null;
 		try {
 			AttractionDto attr = MapService.getAttrInfo(contentId);
 			resultMap.put("data", attr);
 			resultMap.put("message", "상세 조회 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
-			log.debug("회원가입 에러 발생 : {}", e);
+			log.debug("상세 조화 에러 발생 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -132,5 +144,11 @@ public class MapController {
 		resultMap.put("status", status);
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+
+	
+
+	
+	
 	
 }

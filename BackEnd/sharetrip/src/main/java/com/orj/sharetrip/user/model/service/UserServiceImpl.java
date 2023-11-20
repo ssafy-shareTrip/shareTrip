@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
 	public UserDto login(UserDto UserDto) throws Exception {
 		return UserMapper.login(UserDto);
 	}
-	
+
 	@Override
 	public UserDto userInfo(String id) throws Exception {
 		return UserMapper.userInfo(id);
@@ -52,6 +52,16 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void joinUser(UserDto UserDto) throws Exception {
 		UserMapper.joinUser(UserDto);
+	}
+
+	@Override
+	public void followUser(Map<String,Object> map) {
+		UserMapper.followUser(map);
+	}
+
+	@Override
+	public void unFollowUser(Map<String,Object> map) {
+		UserMapper.unFollowUser(map);
 	}
 
 }

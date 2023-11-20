@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,10 +37,10 @@ public class UserController {
 		this.jwtUtil = jwtUtil;
 	}
 
-	@ApiOperation(value = "회원가입", notes = "사용자가 입력한 정보를 이용하여 로그인 처리.")
+	@ApiOperation(value = "회원가입", notes = "사용자가 입력한 정보를 이용하여 로그인 처리.회원가입 시 필요한 회원정보(아이디, 비밀번호, 이름, 이메일id, 이메일domain).")
 	@PostMapping("/join")
-	public  ResponseEntity<Map<String, Object>> join(
-			@RequestBody @ApiParam(value = "회원가입 시 필요한 회원정보(아이디, 비밀번호, 이름, 이메일).", required = true) UserDto UserDto) {
+	public ResponseEntity<Map<String, Object>> join(
+			@RequestBody @ApiParam(value = "회원가입 시 필요한 회원정보(아이디, 비밀번호, 이름, 이메일id, 이메일domain).", required = true) UserDto UserDto) {
 		log.debug("User info : {}", UserDto);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -90,7 +91,6 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
-	
 
 	@ApiOperation(value = "회원인증", notes = "회원 정보를 담은 Token을 반환한다.", response = Map.class)
 	@GetMapping("/info/{userId}")
@@ -158,5 +158,54 @@ public class UserController {
 		}
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+	
+	@ApiOperation(value = "유저 팔로우", notes = "팔로우한 유저를 저장한다", response = Map.class)
+	@PostMapping("/follow/{idTo}")
+	public ResponseEntity<Map<String, Object>> followUser(
+			@PathVariable("idTo") @ApiParam(value = "팔로우할 회원 아이디.", required = true) String idTo,
+			@RequestBody @ApiParam(value = "현재 로그인된 아이디.", required = true) Map<String,Object> map) throws Exception {
+		log.info("유저 팔로우");
+		log.debug(" info : {}, {}", idTo, map);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		map.put("idTo", idTo);
+		try {
+			UserService.followUser(map);
+			resultMap.put("message", "상세 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 
+	@ApiOperation(value = "유저 언팔로우", notes = "팔로우한 유저를 삭제한다", response = Map.class)
+	@DeleteMapping("/follow/{idTo}")
+	public ResponseEntity<Map<String, Object>> unFollowUser(
+			@PathVariable("idTo") @ApiParam(value = "언팔로우할 회원 아이디.", required = true) String idTo,
+			@RequestBody @ApiParam(value = "idTo : 대상 ID, userId : 로그인한 ID.", required = true) Map<String,Object> map) throws Exception {
+		log.info("유저 팔로우");
+		log.debug(" info : {}, {}", idTo, map);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		map.put("idTo", idTo);
+		try {
+			UserService.unFollowUser(map);
+			resultMap.put("message", "상세 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 }

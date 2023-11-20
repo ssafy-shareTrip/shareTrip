@@ -49,4 +49,14 @@
 		where id = #{id}
 	</update>
 	
+	<insert id="followUser" parameterType="map">
+		insert into user_follow (id_from, id_to, follow_time)
+		values (#{userId}, #{idTo}, now())
+	</insert>
+	
+	<delete id="unFollowUser" parameterType="map">
+		delete from user_follow
+		where id_from = #{userId} and id_to = #{idTo}
+	</delete>
+	
 </mapper>

@@ -10,9 +10,11 @@ import com.orj.sharetrip.map.model.SidoGugunCodeDto;
 public interface MapMapper {
 
 	List<SidoGugunCodeDto> getSido() throws SQLException;
+
 	List<SidoGugunCodeDto> getGugunInSido(String sido) throws SQLException;
-	List<AttractionDto> getAttrList(Map<String, String> map);
-	List<AttractionDto> getAttrList(String sidoCode, String gugunCode, String contentTypeId);
+
+	List<AttractionDto> getAttrList(Map<String, Object> map);
+
 	AttractionDto getAttrInfo(String contentId);
-	
+
 }

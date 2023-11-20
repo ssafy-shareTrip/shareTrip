@@ -11,7 +11,7 @@ import com.orj.sharetrip.map.model.mapper.MapMapper;
 
 @Service
 public class MapServiceImpl implements MapService {
-	
+
 	private MapMapper MapMapper;
 
 	public MapServiceImpl(MapMapper mapMapper) {
@@ -30,14 +30,13 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<AttractionDto> getAttrList(String sidoCode, String gugunCode, String contentTypeId) {
-		return MapMapper.getAttrList(sidoCode,gugunCode,contentTypeId);
+	public List<AttractionDto> getAttrList(Map<String, Object> map) {
+		return MapMapper.getAttrList(map);
 	}
 
 	@Override
 	public AttractionDto getAttrInfo(String contentId) {
 		return MapMapper.getAttrInfo(contentId);
 	}
-
 
 }
