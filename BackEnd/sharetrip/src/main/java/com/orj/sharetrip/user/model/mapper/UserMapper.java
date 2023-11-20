@@ -17,5 +17,7 @@ public interface UserMapper {
 	void joinUser(UserDto userDto);
 	void followUser(Map<String,Object> map);
 	void unFollowUser(Map<String,Object> map);
+	void modifyUser(UserDto userDto);
+	void deleteUser(UserDto userDto);
 	
 }

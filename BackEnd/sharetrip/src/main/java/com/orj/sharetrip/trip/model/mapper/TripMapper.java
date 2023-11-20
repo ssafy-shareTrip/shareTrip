@@ -7,10 +7,25 @@ import com.orj.sharetrip.trip.model.TripDto;
 @Mapper
 public interface TripMapper {
 
-	void createTrip(TripDto tripDto);
+	void modifyTrip(TripDto tripDto);
 
 	void pickAttr(TripDto tripDto);
 
-	void joinGroup(TripDto tripDto);
+//	void joinGroup(TripDto tripDto);
 
+	void initTrip(TripDto tripDto);
+
+	void deletePickAttr(Integer tripNo);
+
+	void deleteTrip(Integer tripNo, String userId);
+
+	void deleteGroup(Integer tripNo);
+
+	void insertGroupUser(Integer tripNo, String userId);
+
+	void deleteGroupUser(Integer tripNo, String userId);
+
+	TripDto detailTrip(Integer tripNo);
+
+	
 }

@@ -4,6 +4,15 @@
 
 <mapper namespace="com.orj.sharetrip.fav.model.mapper.FavMapper">
 
+	<select id="getAttrFavCount" parameterType="map" resultType="int">
+		select count(user_id)
+		from attraction_fav
+		where content_id = #{contentId}
+		<if test="category != null">
+			and category = #{category}
+		</if>
+	</select>
+
 	<select id="getAttrFav" parameterType="map" resultType="favoriteDto">
 		select content_id as favId, category
 		from attraction_fav
@@ -11,7 +20,6 @@
 		<if test="category != null">
 			and category = #{category}
 		</if>
-		
 	</select>
 	
 	<insert id="registAttrFav" parameterType="map">
@@ -26,29 +34,34 @@
 		and content_id = #{contentId}
 	</delete>
 	
-<!-- 	<select id="getBoardFav" parameterType="string" resultType="favoriteDto">
-		select board_no as favId, category
+	<select id="getBoardFavCount" parameterType="map" resultType="int">
+		select count(user_id)
 		from board_fav
-		where user_id = #{userId};
+		where board_no = #{boardNo}
+		<if test="category != null">
+			and category = #{category}
+		</if>
 	</select>
 	
+	<select id="getBoardFav" parameterType="map" resultType="favoriteDto">
+		select board_no as favId, category
+		from board_fav
+		where user_id = #{userId}
+		<if test="category != null">
+			and category = #{category}
+		</if>
+	</select>
+	
+	<insert id="registBoardFav" parameterType="map">
+		insert into board_fav (board_no, user_id, category, like_time)
+		values (#{boardNo}, #{userId}, #{category}, now())
+	</insert>
+	
 	<delete id="deleteBoardFav" parameterType="map">
-		delete from attraction_fav
+		delete from board_fav
 		where 1=1
 		and user_id = #{userId}
 		and board_no = #{boardNo}
 	</delete>
 	
-	<select id="getTripFav" parameterType="string" resultType="favoriteDto">
-		select trip_no as favId, category
-		from attraction_fav
-		where user_id = #{userId};
-	</select>
-	
-	<delete id="deleteTripFav" parameterType="map">
-		delete from attraction_fav
-		where 1=1
-		and user_id = #{userId}
-		and trip_no = #{tripNo}
-	</delete> -->
 </mapper>

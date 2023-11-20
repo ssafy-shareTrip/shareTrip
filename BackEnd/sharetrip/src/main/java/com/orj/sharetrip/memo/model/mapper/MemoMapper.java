@@ -8,4 +8,8 @@ public interface MemoMapper {
 
 	void deletetAttrMemo(Map<String, Object> map);
 
+	void registBoardMemo(Map<String, Object> map);
+
+	void deleteBoardMemo(Map<String, Object> map);
+
 }

@@ -27,6 +27,7 @@
 	</resultMap>
 	
 	<resultMap type="memoDto" id="memo">
+		<result column="id" property="id"/>
 		<result column="user_id" property="userId"/>
 		<result column="content" property="content"/>
 		<result column="regist_time" property="registTime"/>
@@ -66,6 +67,9 @@
 		<if test="keyword != null">
 			and title like concat('%',#{keyword},'%')
 		</if>
+		<if test="mapX != null and mapY != null">
+			order by (#{mapX} - latitude) * (#{mapX} - latitude) + (#{mapY} - longitude) * (#{mapY} - longitude)
+		</if>
 		limit 30;
 	</select>
 	
@@ -76,7 +80,7 @@
 	</select>
 	
 	<select id="memoList" resultMap="memo">
-		select content, user_id, regist_time
+		select id, content, user_id, regist_time
 		from attraction_memo
 		where content_id = #{contentId}
 		order by regist_time desc;
