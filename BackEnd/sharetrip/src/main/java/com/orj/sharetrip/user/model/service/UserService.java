@@ -1,5 +1,7 @@
 package com.orj.sharetrip.user.model.service;
 
+import java.util.Map;
+
 import com.orj.sharetrip.user.model.UserDto;
 
 public interface UserService {
@@ -10,5 +12,7 @@ public interface UserService {
 	void saveRefreshToken(String userId, String refreshToken) throws Exception;
 	Object getRefreshToken(String userId) throws Exception;
 	void deleRefreshToken(String userId) throws Exception;
+	void followUser(Map<String,Object> map);
+	void unFollowUser(Map<String,Object> map);
 	
 }
