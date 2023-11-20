@@ -84,21 +84,24 @@ public class MemoController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-	@ApiOperation(value = "요약 정보", notes = "상세 정보", response = Map.class)
-	@GetMapping("url")
-	public ResponseEntity<Map<String, Object>> temp( ) throws Exception {
-		log.info("메소드 설명");
-		log.debug(" info : {}");
+
+	@ApiOperation(value = "게시글 댓글 쓰기", notes = "게시글에 대한 댓글 쓰기 기능", response = Map.class)
+	@PostMapping("/board/{boardNo}")
+	public ResponseEntity<Map<String, Object>> registBoardMemo(
+			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) Integer boardNo,
+			@RequestBody Map<String,Object> map) throws Exception {
+		log.info("게시글 댓글 쓰기");
+		log.debug(" info : {}, {}", boardNo, map);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		map.put("boardNo",boardNo);
 		try {
-			resultMap.put("data", null);
-			resultMap.put("message", "상세 조회 성공");
-			status = HttpStatus.OK;
+			MemoService.registBoardMemo(map);
+			resultMap.put("message", "게시글 댓글 등록 성공");
+			status = HttpStatus.CREATED;
 		} catch (Exception e) {
-			log.debug("## 에러 발생 : {}", e);
+			log.debug("게시글 댓글 쓰기 에러 발생 : {}", e);
 			resultMap.put("message", e.getMessage());
 			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
@@ -106,4 +109,53 @@ public class MemoController {
 		resultMap.put("status", status);
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
+
+	@ApiOperation(value = "게시글 댓글 삭제", notes = "게시글에 대한 댓글 삭제 기능", response = Map.class)
+	@DeleteMapping("/board/{boardNo}")
+	public ResponseEntity<Map<String, Object>> deleteBoardMemo(
+			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) String boardNo,
+			@RequestBody Map<String,Object> map) throws Exception {
+		log.info("게시글 댓글 삭제");
+		log.debug(" info : {}, {}", boardNo, map);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		map.put("boardNo",boardNo);
+		try {
+			MemoService.deletetBoardMemo(map);
+			resultMap.put("message", "관광지 댓글 삭제 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("댓글 삭제 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	
+//	@ApiOperation(value = "요약 정보", notes = "상세 정보", response = Map.class)
+//	@GetMapping("url")
+//	public ResponseEntity<Map<String, Object>> temp( ) throws Exception {
+//		log.info("메소드 설명");
+//		log.debug(" info : {}");
+//		
+//		Map<String, Object> resultMap = new HashMap<String, Object>();
+//		HttpStatus status = HttpStatus.ACCEPTED;
+//		
+//		try {
+//			resultMap.put("data", null);
+//			resultMap.put("message", "상세 조회 성공");
+//			status = HttpStatus.OK;
+//		} catch (Exception e) {
+//			log.debug("## 에러 발생 : {}", e);
+//			resultMap.put("message", e.getMessage());
+//			status = HttpStatus.INTERNAL_SERVER_ERROR;
+//		}
+//		
+//		resultMap.put("status", status);
+//		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+//	}
 }

@@ -36,4 +36,34 @@ public class FavServiceImpl implements FavService {
 		FavMapper.registAttrFav(map);
 	}
 
+
+	@Override
+	public List<FavoriteDto> getBoardFav(String userId, Integer category) {
+		return FavMapper.getBoardFav(userId, category);
+	}
+
+
+	@Override
+	public void registBoardFav(Map<String, Object> map) {
+		FavMapper.registBoardFav(map);
+	}
+
+
+	@Override
+	public void deleteBoardFav(Map<String, Object> map) {
+		FavMapper.deleteBoardFav(map);
+	}
+
+
+	@Override
+	public int getAttrFavCount(Integer contentId, Integer category) {
+		return FavMapper.getAttrFavCount(contentId,category);
+	}
+
+
+	@Override
+	public int getBoardFavCount(Integer contentId, Integer category) {
+		return FavMapper.getBoardFavCount(contentId,category);
+	}
+
 }

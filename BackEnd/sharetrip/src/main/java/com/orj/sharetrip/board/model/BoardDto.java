@@ -1,5 +1,9 @@
 package com.orj.sharetrip.board.model;
 
+import java.util.List;
+
+import com.orj.sharetrip.memo.model.MemoDto;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,5 +28,7 @@ public class BoardDto {
 	private String registTime;
 	@ApiModelProperty(value = "작성자 이름")
 	private String name;
+	@ApiModelProperty(value = "댓글")
+	private List<MemoDto> memos;
 	
 }

@@ -67,6 +67,9 @@
 		<if test="keyword != null">
 			and title like concat('%',#{keyword},'%')
 		</if>
+		<if test="mapX != null and mapY != null">
+			order by (#{mapX} - latitude) * (#{mapX} - latitude) + (#{mapY} - longitude) * (#{mapY} - longitude)
+		</if>
 		limit 30;
 	</select>
 	

@@ -4,6 +4,13 @@
 
 <mapper namespace="com.orj.sharetrip.board.model.mapper.BoardMapper">
 
+	<resultMap type="memoDto" id="memo">
+		<result column="id" property="id"/>
+		<result column="user_id" property="userId"/>
+		<result column="content" property="content"/>
+		<result column="regist_time" property="registTime"/>
+	</resultMap>
+
 	<resultMap type="boardDto" id="board">
 		<result column="board_no" property="boardNo"/>
 		<result column="user_id" property="userId"/>
@@ -14,6 +21,11 @@
 		<result column="hit" property="hit"/>
 		<result column="name" property="name"/>
 	</resultMap>
+	
+	<resultMap type="boardDto" id="viewBoard" extends="board">
+		<collection property="memos" column="board_no" javaType="list" ofType="memoDto" select="memoList"></collection>
+	</resultMap>
+
 
 	<insert id="writeArticle" parameterType="boardDto">
 		insert into board (user_id,trip_no, subject, content, hit, regist_time)
@@ -27,7 +39,7 @@
 	</select>
 	
 		
-	<select id="getArticle" parameterType="int" resultMap="board">
+	<select id="getArticle" parameterType="int" resultMap="viewBoard">
 		select b.board_no, b.user_id, b.trip_no ,b.subject, b.content, b.hit, b.regist_time, u.name 
 		from board b, user u
 		where b.user_id = u.id
@@ -50,6 +62,13 @@
 		delete from board
 		where board_no = #{boardNo}
 	</delete>
+	
+	<select id="memoList" resultMap="memo">
+		select id, content, user_id, regist_time
+		from board_memo
+		where board_no = #{boardNo}
+		order by regist_time desc;
+	</select>
 	
 	
 </mapper>

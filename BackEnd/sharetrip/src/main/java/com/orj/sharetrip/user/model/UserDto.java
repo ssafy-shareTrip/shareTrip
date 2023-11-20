@@ -25,7 +25,7 @@ public class UserDto {
 	@ApiModelProperty(value = "성별")
 	private String gender;
 	@ApiModelProperty(value = "프로필 이미지")
-	private String profile_image;
+	private String profileImage;
 	@ApiModelProperty(value = "refreshToken")
 	private String token;
 	

@@ -20,4 +20,14 @@
 		where content_id = #{contentId} and user_id = #{userId}
 	</delete>
 	
+	<insert id="registBoardMemo" parameterType="map">
+		insert into board_memo (board_no, user_id, content, regist_time)
+		values (#{boardNo}, #{userId}, #{content}, now())
+	</insert>
+	
+	<delete id="deletetBoardMemo" parameterType="map">
+		delete from board_memo
+		where boardNo = #{boardNo} and user_id = #{userId}
+	</delete>
+	
 </mapper>

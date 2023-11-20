@@ -64,4 +64,14 @@ public class UserServiceImpl implements UserService {
 		UserMapper.unFollowUser(map);
 	}
 
+	@Override
+	public void modifyUser(UserDto userDto) {
+		UserMapper.modifyUser(userDto);
+	}
+
+	@Override
+	public void deleteUser(UserDto userDto) {
+		UserMapper.deleteUser(userDto);
+	}
+
 }
