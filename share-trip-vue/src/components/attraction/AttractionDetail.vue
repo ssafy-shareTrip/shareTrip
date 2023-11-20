@@ -1,14 +1,28 @@
 <script setup>
+import { onMounted } from 'vue';
 import { ref } from 'vue'
 import DetailOutline from './detail/DetailOutline.vue'
 import DetailInfo from './detail/DetailInfo.vue'
 import DetailMap from './detail/DetailMap.vue'
 import DetailWeather from './detail/DetailWeather.vue'
+import { UseAttractionStore } from '@/stores/Attraction';
 
 const outline = ref(true);
 const info = ref(false);
 const map = ref(false);
 const weather = ref(false);
+const idx = 125266; // route.params.id
+
+const store = UseAttractionStore();
+
+onMounted(() => {
+    store.getLocation(idx);
+});
+
+const location = {
+    latitude : store.detail.latitude,
+    longitude : store.detail.longitude,
+}
 
 const outlineShow = () => {
     outline.value = true;
@@ -41,19 +55,22 @@ const weatherShow = () => {
 <template>
     <main>
         <div class="attraction-info">
+            {{ store.detail }}
             <div>
                 <span>
-                    관광지 이름
+                    {{ store.detail.title }}
                 </span>
                 <span>하트</span>
                 <span>별</span>
             </div>
             <div>
                 <span>
-                    <img>img
+                    <img :src="`${store.detail.firstImage}`">
                 </span>
                 <span>
-                    관광지 주소
+                    {{ store.detail.addr1 }}
+                    {{ store.detail.addr2 }}
+                    {{ latitude }}
                 </span>
             </div>
         </div>
@@ -68,7 +85,7 @@ const weatherShow = () => {
             <div>
                 <DetailOutline v-show="outline"></DetailOutline>
                 <DetailInfo v-show="info"></DetailInfo>
-                <DetailMap v-show="map"></DetailMap>
+                <DetailMap v-show="map" map-loc=location></DetailMap>
                 <DetailWeather v-show="weather"></DetailWeather>
             </div>
         </div>

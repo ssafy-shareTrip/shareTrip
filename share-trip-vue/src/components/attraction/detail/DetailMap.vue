@@ -1,11 +1,12 @@
 <script setup>
 import { onMounted } from 'vue';
-import { UseAttractionStore } from '@/stores/Attraction';
 
 const latitude = 33.450701;
 const longitude = 126.570667;
-const idx = 125266;
-const store = UseAttractionStore();
+defineProps({
+    mapLoc: Object,
+})
+
 let map = null;
 const initMap = () =>{
     const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -30,7 +31,7 @@ onMounted(() => {
         });
         document.head.appendChild(script); //헤드태그에 추가
     }
-    store.getLocation(idx);
+    
 });
 
 
@@ -39,6 +40,7 @@ onMounted(() => {
 <template>
     <div>
         <div id="map"></div>
+        {{ mapLoc }}
     </div>
 </template>
 
