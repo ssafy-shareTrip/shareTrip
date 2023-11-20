@@ -1,9 +1,11 @@
 package com.orj.sharetrip.user.model;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@ApiModel(value = "UserDto : 회원 정보", description = "회원의 상세 정보를 나타낸다.")
 public class UserDto {
 
 	@ApiModelProperty(value = "아이디")

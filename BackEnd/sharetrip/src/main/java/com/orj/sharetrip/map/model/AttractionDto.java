@@ -4,10 +4,12 @@ import java.util.List;
 
 import com.orj.sharetrip.memo.model.MemoDto;
 
+import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
+@ApiModel(value = "AttractionDto : 관광지정보", description = "관광지의 상세 정보를 나타낸다.")
 public class AttractionDto {
 
 	

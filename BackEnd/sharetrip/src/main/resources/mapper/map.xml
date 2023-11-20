@@ -27,6 +27,7 @@
 	</resultMap>
 	
 	<resultMap type="memoDto" id="memo">
+		<result column="id" property="id"/>
 		<result column="user_id" property="userId"/>
 		<result column="content" property="content"/>
 		<result column="regist_time" property="registTime"/>
@@ -76,7 +77,7 @@
 	</select>
 	
 	<select id="memoList" resultMap="memo">
-		select content, user_id, regist_time
+		select id, content, user_id, regist_time
 		from attraction_memo
 		where content_id = #{contentId}
 		order by regist_time desc;

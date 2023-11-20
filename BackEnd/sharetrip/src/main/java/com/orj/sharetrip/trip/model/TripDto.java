@@ -2,9 +2,11 @@ package com.orj.sharetrip.trip.model;
 
 import java.util.List;
 
+import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 @Data
+@ApiModel(value = "TripDto : 경로정보", description = "경로의 상세 정보를 나타낸다.")
 public class TripDto {
 
 	private int tripNo;

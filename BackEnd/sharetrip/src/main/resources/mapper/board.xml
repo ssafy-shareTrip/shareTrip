@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.orj.sharetrip.board.model.mapper.BoardMapper">
+
+	<resultMap type="boardDto" id="board">
+		<result column="board_no" property="boardNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="trip_no" property="tripNo"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="regist_time" property="registTime"/>
+		<result column="hit" property="hit"/>
+		<result column="name" property="name"/>
+	</resultMap>
+
+	<insert id="writeArticle" parameterType="boardDto">
+		insert into board (user_id,trip_no, subject, content, hit, regist_time)
+		values (#{userId}, #{tripNo}, #{subject}, #{content}, 0, now())
+	</insert>
+	
+	<select id="listArticle" parameterType="map" resultMap="board">
+		select *
+		from board
+		order by board_no desc
+	</select>
+	
+		
+	<select id="getArticle" parameterType="int" resultMap="board">
+		select b.board_no, b.user_id, b.trip_no ,b.subject, b.content, b.hit, b.regist_time, u.name 
+		from board b, user u
+		where b.user_id = u.id
+		and b.board_no = #{boardNo}
+	</select>
+	
+	<update id="updateHit" parameterType="int">
+		update board
+		set hit = hit + 1
+		where board_no = #{boardNo}
+	</update>
+	
+	<update id="modifyArticle" parameterType="boardDto">
+		update board
+		set subject = #{subject}, content = #{content}, trip_no = #{tripNo}
+		where board_no = #{boardNo}
+	</update>
+	
+	<delete id="deleteArticle" parameterType="int">
+		delete from board
+		where board_no = #{boardNo}
+	</delete>
+	
+	
+</mapper>
