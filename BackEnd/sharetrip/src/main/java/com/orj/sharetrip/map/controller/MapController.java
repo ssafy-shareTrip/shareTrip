@@ -88,8 +88,8 @@ public class MapController {
 			@RequestParam(name = "gugun", required = false) @ApiParam(value = "구군코드.") String gugunCode,
 			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광타입(12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점) ID.") String contentTypeId,
 			@RequestParam(name = "keyword", required = false) @ApiParam(value = "검색 키워드.") String keyword,
-			@RequestParam(name = "mapX", required = false) @ApiParam(value = "GPS X좌표(WGS84 경도좌표).") double mapX,
-			@RequestParam(name = "mapY", required = false) @ApiParam(value = "GPS Y좌표(WGS84 위도좌표).") double mapY) throws Exception {
+			@RequestParam(name = "mapX", required = false) @ApiParam(value = "GPS X좌표(WGS84 경도좌표).") Double mapX,
+			@RequestParam(name = "mapY", required = false) @ApiParam(value = "GPS Y좌표(WGS84 위도좌표).") Double mapY) throws Exception {
 		log.info("관광지 조회");
 		log.debug(" info : {}, {}, {}, {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword, mapX, mapY);
 		
@@ -147,28 +147,7 @@ public class MapController {
 	
 
 	
-	@ApiOperation(value = "요약 정보", notes = "상세 정보", response = Map.class)
-	@GetMapping("url")
-	public ResponseEntity<Map<String, Object>> temp( ) throws Exception {
-		log.info("메소드 설명");
-		log.debug(" info : {}");
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		
-		try {
-			resultMap.put("data", null);
-			resultMap.put("message", "상세 조회 성공");
-			status = HttpStatus.OK;
-		} catch (Exception e) {
-			log.debug("## 에러 발생 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		resultMap.put("status", status);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
+
 	
 	
 	
