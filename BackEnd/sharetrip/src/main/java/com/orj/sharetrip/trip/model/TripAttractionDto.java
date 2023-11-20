@@ -5,10 +5,9 @@ import lombok.Data;
 @Data
 public class TripAttractionDto {
 	
-	private int id;
 	private int contentId;
 	private int day;
-	private int order;
+	private int seq;
 	private String pickTime;
 	
 }
