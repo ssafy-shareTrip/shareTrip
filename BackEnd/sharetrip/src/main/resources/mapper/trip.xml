@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper	namespace="com.orj.sharetrip.trip.model.mapper.TripMapper">
+
+	<insert id="createTrip" parameterType="tripDto">
+		insert into user_trip
+		values (0, #{userId}, #{title}, now(), #{isShared})
+		<selectKey resultType="int" keyProperty="tripNo" order="AFTER">
+			select last_insert_id()
+		</selectKey>
+	</insert>
+
+	<insert id="pickAttr" parameterType="tripDto">
+		insert into trip_attraction
+		values
+		<foreach collection="attractions" item="attraction"	separator=" , ">
+			(0, #{tripNo}, #{attraction.contentId},
+			#{attraction.day}, #{attraction.order}, now())
+		</foreach>
+	</insert>
+	
+	<insert id="joinGroup" parameterType="tripDto">
+		insert into trip_share
+		values
+		<foreach collection="userIds" item="userId"	separator=" , ">
+			(#{tripNo}, #{userId}, now())
+		</foreach>
+	</insert>
+
+
+</mapper>

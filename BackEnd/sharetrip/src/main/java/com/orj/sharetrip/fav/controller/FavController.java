@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orj.sharetrip.fav.model.FavoriteDto;
@@ -39,7 +40,8 @@ public class FavController {
 	@ApiOperation(value = "관광지 좋아요 상태 조회", notes = "유저가 좋아요 또는 북마크한 관광지 정보를 가져온다.", response = Map.class)
 	@GetMapping("/attr/{userId}")
 	public ResponseEntity<Map<String, Object>> getAttrFav(
-			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId) throws Exception {
+			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
+			@RequestParam(name = "category", required = false) Integer category) throws Exception {
 		log.info("관광지 좋아요 상태  조회");
 		log.debug(" info : {}", userId);
 		
@@ -48,7 +50,7 @@ public class FavController {
 		List<FavoriteDto> list = null;
 		
 		try {
-			list = FavService.getAttrFav(userId);
+			list = FavService.getAttrFav(userId, category);
 			resultMap.put("data", list);
 			resultMap.put("message", "관광지 좋아요 조회 성공");
 			status = HttpStatus.OK;
@@ -72,7 +74,7 @@ public class FavController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		map.put("userId", userId);
 		try {
 			FavService.registAttrFav(map);
 			resultMap.put("message", "관광지 좋아요 정보 등록 성공");
@@ -97,7 +99,7 @@ public class FavController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		map.put("userId", userId);
 		try {
 			FavService.deleteAttrFav(map);
 			resultMap.put("message", "관광지 좋아요 정보 삭제 성공");

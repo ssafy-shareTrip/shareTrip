@@ -6,7 +6,7 @@ import java.util.Map;
 import com.orj.sharetrip.fav.model.FavoriteDto;
 
 public interface FavService {
-	List<FavoriteDto> getAttrFav(String userId);
+	List<FavoriteDto> getAttrFav(String userId, Integer category);
 
 	void deleteAttrFav(Map<String, Object> map);
 
