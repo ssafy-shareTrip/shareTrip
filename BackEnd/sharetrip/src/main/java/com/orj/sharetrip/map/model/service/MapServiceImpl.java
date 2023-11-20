@@ -30,8 +30,8 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public List<AttractionDto> getAttrList(String sidoCode, String gugunCode, String contentTypeId, String keyword) {
-		return MapMapper.getAttrList(sidoCode, gugunCode, contentTypeId, keyword);
+	public List<AttractionDto> getAttrList(Map<String, Object> map) {
+		return MapMapper.getAttrList(map);
 	}
 
 	@Override
