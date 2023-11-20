@@ -1,10 +1,14 @@
 <script setup>
 
+defineProps({
+    overView : String
+})
+
 </script>
 
 <template>
     <div>
-        DetailInfo
+        {{ overView }}
     </div>
 </template>
 

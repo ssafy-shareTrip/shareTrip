@@ -1,10 +1,13 @@
 <script setup>
+const props = defineProps({
+    detIdx : Number
+})
 
 </script>
 
 <template>
     <div>
-        DetailOutline
+        e댓글
     </div>
 </template>
 

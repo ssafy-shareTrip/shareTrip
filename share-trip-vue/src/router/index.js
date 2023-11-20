@@ -5,8 +5,12 @@ import TheBoardView from "@/views/TheBoardView.vue"
 import LoginView from "@/components/user/LoginView.vue"
 import JoinView from "@/components/user/JoinView.vue"
 import TheMypageView from "@/views/TheMypageView.vue"
+import AttractionDetail from "@/components/attraction/AttractionDetail.vue"
+import DetailInfo from '@/components/attraction/detail/DetailInfo.vue'
+import DetailMap from '@/components/attraction/detail/DetailMap.vue'
+import DetailWeather from '@/components/attraction/detail/DetailWeather.vue'
 
-//찬혁이한테 api받으면 path 수정해야함
+//api받으면 path 수정해야함
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -58,6 +62,29 @@ const router = createRouter({
       path: '/kakao',
       name: 'kakao',
       component: TheAttractionView
+    },
+
+    {
+      path: '/attrDet/:idx',
+      name: 'attrDet',
+      component: AttractionDetail,
+      children: [
+        {
+          path: 'detInfo',
+          name: 'detInfo',
+          component: DetailInfo
+        },
+        {
+          path: 'detMap',
+          name: 'detMap',
+          component: DetailMap
+        },
+        {
+          path: 'detWeather',
+          name: 'detWeather',
+          component: DetailWeather
+        },
+      ]
     },
 
   ]

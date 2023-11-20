@@ -7,10 +7,11 @@ import TheAttractionView from './views/TheAttractionView.vue';
 <template>
   <header>
     <TheHeadingNavBar></TheHeadingNavBar>
+    <!-- <RouterLink :to="{name:attrDet}">디테일</RouterLink> -->
   </header>
   <div>
-    <TheAttractionView></TheAttractionView>
-    <!-- <router-view></router-view> -->
+    <!-- <TheAttractionView></TheAttractionView> -->
+    <router-view></router-view>
   </div>
 </template>
 

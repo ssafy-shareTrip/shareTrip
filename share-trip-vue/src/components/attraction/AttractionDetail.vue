@@ -1,27 +1,39 @@
 <script setup>
-import { onMounted } from 'vue';
+import { RouterView, useRoute, useRouter } from 'vue-router'
+import { onMounted, provide } from 'vue';
 import { ref } from 'vue'
-import DetailOutline from './detail/DetailOutline.vue'
-import DetailInfo from './detail/DetailInfo.vue'
-import DetailMap from './detail/DetailMap.vue'
-import DetailWeather from './detail/DetailWeather.vue'
 import { UseAttractionStore } from '@/stores/Attraction';
+import DetailInfo from '@/components/attraction/detail/DetailInfo.vue'
+import DetailMap from '@/components/attraction/detail/DetailMap.vue'
+import DetailWeather from '@/components/attraction/detail/DetailWeather.vue'
+import DetailMemo from '@/components/attraction/detail/DetailMemo.vue';
 
+const route = useRoute()
+const router = useRouter()
+const store = UseAttractionStore();
+
+const idx = route.params.idx; //125266
 const outline = ref(true);
 const info = ref(false);
 const map = ref(false);
 const weather = ref(false);
-const idx = 125266; // route.params.id
-
-const store = UseAttractionStore();
 
 onMounted(() => {
-    store.getLocation(idx);
+    console.log(idx);
+    store.getDetail(idx);
+    // async function getInfo() {
+    //     const detail = await store.detail;
+    //     await console.log(store.detail)
+    // }
 });
 
-const location = {
-    latitude : store.detail.latitude,
-    longitude : store.detail.longitude,
+
+const overView = (e) => {
+    router.push({ 
+        name:'detInfo', 
+        params:{
+            idx:'idx'}
+    })
 }
 
 const outlineShow = () => {
@@ -55,7 +67,6 @@ const weatherShow = () => {
 <template>
     <main>
         <div class="attraction-info">
-            {{ store.detail }}
             <div>
                 <span>
                     {{ store.detail.title }}
@@ -70,26 +81,33 @@ const weatherShow = () => {
                 <span>
                     {{ store.detail.addr1 }}
                     {{ store.detail.addr2 }}
-                    {{ latitude }}
                 </span>
             </div>
-        </div>
-        <div class="menu-tab">
-            <div>
-                <span @click="outlineShow">개요</span>
-                <span @click="infoShow">설명</span>
-                <span @click="mapShow">지도</span>
-                <span @click="weatherShow">날씨</span>
+                <!-- <div>
+                    
+                    <button @click="overView">설명</button>
+                    <RouterLink :to="{name:'detInfo'}">설명</RouterLink>
+                    <RouterLink :to="{name:'detMap'}" :map-lat="store.detail.latitude" :map-long="store.detail.longitude">지도</RouterLink>
+                    <RouterLink :to="{name:'detWeather'}" :map-lat="store.detail.latitude" :map-long="store.detail.longitude">날씨</RouterLink>
+                    <hr>
+                    <RouterView></RouterView>
+                </div> -->
+                <div>
+                    <span @click="infoShow">설명</span>
+                    <span @click="mapShow">지도</span>
+                    <span @click="weatherShow">날씨</span>
+                </div>
+                <hr>
+                <div>
+                    <DetailInfo v-show="info" :over-view="store.detail.overview"></DetailInfo>
+                    <DetailMap v-show="map" :map-lat="store.detail.latitude" :map-long="store.detail.longitude"></DetailMap>
+                    <DetailWeather v-show="weather" :map-lat="store.detail.latitude" :map-long="store.detail.longitude"></DetailWeather>
+                </div>
             </div>
-            <hr>
             <div>
-                <DetailOutline v-show="outline"></DetailOutline>
-                <DetailInfo v-show="info"></DetailInfo>
-                <DetailMap v-show="map" map-loc=location></DetailMap>
-                <DetailWeather v-show="weather"></DetailWeather>
+                <DetailMemo :det-idx="idx"></DetailMemo>
             </div>
-        </div>
-    </main>
+        </main>
 </template>
 
 <style scoped>

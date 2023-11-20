@@ -6,17 +6,18 @@ const REST_ATTRACTION_API = `http://localhost:80/sharetrip/map/attr/`
 
 export const UseAttractionStore = defineStore('attraction', () => {
     const detail = ref({});
-    const getLocation = (idx) => {
-        console.log(idx)
+
+    const getDetail = (idx) => {
         axios({
             url: REST_ATTRACTION_API+idx,
         })
         .then((response)=>{
+            console.log(response)
             detail.value = response.data.data
-            console.log(detail.value);
+            console.log(response.data)
         })
         .catch(()=>{})
     }
 
-    return {getLocation, detail}
+    return {getDetail, detail}
 })
