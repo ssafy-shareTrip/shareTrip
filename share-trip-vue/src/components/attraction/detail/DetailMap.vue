@@ -1,8 +1,11 @@
 <script setup>
 import { onMounted } from 'vue';
+import {} from '@/stores/Attraction';
 
 const latitude = 33.450701;
 const longitude = 126.570667;
+const idx = ;
+const store = UseAttractionStore();
 let map = null;
 const initMap = () =>{
     const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
@@ -16,7 +19,7 @@ const initMap = () =>{
 onMounted(() => {
     if (window.kakao && window.kakao.maps) {
         initMap();
-        getLocation();
+        store.getLocation(idx.value);
     } else {
         const script = document.createElement('script'); 
         //autoload=false 스크립트를 동적으로 로드하기 위해서 사용
@@ -30,9 +33,7 @@ onMounted(() => {
     }
 });
 
-const getLocation = () => {
-    console.log(param.value);
-}
+
 </script>
 
 <template>
