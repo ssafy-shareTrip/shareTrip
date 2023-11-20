@@ -30,7 +30,6 @@ const router = createRouter({
       component: TheBoardView
     },
 
-    //에러발생: 로그인 페이지 이동 시 Uncaught TypeError: Cannot read properties of undefined (reading 'backdrop')
     {
       path: '/login',
       name: 'login',
@@ -53,6 +52,12 @@ const router = createRouter({
       path: '/logout',
       name: 'logout',
       component: TheMainView
+    },
+
+    {
+      path: '/kakao',
+      name: 'kakao',
+      component: TheAttractionView
     },
 
   ]

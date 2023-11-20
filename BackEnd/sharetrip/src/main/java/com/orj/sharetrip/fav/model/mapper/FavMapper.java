@@ -9,9 +9,7 @@ import com.orj.sharetrip.fav.model.FavoriteDto;
 
 @Mapper
 public interface FavMapper {
-	List<FavoriteDto> getAttrFav(String userId);
-
-	void deleteAttrFav(String userId, String contentId, String category);
+	List<FavoriteDto> getAttrFav(String userId, Integer category);
 
 	void deleteAttrFav(Map<String, Object> map);
 

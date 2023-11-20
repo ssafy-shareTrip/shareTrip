@@ -172,7 +172,7 @@ public class UserController {
 		map.put("idTo", idTo);
 		try {
 			UserService.followUser(map);
-			resultMap.put("message", "상세 조회 성공");
+			resultMap.put("message", "팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			log.debug("## 에러 발생 : {}", e);
@@ -197,7 +197,7 @@ public class UserController {
 		map.put("idTo", idTo);
 		try {
 			UserService.unFollowUser(map);
-			resultMap.put("message", "상세 조회 성공");
+			resultMap.put("message", "언팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			log.debug("## 에러 발생 : {}", e);

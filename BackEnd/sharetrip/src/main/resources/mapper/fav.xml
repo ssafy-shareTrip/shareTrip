@@ -4,10 +4,14 @@
 
 <mapper namespace="com.orj.sharetrip.fav.model.mapper.FavMapper">
 
-	<select id="getAttrFav" parameterType="string" resultType="favoriteDto">
+	<select id="getAttrFav" parameterType="map" resultType="favoriteDto">
 		select content_id as favId, category
 		from attraction_fav
-		where user_id = #{userId};
+		where user_id = #{userId}
+		<if test="category != null">
+			and category = #{category}
+		</if>
+		
 	</select>
 	
 	<insert id="registAttrFav" parameterType="map">

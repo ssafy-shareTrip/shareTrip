@@ -232,20 +232,20 @@ DEFAULT CHARACTER SET = utf8mb4;
 CREATE TABLE IF NOT EXISTS `sharetrip`.`board` (
   `board_no` INT NOT NULL AUTO_INCREMENT,
   `user_id` VARCHAR(45) NOT NULL,
-  `user_trip_trip_no` INT NULL,
+  `trip_no` INT NULL,
   `subject` VARCHAR(100) NOT NULL,
   `content` VARCHAR(2000) NOT NULL,
   `regist_time` DATETIME NOT NULL,
   PRIMARY KEY (`board_no`),
   INDEX `fk_board_user1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_board_user_trip1_idx` (`user_trip_trip_no` ASC) VISIBLE,
+  INDEX `fk_board_user_trip1_idx` (`trip_no` ASC) VISIBLE,
   CONSTRAINT `fk_board_user1`
     FOREIGN KEY (`user_id`)
     REFERENCES `sharetrip`.`user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_board_user_trip1`
-    FOREIGN KEY (`user_trip_trip_no`)
+    FOREIGN KEY (`trip_no`)
     REFERENCES `sharetrip`.`user_trip` (`trip_no`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)

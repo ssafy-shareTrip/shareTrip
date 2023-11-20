@@ -20,8 +20,8 @@ public class FavServiceImpl implements FavService {
 
 
 	@Override
-	public List<FavoriteDto> getAttrFav(String userId) {
-		return FavMapper.getAttrFav(userId);
+	public List<FavoriteDto> getAttrFav(String userId,Integer category) {
+		return FavMapper.getAttrFav(userId,category);
 	}
 
 

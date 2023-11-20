@@ -44,7 +44,7 @@ public class MemoController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		map.put("contentId",contentId);
 		try {
 			MemoService.registAttrMemo(map);
 			resultMap.put("message", "관광지 댓글 등록 성공");
@@ -69,7 +69,7 @@ public class MemoController {
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		
+		map.put("contentId",contentId);
 		try {
 			MemoService.deletetAttrMemo(map);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
