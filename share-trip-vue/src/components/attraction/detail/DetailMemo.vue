@@ -6,6 +6,7 @@ import { ref,watch } from "vue"
 const REST_ATTRACTION_API = `http://localhost:80/sharetrip/map/attr/`
 const REST_MEMO_API = `http://localhost:80/sharetrip/memo/attr/`
 const store = UseAttractionStore();
+// 댓글 읽어오기
 const memos = ref({memos:[]})
     axios({
         url: REST_ATTRACTION_API+"125266",
@@ -23,6 +24,7 @@ const memo = ref({
     content: "",
 });
 
+// 댓글 작성 기능
 const registMemo = function() {
     const contentId = store.detail.contentId;
     console.log("댓글 작성", contentId);
@@ -35,16 +37,13 @@ const registMemo = function() {
     .catch(()=>{})
 }
 
+// 댓글 삭제 기능
 const delMemo = (id) => {
     const contentId = store.detail.contentId;
     console.log("댓글 삭제", id);
     axios.delete(
         REST_MEMO_API+contentId,
-        {
-            contentId:contentId,
-            id:id,
-        }
-    )
+        id.value)
     .then((response) => {
         console.log("성공",response)
     })
