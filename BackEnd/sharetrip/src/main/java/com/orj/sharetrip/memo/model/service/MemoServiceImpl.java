@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.orj.sharetrip.memo.model.MemoDto;
 import com.orj.sharetrip.memo.model.mapper.MemoMapper;
 
 @Service
@@ -18,8 +19,8 @@ public class MemoServiceImpl implements MemoService{
 
 
 	@Override
-	public void registAttrMemo(Map<String, Object> map) {
-		MemoMapper.registAttrMemo(map);
+	public void registAttrMemo(MemoDto memoDto) {
+		MemoMapper.registAttrMemo(memoDto);
 	}
 
 
@@ -30,8 +31,8 @@ public class MemoServiceImpl implements MemoService{
 
 
 	@Override
-	public void registBoardMemo(Map<String, Object> map) {
-		MemoMapper.registBoardMemo(map);
+	public void registBoardMemo(MemoDto memoDto) {
+		MemoMapper.registBoardMemo(memoDto);
 	}
 
 

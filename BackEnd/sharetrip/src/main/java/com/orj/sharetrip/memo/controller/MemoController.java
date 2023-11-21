@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orj.sharetrip.memo.model.MemoDto;
 import com.orj.sharetrip.memo.model.service.MemoService;
 
 import io.swagger.annotations.Api;
@@ -39,15 +40,16 @@ public class MemoController {
 	@PostMapping("/attr/{contentId}")
 	public ResponseEntity<Map<String, Object>> registAttrMemo(
 			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
-			@RequestBody Map<String,Object> map) throws Exception {
+			@RequestBody MemoDto memoDto ) throws Exception {
 		log.info("관광지 댓글 쓰기");
-		log.debug(" info : {}, {}", contentId, map);
+		log.debug(" info : {}, {}", contentId, memoDto);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("contentId",contentId);
+		memoDto.setTarget(contentId);
 		try {
-			MemoService.registAttrMemo(map);
+			MemoService.registAttrMemo(memoDto);
+			resultMap.put("data", memoDto);
 			resultMap.put("message", "관광지 댓글 등록 성공");
 			status = HttpStatus.CREATED;
 		} catch (Exception e) {
@@ -61,12 +63,11 @@ public class MemoController {
 	}
 
 	@ApiOperation(value = "관광지 댓글 삭제", notes = "관광지에 대한 댓글 삭제 기능", response = Map.class)
-	@DeleteMapping("/attr/{contentId}")
+	@DeleteMapping("/attr/{id}")
 	public ResponseEntity<Map<String, Object>> deleteAttrMemo(
-			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
-			@RequestParam @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
+			@PathVariable("id") @ApiParam(value = "댓글 번호.", required = true) Integer id) throws Exception {
 		log.info("관광지 댓글 삭제");
-		log.debug(" info : {}, {}", contentId, id);
+		log.debug(" info : {}", id);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -89,15 +90,16 @@ public class MemoController {
 	@PostMapping("/board/{boardNo}")
 	public ResponseEntity<Map<String, Object>> registBoardMemo(
 			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) Integer boardNo,
-			@RequestBody Map<String,Object> map) throws Exception {
+			@RequestBody MemoDto memoDto) throws Exception {
 		log.info("게시글 댓글 쓰기");
-		log.debug(" info : {}, {}", boardNo, map);
+		log.debug(" info : {}, {}", boardNo, memoDto);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("boardNo",boardNo);
+		memoDto.setTarget(boardNo);
 		try {
-			MemoService.registBoardMemo(map);
+			MemoService.registBoardMemo(memoDto);
+			resultMap.put("data", memoDto);
 			resultMap.put("message", "게시글 댓글 등록 성공");
 			status = HttpStatus.CREATED;
 		} catch (Exception e) {
@@ -111,12 +113,11 @@ public class MemoController {
 	}
 
 	@ApiOperation(value = "게시글 댓글 삭제", notes = "게시글에 대한 댓글 삭제 기능", response = Map.class)
-	@DeleteMapping("/board/{boardNo}")
+	@DeleteMapping("/board/{id}")
 	public ResponseEntity<Map<String, Object>> deleteBoardMemo(
-			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) String boardNo,
-			@RequestParam @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
+			@PathVariable("id") @ApiParam(value = "댓글 번호.", required = true) Integer id) throws Exception {
 		log.info("게시글 댓글 삭제");
-		log.debug(" info : {}, {}", boardNo, id);
+		log.debug(" info : {}, {}", id);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;

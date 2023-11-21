@@ -1,7 +1,7 @@
 <script setup></script>
 
 <template>
-	<div id="navBar">네브바</div>
+	<div>관광지 조회 뷰</div>
 </template>
 
 <style scoped></style>

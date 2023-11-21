@@ -1,16 +1,7 @@
 <script setup></script>
 
 <template>
-	<div class="main">
-		<div class="top"></div>
-		<div class="bottom"></div>
-	</div>
+	<div class="main">메인 뷰</div>
 </template>
 
-<style scoped>
-.top {
-	position: absolute;
-	height: 50%;
-	background-color: rgb(217, 217, 217);
-}
-</style>
+<style scoped></style>

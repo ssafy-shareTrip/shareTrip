@@ -2,24 +2,38 @@ import { ref } from 'vue';
 import { defineStore } from 'pinia';
 import axios from 'axios';
 
-const REST_ATTRACTION_API = `http://localhost:80/sharetrip/map/attr/`
+const REST_ATTRACTION_API = `http://localhost:80/sharetrip/`
 
 export const UseAttractionStore = defineStore('attraction', () => {
     const detail = ref({
         memos:[]
     });
+    const favs = ref({
+        
+    });
 
+    // 관광지 상세 정보 조회
     const getDetail = (idx) => {
         axios({
-            url: REST_ATTRACTION_API+idx,
+            url: REST_ATTRACTION_API+'map/attr/'+idx,
         })
         .then((response)=>{
-            console.log(response)
+            console.log("getDetail")
             detail.value = response.data.data
-            console.log(response.data)
         })
         .catch(()=>{})
     }
 
-    return {getDetail, detail}
+    // 사용자의 관광지 좋아요 또는 북마크 정보 조회
+    const getFav = (userId) => {
+        axios
+        .get(REST_ATTRACTION_API+'/fav/attr/'+userId)
+        .then((response) => {
+            console.log("FAV :", response.data.data)
+
+        })
+        .catch(() => {})
+    }
+
+    return {getDetail, detail, getFav}
 })

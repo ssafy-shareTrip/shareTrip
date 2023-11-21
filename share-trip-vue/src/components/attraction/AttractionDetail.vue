@@ -7,12 +7,14 @@ import DetailInfo from '@/components/attraction/detail/DetailInfo.vue'
 import DetailMap from '@/components/attraction/detail/DetailMap.vue'
 import DetailWeather from '@/components/attraction/detail/DetailWeather.vue'
 import DetailMemo from '@/components/attraction/detail/DetailMemo.vue';
+import axios from 'axios';
 
 const route = useRoute()
 const router = useRouter()
 const store = UseAttractionStore();
 
 const idx = route.params.idx; //125266
+const userId = "jeon"
 const info = ref(true);
 const map = ref(false);
 const weather = ref(false);
@@ -20,20 +22,9 @@ const weather = ref(false);
 onMounted(() => {
     console.log(idx);
     store.getDetail(idx);
-    // async function getInfo() {
-    //     const detail = await store.detail;
-    //     await console.log(store.detail)
-    // }
+    store.getFav(userId);
 });
 
-
-const overView = (e) => {
-    router.push({ 
-        name:'detInfo', 
-        params:{
-            idx:'idx'}
-    })
-}
 
 const infoShow = () => {
     info.value = true;
@@ -60,8 +51,10 @@ const weatherShow = () => {
                 <span>
                     {{ store.detail.title }}
                 </span>
-                <span>하트</span>
-                <span>별</span>
+                <span><img src="/public/icon/like_none.png" width="30"></span>
+                <span><img src="/public/icon/like_push.png" width="30"></span>
+                <span><img src="/public/icon/star_none.png" width="30"></span>
+                <span><img src="/public/icon/star_push.png" width="30"></span>
             </div>
             <div>
                 <span>

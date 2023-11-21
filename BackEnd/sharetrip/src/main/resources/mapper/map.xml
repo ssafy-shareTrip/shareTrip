@@ -47,7 +47,7 @@
 	<select id="getGugunInSido" parameterType="string" resultMap="sidoGugun">
 		select left(gugun_code,5) gugun_code, gugun_name
 		from gugun
-		where left(gugun_code,2) = #{sido}
+		where sido_code = #{sido}
 		order by gugun_code
 	</select>
 	
