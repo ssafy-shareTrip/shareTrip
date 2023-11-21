@@ -12,7 +12,10 @@
 
 	<insert id="registAttrMemo" parameterType="map">
 		insert into attraction_memo (content_id, user_id, content, regist_time)
-		values (#{contentId}, #{userId}, #{content}, now())
+		values (#{target}, #{userId}, #{content}, now())
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select last_insert_id()
+		</selectKey>
 	</insert>
 	
 	<delete id="deletetAttrMemo" parameterType="int">
@@ -22,7 +25,10 @@
 	
 	<insert id="registBoardMemo" parameterType="map">
 		insert into board_memo (board_no, user_id, content, regist_time)
-		values (#{boardNo}, #{userId}, #{content}, now())
+		values (#{target}, #{userId}, #{content}, now())
+		<selectKey resultType="int" keyProperty="id" order="AFTER">
+			select last_insert_id()
+		</selectKey>
 	</insert>
 	
 	<delete id="deletetBoardMemo" parameterType="int">

@@ -2,13 +2,15 @@ package com.orj.sharetrip.memo.model.mapper;
 
 import java.util.Map;
 
+import com.orj.sharetrip.memo.model.MemoDto;
+
 public interface MemoMapper {
 
-	void registAttrMemo(Map<String, Object> map);
+	void registAttrMemo(MemoDto memoDto);
 
 	void deletetAttrMemo(Integer id);
 
-	void registBoardMemo(Map<String, Object> map);
+	void registBoardMemo(MemoDto memoDto);
 
 	void deleteBoardMemo(Integer id);
 
