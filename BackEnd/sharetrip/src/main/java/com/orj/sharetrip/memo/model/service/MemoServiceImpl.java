@@ -24,8 +24,8 @@ public class MemoServiceImpl implements MemoService{
 
 
 	@Override
-	public void deletetAttrMemo(Integer id) {
-		MemoMapper.deletetAttrMemo(id);
+	public void deletetAttrMemo(Map<String, Object> map) {
+		MemoMapper.deletetAttrMemo(map);
 	}
 
 
@@ -36,8 +36,8 @@ public class MemoServiceImpl implements MemoService{
 
 
 	@Override
-	public void deletetBoardMemo(Integer id) {
-		MemoMapper.deleteBoardMemo(id);
+	public void deletetBoardMemo(Map<String, Object> map) {
+		MemoMapper.deleteBoardMemo(map);
 	}
 
 }
