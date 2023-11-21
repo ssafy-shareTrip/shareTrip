@@ -6,11 +6,11 @@ public interface MemoMapper {
 
 	void registAttrMemo(Map<String, Object> map);
 
-	void deletetAttrMemo(Integer id);
+	void deletetAttrMemo(Map<String, Object> map);
 
 	void registBoardMemo(Map<String, Object> map);
 
-	void deleteBoardMemo(Integer id);
+	void deleteBoardMemo(Map<String, Object> map);
 
 
 }

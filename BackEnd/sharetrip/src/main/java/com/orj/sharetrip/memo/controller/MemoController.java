@@ -64,14 +64,14 @@ public class MemoController {
 	@DeleteMapping("/attr/{contentId}")
 	public ResponseEntity<Map<String, Object>> deleteAttrMemo(
 			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
-			@RequestBody @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
+			@RequestBody Map<String,Object> map) throws Exception {
 		log.info("관광지 댓글 삭제");
-		log.debug(" info : {}, {}", contentId, id);
+		log.debug(" info : {}, {}", contentId, map);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			MemoService.deletetAttrMemo(id);
+			MemoService.deletetAttrMemo(map);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -114,14 +114,14 @@ public class MemoController {
 	@DeleteMapping("/board/{boardNo}")
 	public ResponseEntity<Map<String, Object>> deleteBoardMemo(
 			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) String boardNo,
-			@RequestBody @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
+			@RequestBody Map<String,Object> map) throws Exception {
 		log.info("게시글 댓글 삭제");
-		log.debug(" info : {}, {}", boardNo, id);
+		log.debug(" info : {}, {}", boardNo, map);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			MemoService.deletetBoardMemo(id);
+			MemoService.deletetBoardMemo(map);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
