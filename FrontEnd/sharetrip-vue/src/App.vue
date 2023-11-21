@@ -6,7 +6,6 @@ import TheHeadingNavBar from "./components/layout/TheHeadingNavBar.vue";
 	<div style="width: 100%">
 		<v-layout class="rounded rounded-md">
 			<the-heading-nav-bar></the-heading-nav-bar>
-
 			<!-- <v-navigation-drawer>
 			<v-list>
 				<v-list-item title="Drawer left"></v-list-item>

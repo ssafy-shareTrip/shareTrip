@@ -28,6 +28,7 @@ onMounted(() => {
 const listSido = () => {
     //시 정보를 가져오는 리스트
     axios
+
         // .get("http://192.168.31.55:80/sharetrip/map/sido")
         .get("http://localhost:80/sharetrip/map/sido")
         .then(function (data) {
@@ -50,6 +51,7 @@ const listSido = () => {
 const listGugun = (param) => {
     //군 정보를 가져오는 리스트
     axios
+        //.get("http://192.168.31.55:80/sharetrip/map/gugun", { params: param })
         .get("http://localhost:80/sharetrip/map/gugun", { params: param })
         .then(function (data) {
             data = data.data.data;
@@ -79,7 +81,9 @@ const onChangeGugun = (key) => {
 };
 
 const search = () => {
+    //let url = new URL("http://192.168.31.55:80/sharetrip/map/attr");
     let url = new URL("http://localhost:80/sharetrip/map/attr");
+
     const params = new URLSearchParams();
 
     if (selectedSido.value !== "" && selectedSido.value != 0) {
@@ -130,6 +134,14 @@ const favList = () => {
     }
 }
 
+
+const clickSelectAttraction= (selectAttraction)=>{
+    console.log("select 완료")
+    console.log(selectAttraction)
+    selectAttractionElement.value= selectAttraction;
+}
+
+
 const mvDet = (contentId) => {
     router.push({
         name: 'attrDet',
@@ -172,18 +184,22 @@ const mvDet = (contentId) => {
         <input type="checkbox" id="contentId39" value="39" v-model="contentTypeId" />
         <label for="contentId39">음식점</label>
 
-        <KakaoMap :attractionList="attractionList"></KakaoMap>
+        <KakaoMap :attractionList="attractionList" :selectAttractionElement="selectAttractionElement"></KakaoMap>
 
         <!-- {{ store.favs[0].favId }}
         {{ store.favs }} -->
         <!-- 검색한 관광지 리스트 보여주기 -->
-        <div v-for="(element,index) in attractionList" :key="element.title">
+        <div v-for="(element,index) in attractionList" 
+        :key="element.title"
+        @click="clickSelectAttraction(element)">
+
             <span @click="mvDet(element.contentId)">
                 <img :src="element.firstImage" style="width: 200px; height: 200px" />
                 <h3>{{ element.title }}</h3>
                 <p>{{ element.addr1 }}</p>
                 <p>{{ element.addr2 }}</p>
             </span>
+
             <span v-for="fav in store.favs" :key="fav.favId">
                 <span v-show="fav.favId != element.contentId && fav.category === 0">
                     <img :src="`/public/icon/like_false.png`" width="15" @click="f1">
@@ -198,6 +214,7 @@ const mvDet = (contentId) => {
                     <img :src="`/public/icon/star_true.png`" width="15">
                 </span>
             </span>
+        
         </div>
     </div>
 </template>
