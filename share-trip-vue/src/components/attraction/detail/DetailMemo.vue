@@ -23,6 +23,7 @@ const memo = ref({
     id: 0,
     userId: "ryu",
     content: "",
+    registTime: "",
 });
 
 // 댓글 작성 기능
@@ -35,12 +36,13 @@ const registMemo = function() {
     .then((response) => {
         console.log("성공", response)
         memos.value.unshift(response.data.data)
+        memo.value.content = "";
     })
     .catch(()=>{})
 }
 
 // 댓글 삭제 기능
-const delMemo = (id) => {
+const delMemo = (id, index) => {
     const contentId = store.detail.contentId;
     console.log("댓글 삭제", id);
     axios.delete(
@@ -48,7 +50,8 @@ const delMemo = (id) => {
     )
     .then((response) => {
         console.log("성공",response)
-        // initRead();
+        memos.value.splice(index,1);
+        
     })
     .catch(()=>{})
 }
@@ -57,17 +60,16 @@ const delMemo = (id) => {
 
 <template>
     <hr>
-    {{ memos }}
     <h4>댓글 ({{ memos.length }})</h4>
-        <input type="text" v-model="memo.content">
+        <input type="text" v-model="memo.content" @keypress.Enter="registMemo">
         <button @click="registMemo">작성</button>
     <table>
-        <div v-for="(memo) in memos" :key="memo.id">
+        <div v-for="(memo, index) in memos" :key="memo.id">
             <tr>
                 <td>{{ memo.userId }}</td>
                 <td>{{ memo.registTime }}</td>
                 <td>{{ memo.content }}</td>
-                <td><button @click="delMemo(memo.id)" v-if="memo.userId === 'ryu'">x</button></td>
+                <td><button @click="delMemo(memo.id, index)" v-if="memo.userId === 'ryu'">x</button></td>
             </tr>
         </div>
     </table>
