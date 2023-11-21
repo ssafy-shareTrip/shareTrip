@@ -15,16 +15,15 @@ const initMap = () =>{
     console.log("init")
     console.log(props.mapLat)
     console.log(props.mapLng)
-
-    const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
-    
     
     const options = { //지도를 생성할 때 필요한 기본 옵션
         center: new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표. (33.450701, 126.570667)
         draggable: false, // 지도 이동 막기 -> build up: 탭 이동에 따라 실시간 위치 다시 받아오기 -> 이동 가능으로 변경
         level: 3 //지도의 레벨(확대, 축소 정도)
     }; //지도 객체를 등록합니다.
+    const container = document.getElementById('map');
     map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+    setTimeout(f1, 3500);
 }
 
 onMounted(() => {

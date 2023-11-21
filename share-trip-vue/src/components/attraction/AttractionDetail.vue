@@ -82,7 +82,7 @@ const weatherShow = () => {
                 <hr>
                 <div>
                     <DetailInfo v-show="info" :over-view="store.detail.overview"></DetailInfo>
-                    <DetailMap v-show="map" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailMap>
+                    <!-- <DetailMap v-show="map" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailMap> -->
                     <DetailWeather v-show="weather" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailWeather>
                 </div>
             </div>

@@ -1,17 +1,27 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted,computed } from 'vue';
 import axios from 'axios';
+import { UseAttractionStore } from '@/stores/Attraction';
+const store = UseAttractionStore();
 
 const props = defineProps({
     mapLat: Number,
-    mapLong: Number,
+    mapLng: Number,
 })
 
 const tmp = ref();
 const sky = ref();
 const pty = ref();
 const pop = ref();
+const lat = computed(() => props.mapLat)
+const lng = computed(() => props.mapLng)
+
 onMounted(() => {
+    initWeather();
+    
+});
+
+const initWeather = () => {
     const API_URL = import.meta.env.VITE_WEATHER_API_URL
 
     const today = new Date();
@@ -22,7 +32,7 @@ onMounted(() => {
     day = day < 10 ? "0" + day : day;
     const todayStr = `${year}${month}${day}`;
     console.log(todayStr);
-    console.log(props.mapLat);
+    console.log(lat);
     //발표시간을 전부 넣어둬
     const times = ['0200', '0500']
     axios
@@ -33,8 +43,8 @@ onMounted(() => {
                 base_date: todayStr, //20231105 형태
                 base_time: "0200",   //이것은 총 8회 발표
                 numOfRows: 15,
-                nx: 61,//props.mapLat, //61, //역삼위치
-                ny: 125,//props.mapLong, //125,
+                nx: lat, //역삼위치
+                ny: lng,
             },
         })
         .then((response) => {
@@ -77,14 +87,13 @@ onMounted(() => {
                 }
             });
         });
-});
-
+}
 </script>
 
 <template>
     <div>
         <h4>날씨정보</h4>
-        {{ mapLat }}
+        {{ lat }}, {{ lng }}
         <div>기온 : {{ tmp }}</div>
         <div>하늘상태 : {{ sky }}</div>
         <div>강수형태 : {{ pty }}</div>
