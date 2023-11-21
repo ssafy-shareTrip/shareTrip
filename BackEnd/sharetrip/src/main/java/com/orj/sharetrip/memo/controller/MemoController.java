@@ -34,7 +34,7 @@ public class MemoController {
 		MemoService = memoService;
 	}
 
-	@ApiOperation(value = "관광지 댓글 쓰기", notes = "관광지에 대한 댓글 쓰기 기능", response = Map.class)
+	@ApiOperation(value = "관광지 댓글 쓰기", notes = "관광지에 대한 댓글 쓰기 기능. contentId, { \"userId\" : \"\", \"content\" : \"\" }", response = Map.class)
 	@PostMapping("/attr/{contentId}")
 	public ResponseEntity<Map<String, Object>> registAttrMemo(
 			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,

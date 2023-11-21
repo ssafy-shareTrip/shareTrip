@@ -62,7 +62,7 @@
 			</if>
 		</if>
 		<if test="contentTypeId != null">
-			and content_type_id = #{contentTypeId}
+			and content_type_id in <foreach collection="contentTypeId" item="TypeId" separator=", " open="(" close=")">#{TypeId}</foreach>
 		</if>
 		<if test="keyword != null">
 			and title like concat('%',#{keyword},'%')
