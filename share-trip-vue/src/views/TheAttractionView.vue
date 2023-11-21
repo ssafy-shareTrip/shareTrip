@@ -5,10 +5,12 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 import AttractionDetail from "../components/attraction/AttractionDetail.vue";
 import { useRoute, useRouter } from 'vue-router'
+import { UseAttractionStore } from '@/stores/Attraction';
 var selectedSido = ref("");
 var selectedGugun = ref();
 var searchTitle = ref("");
 
+const store = UseAttractionStore();
 const router = useRouter();
 const sidoList = ref([]);
 const gugunList = ref([{ text: "구군선택", value: "" }]);
@@ -20,12 +22,14 @@ const selectAttractionElement= ref([]);
 
 onMounted(() => {
     listSido();
+    // store.getFav("jeon");
 });
 
 const listSido = () => {
     //시 정보를 가져오는 리스트
     axios
-        .get("http://192.168.31.55:80/sharetrip/map/sido")
+        // .get("http://192.168.31.55:80/sharetrip/map/sido")
+        .get("http://localhost:80/sharetrip/map/sido")
         .then(function (data) {
             data = data.data.data;
             console.log(data);
@@ -46,7 +50,7 @@ const listSido = () => {
 const listGugun = (param) => {
     //군 정보를 가져오는 리스트
     axios
-        .get("http://192.168.31.55:80/sharetrip/map/gugun", { params: param })
+        .get("http://localhost:80/sharetrip/map/gugun", { params: param })
         .then(function (data) {
             data = data.data.data;
             console.log(data);
@@ -75,7 +79,7 @@ const onChangeGugun = (key) => {
 };
 
 const search = () => {
-    let url = new URL("http://192.168.31.55:80/sharetrip/map/attr");
+    let url = new URL("http://localhost:80/sharetrip/map/attr");
     const params = new URLSearchParams();
 
     if (selectedSido.value !== "" && selectedSido.value != 0) {
@@ -110,6 +114,15 @@ const search = () => {
             console.log("검색 실패");
         });
 };
+
+const mvDet = (contentId) => {
+    router.push({
+        name: 'attrDet',
+        params: { 
+            idx: contentId}
+    })
+}
+
 </script>
 
 <template>
@@ -148,10 +161,12 @@ const search = () => {
 
         <!-- 검색한 관광지 리스트 보여주기 -->
         <div v-for="element in attractionList" :key="element.title">
-            <img :src="element.firstImage" style="width: 200px; height: 200px" />
-            <h3>{{ element.title }}</h3>
-            <p>{{ element.addr1 }}</p>
-            <p>{{ element.addr2 }}</p>
+            <span @click="mvDet(element.contentId)">
+                <img :src="element.firstImage" style="width: 200px; height: 200px" />
+                <h3>{{ element.title }}</h3>
+                <p>{{ element.addr1 }}</p>
+                <p>{{ element.addr2 }}</p>
+            </span>
         </div>
     </div>
 </template>

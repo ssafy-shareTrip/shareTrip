@@ -1,15 +1,17 @@
 <script setup>
 import { onMounted, watch, ref } from "vue";
-const props = defineProps({ attractionList: Array, selectAttractionElement: Object });
+const props = defineProps(
+    { 
+        attractionList: Array, 
+        selectAttractionElement: Object 
+    });
 
 var map;
 const positions = ref([]);
 const markers = ref([]);
 
-
-
 watch(
-  () => props.selectAttractionElement.value,
+  () => props.selectAttractionElement, //.value
   () => {
     console.log("watch 감시 완료");
     // 이동할 위도 경도 위치를 생성합니다
