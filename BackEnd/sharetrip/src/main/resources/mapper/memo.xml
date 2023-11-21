@@ -15,7 +15,7 @@
 		values (#{contentId}, #{userId}, #{content}, now())
 	</insert>
 	
-	<delete id="deletetAttrMemo" parameterType="map">
+	<delete id="deletetAttrMemo" parameterType="int">
 		delete from attraction_memo
 		where id = #{id}
 	</delete>
@@ -25,7 +25,7 @@
 		values (#{boardNo}, #{userId}, #{content}, now())
 	</insert>
 	
-	<delete id="deletetBoardMemo" parameterType="map">
+	<delete id="deletetBoardMemo" parameterType="int">
 		delete from board_memo
 		where id = #{id}
 	</delete>
