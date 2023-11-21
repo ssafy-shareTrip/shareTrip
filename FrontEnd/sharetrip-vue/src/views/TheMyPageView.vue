@@ -36,10 +36,9 @@ onMounted(() => {
 				<v-tab :value="1">내 정보</v-tab>
 				<v-tab :value="2">즐겨찾기한 관광지</v-tab>
 				<v-tab :value="3">즐겨찾기한 경로</v-tab>
-				<v-tab :value="4">공유 경로</v-tab>
-				<v-tab :value="5">생성 경로</v-tab>
-				<v-tab :value="6">작성 글</v-tab>
-				<v-tab :value="7">작성 댓글</v-tab>
+
+				<v-tab :value="4">작성 글</v-tab>
+				<v-tab :value="5">작성 댓글</v-tab>
 			</v-tabs>
 		</v-row>
 		<v-row>

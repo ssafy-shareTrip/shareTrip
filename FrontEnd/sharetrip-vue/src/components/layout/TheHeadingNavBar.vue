@@ -20,14 +20,19 @@ const navToggle = ref(false);
 		<v-app-bar color="blue-lighten-4">
 			<v-app-bar-title
 				><router-link :to="{ name: 'main' }" class="navItem"
-					>로고이미지</router-link
+					><v-icon icon="mdi-plane-car"></v-icon>ShareTrip</router-link
 				></v-app-bar-title
 			>
 
 			<v-tabs color="blue lighten-4" align-with-title>
+				<router-link :to="{ name: 'path' }" class="navItem"
+					><v-tab
+						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
+					></router-link
+				>
 				<router-link :to="{ name: 'board' }" class="navItem"
 					><v-tab
-						><v-icon icon="mdi-bulletin-board"></v-icon>&nbsp; Board</v-tab
+						><v-icon icon="mdi-share-variant"></v-icon>&nbsp; Share</v-tab
 					></router-link
 				>
 				<router-link :to="{ name: 'attr' }" class="navItem"
