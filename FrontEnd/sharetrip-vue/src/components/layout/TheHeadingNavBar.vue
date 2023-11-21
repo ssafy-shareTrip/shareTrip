@@ -4,18 +4,12 @@
 	<nav id="navBar">
 		<router-link :to="{ name: 'main' }">Logo</router-link>
 		<ul>
-			<li><a href="#">menu1</a></li>
-			<li><a href="#">menu2</a></li>
-			<li><a href="#">menu3</a></li>
-			<li><a href="#">menu4</a></li>
-			<li><a href="#">menu5</a></li>
+			<li><router-link :to="{ name: 'board' }">게시판</router-link></li>
+			<li><router-link :to="{ name: 'attr' }">관광지</router-link></li>
+			<li><router-link :to="{ name: 'mypage' }">마이페이지</router-link></li>
+			<li><router-link :to="{ name: 'board' }">로그인</router-link></li>
+			<li><router-link :to="{ name: 'attr' }">회원가입</router-link></li>
 		</ul>
-
-		<select>
-			<option>=test=</option>
-			<option>=test=</option>
-			<option>=test=</option>
-		</select>
 	</nav>
 </template>
 
@@ -48,18 +42,6 @@ nav {
 	font-weight: 900;
 	position: absolute;
 	left: 30px;
-}
-#navBar > select {
-	padding: 0 20px;
-	height: 30px;
-	background-color: #1b2035;
-	color: #fff;
-	position: absolute;
-	right: 30px;
-	top: 50%;
-	transform: translateY(-15px);
-	border: 2px solid #fff;
-	border-radius: 30px;
 }
 #navBar > ul {
 	display: inline-block;
