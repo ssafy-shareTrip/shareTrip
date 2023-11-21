@@ -43,7 +43,7 @@ const delMemo = (id) => {
     console.log("댓글 삭제", id);
     axios.delete(
         REST_MEMO_API+contentId,
-        id.value)
+        {id:id})
     .then((response) => {
         console.log("성공",response)
     })
