@@ -12,6 +12,8 @@ const sidoList = ref([]);
 const gugunList = ref([]);
 const contentTypeId = ref([]);
 
+var attractionList = ref([]);
+
 onMounted(() => {
     listSido();
 });
@@ -95,7 +97,10 @@ const search = () => {
     axios
         .get(url.toString())
         .then(function (data) {
+            data = data.data.data;
             console.log(data);
+            //검색 성공했으면 다시 마커를 띄워줘야 함
+            attractionList.value = data;
         })
         .catch(function (error) {
             console.log("검색 실패");
@@ -105,8 +110,9 @@ const search = () => {
 
 <template>
     <div>
+        <AttractionDetail></AttractionDetail>
+        관광지 페이지
         <h2>관광지 조회</h2>
-        <div>지역 테마 검색</div>
 
         <div>
             <VSelect :selectOption="sidoList" @onKeySelect="onChangeSido" />
@@ -135,7 +141,15 @@ const search = () => {
         <input type="checkbox" id="contentId39" value="39" v-model="contentTypeId" />
         <label for="contentId39">음식점</label>
 
-        <KakaoMap></KakaoMap>
+        <KakaoMap :attractionList="attractionList"></KakaoMap>
+
+        <!-- 검색한 관광지 리스트 보여주기 -->
+        <div v-for="element in attractionList" :key="element.title">
+            <img :src="element.firstImage" style="width: 200px; height: 200px" />
+            <h3>{{ element.title }}</h3>
+            <p>{{ element.addr1 }}</p>
+            <p>{{ element.addr2 }}</p>
+        </div>
     </div>
 </template>
 

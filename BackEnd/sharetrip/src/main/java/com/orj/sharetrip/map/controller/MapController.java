@@ -86,7 +86,7 @@ public class MapController {
 	public ResponseEntity<Map<String, Object>> getAttrList(
 			@RequestParam(name = "sido", required = false) @ApiParam(value = "시도코드.") String sidoCode,
 			@RequestParam(name = "gugun", required = false) @ApiParam(value = "구군코드.") String gugunCode,
-			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광타입(12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점) ID.") String contentTypeId,
+			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광타입(12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점) ID.", example = "12, 14, 25") List<String> contentTypeId,
 			@RequestParam(name = "keyword", required = false) @ApiParam(value = "검색 키워드.") String keyword,
 			@RequestParam(name = "mapX", required = false) @ApiParam(value = "GPS X좌표(WGS84 경도좌표).") Double mapX,
 			@RequestParam(name = "mapY", required = false) @ApiParam(value = "GPS Y좌표(WGS84 위도좌표).") Double mapY) throws Exception {

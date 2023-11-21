@@ -6,6 +6,10 @@ public interface MemoService {
 
 	void registAttrMemo(Map<String, Object> map);
 
-	void deletetAttrMemo(Map<String, Object> map);
+	void deletetAttrMemo(Integer id);
+
+	void registBoardMemo(Map<String, Object> map);
+
+	void deletetBoardMemo(Integer id);
 
 }

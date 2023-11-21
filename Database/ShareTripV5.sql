@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`sido` (
   `sido_name` VARCHAR(30) NULL DEFAULT NULL,
   PRIMARY KEY (`sido_code`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`gugun` (
     FOREIGN KEY (`sido_code`)
     REFERENCES `sharetrip`.`sido` (`sido_code`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`attraction_info` (
     FOREIGN KEY (`sido_code`)
     REFERENCES `sharetrip`.`sido` (`sido_code`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -90,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`attraction_description` (
     FOREIGN KEY (`content_id`)
     REFERENCES `sharetrip`.`attraction_info` (`content_id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -109,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`attraction_detail` (
     FOREIGN KEY (`content_id`)
     REFERENCES `sharetrip`.`attraction_info` (`content_id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb3;
 
 
 -- -----------------------------------------------------
@@ -122,33 +122,14 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`user` (
   `email_id` VARCHAR(45) NOT NULL,
   `email_domain` VARCHAR(45) NOT NULL,
   `join_date` DATETIME NOT NULL,
-  `birth` DATE NULL,
-  `gender` VARCHAR(20) NULL,
-  `profile_image` LONGTEXT NULL,
-  `token` VARCHAR(1000) NULL,
+  `birth` DATE NULL DEFAULT NULL,
+  `gender` VARCHAR(20) NULL DEFAULT NULL,
+  `profile_image` LONGTEXT NULL DEFAULT NULL,
+  `token` VARCHAR(1000) NULL DEFAULT NULL,
   PRIMARY KEY (`id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`user_trip`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`user_trip` (
-  `trip_no` INT NOT NULL AUTO_INCREMENT,
-  `user_id` VARCHAR(45) NOT NULL,
-  `title` VARCHAR(200) NOT NULL,
-  `create_time` DATETIME NOT NULL,
-  `is_shared` TINYINT NOT NULL DEFAULT 0,
-  PRIMARY KEY (`trip_no`),
-  INDEX `fk_user_trip_user1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_user_trip_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -157,9 +138,9 @@ DEFAULT CHARACTER SET = utf8mb4;
 CREATE TABLE IF NOT EXISTS `sharetrip`.`attraction_fav` (
   `content_id` INT NOT NULL,
   `user_id` VARCHAR(45) NOT NULL,
-  `like_time` DATETIME NOT NULL,
   `category` INT NOT NULL,
-  PRIMARY KEY (`content_id`, `user_id`),
+  `like_time` DATETIME NOT NULL,
+  PRIMARY KEY (`content_id`, `user_id`, `category`),
   INDEX `fk_attraction_info_has_user_user1_idx` (`user_id` ASC) VISIBLE,
   INDEX `fk_attraction_info_has_user_attraction_info1_idx` (`content_id` ASC) VISIBLE,
   CONSTRAINT `fk_attraction_info_has_user_attraction_info1`
@@ -173,159 +154,8 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`attraction_fav` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`trip_attraction`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`trip_attraction` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `trip_no` INT NOT NULL,
-  `content_id` INT NOT NULL,
-  `day` INT NOT NULL DEFAULT 0,
-  `order` INT NOT NULL DEFAULT 0,
-  `pick_time` DATETIME NOT NULL,
-  PRIMARY KEY (`id`),
-  INDEX `fk_trip_attraction_user_trip1_idx` (`trip_no` ASC) VISIBLE,
-  CONSTRAINT `fk_trip_attraction_attraction_info1`
-    FOREIGN KEY (`content_id`)
-    REFERENCES `sharetrip`.`attraction_info` (`content_id`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_trip_attraction_user_trip1`
-    FOREIGN KEY (`trip_no`)
-    REFERENCES `sharetrip`.`user_trip` (`trip_no`)
-    ON DELETE NO ACTION
-    ON UPDATE CASCADE)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`user_follow`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`user_follow` (
-  `id_from` VARCHAR(45) NOT NULL,
-  `id_to` VARCHAR(45) NOT NULL,
-  `follow_time` DATETIME NOT NULL,
-  PRIMARY KEY (`id_from`, `id_to`),
-  INDEX `fk_user_has_user_user2_idx` (`id_to` ASC) VISIBLE,
-  INDEX `fk_user_has_user_user1_idx` (`id_from` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_user_user1`
-    FOREIGN KEY (`id_from`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_user_user2`
-    FOREIGN KEY (`id_to`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`board`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`board` (
-  `board_no` INT NOT NULL AUTO_INCREMENT,
-  `user_id` VARCHAR(45) NOT NULL,
-  `trip_no` INT NULL,
-  `subject` VARCHAR(100) NOT NULL,
-  `content` VARCHAR(2000) NOT NULL,
-  `regist_time` DATETIME NOT NULL,
-  PRIMARY KEY (`board_no`),
-  INDEX `fk_board_user1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_board_user_trip1_idx` (`trip_no` ASC) VISIBLE,
-  CONSTRAINT `fk_board_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_board_user_trip1`
-    FOREIGN KEY (`trip_no`)
-    REFERENCES `sharetrip`.`user_trip` (`trip_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`board_fav`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`board_fav` (
-  `user_id` VARCHAR(45) NOT NULL,
-  `board_no` INT NOT NULL,
-  `category` INT NOT NULL,
-  `bookmark_time` DATETIME NOT NULL,
-  PRIMARY KEY (`user_id`, `board_no`),
-  INDEX `fk_user_has_user_trip_user1_idx` (`user_id` ASC) VISIBLE,
-  INDEX `fk_trip_fav_board1_idx` (`board_no` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_user_trip_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trip_fav_board1`
-    FOREIGN KEY (`board_no`)
-    REFERENCES `sharetrip`.`board` (`board_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`board_memo`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`board_memo` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `user_id` VARCHAR(45) NOT NULL,
-  `board_no` INT NOT NULL,
-  `content` VARCHAR(1000) NOT NULL,
-  `regist_time` DATETIME NOT NULL,
-  INDEX `fk_user_trip_has_user_user1_idx` (`user_id` ASC) VISIBLE,
-  PRIMARY KEY (`id`),
-  INDEX `fk_trip_memo_board1_idx` (`board_no` ASC) VISIBLE,
-  CONSTRAINT `fk_user_trip_has_user_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_trip_memo_board1`
-    FOREIGN KEY (`board_no`)
-    REFERENCES `sharetrip`.`board` (`board_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
-
-
--- -----------------------------------------------------
--- Table `sharetrip`.`trip_share`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `sharetrip`.`trip_share` (
-  `trip_no` INT NOT NULL,
-  `user_id` VARCHAR(45) NOT NULL,
-  `join_date` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`trip_no`, `user_id`),
-  INDEX `fk_user_has_user_trip_user_trip2_idx` (`trip_no` ASC) VISIBLE,
-  INDEX `fk_user_has_user_trip_user2_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_user_trip_user2`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_user_has_user_trip_user_trip2`
-    FOREIGN KEY (`trip_no`)
-    REFERENCES `sharetrip`.`user_trip` (`trip_no`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 -- -----------------------------------------------------
@@ -340,18 +170,174 @@ CREATE TABLE IF NOT EXISTS `sharetrip`.`attraction_memo` (
   PRIMARY KEY (`id`),
   INDEX `fk_user_has_attraction_info_attraction_info1_idx` (`content_id` ASC) VISIBLE,
   INDEX `fk_user_has_attraction_info_user1_idx` (`user_id` ASC) VISIBLE,
-  CONSTRAINT `fk_user_has_attraction_info_user1`
-    FOREIGN KEY (`user_id`)
-    REFERENCES `sharetrip`.`user` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
   CONSTRAINT `fk_user_has_attraction_info_attraction_info1`
     FOREIGN KEY (`content_id`)
-    REFERENCES `sharetrip`.`attraction_info` (`content_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    REFERENCES `sharetrip`.`attraction_info` (`content_id`),
+  CONSTRAINT `fk_user_has_attraction_info_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `sharetrip`.`user` (`id`))
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8mb4;
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`user_trip`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`user_trip` (
+  `trip_no` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(45) NOT NULL,
+  `title` VARCHAR(200) NOT NULL,
+  `create_time` DATETIME NOT NULL,
+  `is_shared` TINYINT NOT NULL DEFAULT '0',
+  PRIMARY KEY (`trip_no`),
+  INDEX `fk_user_trip_user1_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_trip_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `sharetrip`.`user` (`id`))
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`board`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`board` (
+  `board_no` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(45) NOT NULL,
+  `trip_no` INT NULL DEFAULT NULL,
+  `subject` VARCHAR(100) NOT NULL,
+  `content` VARCHAR(2000) NOT NULL,
+  `regist_time` DATETIME NOT NULL,
+  PRIMARY KEY (`board_no`),
+  INDEX `fk_board_user1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_board_user_trip1_idx` (`trip_no` ASC) VISIBLE,
+  CONSTRAINT `fk_board_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `sharetrip`.`user` (`id`),
+  CONSTRAINT `fk_board_user_trip1`
+    FOREIGN KEY (`trip_no`)
+    REFERENCES `sharetrip`.`user_trip` (`trip_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`board_fav`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`board_fav` (
+  `user_id` VARCHAR(45) NOT NULL,
+  `board_no` INT NOT NULL,
+  `category` INT NOT NULL,
+  `bookmark_time` DATETIME NOT NULL,
+  PRIMARY KEY (`user_id`, `board_no`),
+  INDEX `fk_user_has_user_trip_user1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_trip_fav_board1_idx` (`board_no` ASC) VISIBLE,
+  CONSTRAINT `fk_trip_fav_board1`
+    FOREIGN KEY (`board_no`)
+    REFERENCES `sharetrip`.`board` (`board_no`),
+  CONSTRAINT `fk_user_has_user_trip_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `sharetrip`.`user` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`board_memo`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`board_memo` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `user_id` VARCHAR(45) NOT NULL,
+  `board_no` INT NOT NULL,
+  `content` VARCHAR(1000) NOT NULL,
+  `regist_time` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_user_trip_has_user_user1_idx` (`user_id` ASC) VISIBLE,
+  INDEX `fk_trip_memo_board1_idx` (`board_no` ASC) VISIBLE,
+  CONSTRAINT `fk_trip_memo_board1`
+    FOREIGN KEY (`board_no`)
+    REFERENCES `sharetrip`.`board` (`board_no`),
+  CONSTRAINT `fk_user_trip_has_user_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `sharetrip`.`user` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`trip_attraction`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`trip_attraction` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `trip_no` INT NOT NULL,
+  `content_id` INT NOT NULL,
+  `day` INT NOT NULL DEFAULT '0',
+  `order` INT NOT NULL DEFAULT '0',
+  `pick_time` DATETIME NOT NULL,
+  PRIMARY KEY (`id`),
+  INDEX `fk_trip_attraction_user_trip1_idx` (`trip_no` ASC) VISIBLE,
+  INDEX `fk_trip_attraction_attraction_info1` (`content_id` ASC) VISIBLE,
+  CONSTRAINT `fk_trip_attraction_attraction_info1`
+    FOREIGN KEY (`content_id`)
+    REFERENCES `sharetrip`.`attraction_info` (`content_id`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `fk_trip_attraction_user_trip1`
+    FOREIGN KEY (`trip_no`)
+    REFERENCES `sharetrip`.`user_trip` (`trip_no`)
+    ON UPDATE CASCADE)
+ENGINE = InnoDB
+AUTO_INCREMENT = 2
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`trip_share`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`trip_share` (
+  `trip_no` INT NOT NULL,
+  `user_id` VARCHAR(45) NOT NULL,
+  `join_date` VARCHAR(45) NOT NULL,
+  PRIMARY KEY (`trip_no`, `user_id`),
+  INDEX `fk_user_has_user_trip_user_trip2_idx` (`trip_no` ASC) VISIBLE,
+  INDEX `fk_user_has_user_trip_user2_idx` (`user_id` ASC) VISIBLE,
+  CONSTRAINT `fk_user_has_user_trip_user2`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `sharetrip`.`user` (`id`),
+  CONSTRAINT `fk_user_has_user_trip_user_trip2`
+    FOREIGN KEY (`trip_no`)
+    REFERENCES `sharetrip`.`user_trip` (`trip_no`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
+
+
+-- -----------------------------------------------------
+-- Table `sharetrip`.`user_follow`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `sharetrip`.`user_follow` (
+  `id_from` VARCHAR(45) NOT NULL,
+  `id_to` VARCHAR(45) NOT NULL,
+  `follow_time` DATETIME NOT NULL,
+  PRIMARY KEY (`id_from`, `id_to`),
+  INDEX `fk_user_has_user_user2_idx` (`id_to` ASC) VISIBLE,
+  INDEX `fk_user_has_user_user1_idx` (`id_from` ASC) VISIBLE,
+  CONSTRAINT `fk_user_has_user_user1`
+    FOREIGN KEY (`id_from`)
+    REFERENCES `sharetrip`.`user` (`id`),
+  CONSTRAINT `fk_user_has_user_user2`
+    FOREIGN KEY (`id_to`)
+    REFERENCES `sharetrip`.`user` (`id`))
+ENGINE = InnoDB
+DEFAULT CHARACTER SET = utf8mb4
+COLLATE = utf8mb4_0900_ai_ci;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
