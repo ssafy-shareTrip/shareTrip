@@ -1,15 +1,31 @@
-<script setup="setup">
-    import {onMounted, watch, ref} from "vue";
-    const props = defineProps(
-        {attractionList: Array, selectAttractionElement: Object}
-    );
+<script setup>
+import { onMounted, watch, ref } from "vue";
+const props = defineProps({ attractionList: Array, selectAttractionElement: Object });
 
-    var map;
-    const positions = ref([]);
-    const markers = ref([]);
+var map;
+const positions = ref([]);
+const markers = ref([]);
 
-    watch(() => props.selectAttractionElement.value, () => {
-        console.log("watch 감시 완료");
+
+
+watch(
+  () => props.selectAttractionElement.value,
+  () => {
+    console.log("watch 감시 완료");
+    // 이동할 위도 경도 위치를 생성합니다
+    var moveLatLon = new kakao.maps.LatLng(props.selectAttractionElement.latitude, props.selectAttractionElement.longitude);
+
+    // 지도 중심을 부드럽게 이동시킵니다
+    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+    map.panTo(moveLatLon);
+  },
+  { deep: true }
+);
+
+
+watch(
+    () => props.attractionList.value,
+    () => {
         // 이동할 위도 경도 위치를 생성합니다
         var moveLatLon = new kakao
             .maps

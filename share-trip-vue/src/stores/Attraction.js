@@ -29,10 +29,10 @@ export const UseAttractionStore = defineStore('attraction', () => {
         .get(REST_ATTRACTION_API+'/fav/attr/'+userId)
         .then((response) => {
             console.log("FAV :", response.data.data)
-
+            favs.value = response.data.data
         })
         .catch(() => {})
     }
 
-    return {getDetail, detail, getFav}
+    return {getDetail, detail, getFav, favs}
 })
