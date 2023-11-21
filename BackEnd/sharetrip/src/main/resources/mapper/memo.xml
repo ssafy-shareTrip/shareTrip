@@ -17,7 +17,7 @@
 	
 	<delete id="deletetAttrMemo" parameterType="map">
 		delete from attraction_memo
-		where content_id = #{contentId} and id = #{id}
+		where id = #{id}
 	</delete>
 	
 	<insert id="registBoardMemo" parameterType="map">
@@ -27,7 +27,7 @@
 	
 	<delete id="deletetBoardMemo" parameterType="map">
 		delete from board_memo
-		where boardNo = #{boardNo} and id = #{id}
+		where id = #{id}
 	</delete>
 	
 </mapper>
