@@ -10,12 +10,12 @@
 		<result column="regist_time" property="registTime"/>
 	</resultMap>
 
-	<insert id="registAttrMemo" parameterType="map">
+	<insert id="registAttrMemo" parameterType="memoDto">
 		insert into attraction_memo (content_id, user_id, content, regist_time)
 		values (#{target}, #{userId}, #{content}, now())
-		<selectKey resultType="int" keyProperty="id" order="AFTER">
-			select last_insert_id()
-		</selectKey>
+		<selectKey keyColumn="id,registTime" resultType="memoDto" keyProperty="id,registTime" order="AFTER">
+			select last_insert_id() id, now() registTime
+		</selectKey> 
 	</insert>
 	
 	<delete id="deletetAttrMemo" parameterType="int">
@@ -23,12 +23,12 @@
 		where id = #{id}
 	</delete>
 	
-	<insert id="registBoardMemo" parameterType="map">
+	<insert id="registBoardMemo" parameterType="memoDto">
 		insert into board_memo (board_no, user_id, content, regist_time)
 		values (#{target}, #{userId}, #{content}, now())
-		<selectKey resultType="int" keyProperty="id" order="AFTER">
-			select last_insert_id()
-		</selectKey>
+		<selectKey keyColumn="id,registTime" resultType="memoDto" keyProperty="id,registTime" order="AFTER">
+			select last_insert_id() id, now() registTime
+		</selectKey> 
 	</insert>
 	
 	<delete id="deletetBoardMemo" parameterType="int">
