@@ -1,25 +1,29 @@
 <script setup>
 import { UseAttractionStore } from '@/stores/Attraction';
 import axios from 'axios';
-import { ref,watch } from "vue"
+import { ref,computed } from "vue"
 
 const REST_ATTRACTION_API = `http://localhost:80/sharetrip/map/attr/`
 const REST_MEMO_API = `http://localhost:80/sharetrip/memo/attr/`
-const store = UseAttractionStore();
+
 // 댓글 읽어오기
 const memos = ref([])
+const props = defineProps({
+    contentId:String,
+})
+const contentId = computed(() => props.contentId)
 
 axios({
-    url: REST_ATTRACTION_API+"125266",
+    url: REST_ATTRACTION_API+contentId.value,
 })
 .then((response)=>{
     memos.value = response.data.data.memos
-    console.log(memos.value)
+    console.log("mem",response.data.data.memos)
 })
 .catch(()=>{})
 
 const memo = ref({
-    detailId: store.detail.contentId,
+    contentId: contentId.value,
     id: 0,
     userId: "ryu",
     content: "",
@@ -28,10 +32,9 @@ const memo = ref({
 
 // 댓글 작성 기능
 const registMemo = function() {
-    const contentId = store.detail.contentId;
-    console.log("댓글 작성", contentId);
+    console.log(contentId+"글의 댓글 작성", contentId.value);
     axios.post(
-        REST_MEMO_API+contentId,
+        REST_MEMO_API+contentId.value,
         memo.value)
     .then((response) => {
         console.log("성공", response)
@@ -43,8 +46,7 @@ const registMemo = function() {
 
 // 댓글 삭제 기능
 const delMemo = (id, index) => {
-    const contentId = store.detail.contentId;
-    console.log("댓글 삭제", id);
+    console.log(contentId+"글의 댓글 삭제", id);
     axios.delete(
         REST_MEMO_API+id
     )
@@ -61,7 +63,7 @@ const delMemo = (id, index) => {
 <template>
     <hr>
     <h4>댓글 ({{ memos.length }})</h4>
-        <input type="text" v-model="memo.content" @keypress.Enter="registMemo">
+        <input type="text" v-model="memo.content" @keyup.enter="registMemo">
         <button @click="registMemo">작성</button>
     <table>
         <div v-for="(memo, index) in memos" :key="memo.id">

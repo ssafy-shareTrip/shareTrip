@@ -80,7 +80,6 @@ const weatherShow = () => {
                 </div>
                 <hr>
                 <div>
-                    {{ attractionList }}
                     <DetailInfo v-show="infoItem" :over-view="store.detail.overview"></DetailInfo>
                     <!-- <KakaoMap v-show="mapItem" :attractionList="attractionList"></KakaoMap> -->
                     <DetailMap v-if="mapItem" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailMap>
@@ -88,7 +87,7 @@ const weatherShow = () => {
                 </div>
             </div>
             <div>
-                <DetailMemo></DetailMemo>
+                <DetailMemo :content-id="idx"></DetailMemo>
             </div>
         </main>
 </template>
