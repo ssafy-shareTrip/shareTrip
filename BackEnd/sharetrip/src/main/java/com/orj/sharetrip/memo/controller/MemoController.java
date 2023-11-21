@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orj.sharetrip.memo.model.service.MemoService;
@@ -63,15 +64,14 @@ public class MemoController {
 	@DeleteMapping("/attr/{contentId}")
 	public ResponseEntity<Map<String, Object>> deleteAttrMemo(
 			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
-			@RequestBody Map<String,Object> map) throws Exception {
+			@RequestParam @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
 		log.info("관광지 댓글 삭제");
-		log.debug(" info : {}, {}", contentId, map);
+		log.debug(" info : {}, {}", contentId, id);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("contentId",contentId);
 		try {
-			MemoService.deletetAttrMemo(map);
+			MemoService.deletetAttrMemo(id);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -114,15 +114,14 @@ public class MemoController {
 	@DeleteMapping("/board/{boardNo}")
 	public ResponseEntity<Map<String, Object>> deleteBoardMemo(
 			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) String boardNo,
-			@RequestBody Map<String,Object> map) throws Exception {
+			@RequestParam @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
 		log.info("게시글 댓글 삭제");
-		log.debug(" info : {}, {}", boardNo, map);
+		log.debug(" info : {}, {}", boardNo, id);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("boardNo",boardNo);
 		try {
-			MemoService.deletetBoardMemo(map);
+			MemoService.deletetBoardMemo(id);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
