@@ -17,11 +17,15 @@ const vuetify = createVuetify({
 	components,
 	directives,
 	icons: {
+<<<<<<< HEAD
 		defaultSet: "mdi",
 		aliases,
 		sets: {
 			mdi,
 		},
+=======
+		iconfont: "mdi", // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+>>>>>>> 3635fc4767cedcae1f0984a60941494243ab9e37
 	},
 });
 const app = createApp(App);

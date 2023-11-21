@@ -1,5 +1,7 @@
 package com.orj.sharetrip.user.model;
 
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -28,6 +30,14 @@ public class UserDto {
 	private String profileImage;
 	@ApiModelProperty(value = "refreshToken")
 	private String token;
+	@ApiModelProperty(value = "팔로잉")
+	private Integer following;
+	@ApiModelProperty(value = "팔로잉 리스트")
+	private List<String> followingList;
+	@ApiModelProperty(value = "팔로워")
+	private Integer follower;
+	@ApiModelProperty(value = "팔로워 리스트")
+	private List<String> followerList;
 	
 	
 }

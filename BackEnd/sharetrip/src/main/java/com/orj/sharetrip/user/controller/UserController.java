@@ -79,6 +79,7 @@ public class UserController {
 //				resultMap.put("access-token", accessToken);
 //				resultMap.put("refresh-token", refreshToken);
 				resultMap.put("userId", loginUser.getId());
+				resultMap.put("userName", loginUser.getName());
 				resultMap.put("message", "로그인 성공.");
 				status = HttpStatus.CREATED;
 			} else {

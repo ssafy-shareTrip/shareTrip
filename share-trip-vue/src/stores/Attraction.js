@@ -9,7 +9,7 @@ export const UseAttractionStore = defineStore('attraction', () => {
         memos:[]
     });
     const favs = ref({
-        
+
     });
 
     // 관광지 상세 정보 조회
@@ -18,7 +18,6 @@ export const UseAttractionStore = defineStore('attraction', () => {
             url: REST_ATTRACTION_API+'map/attr/'+idx,
         })
         .then((response)=>{
-            console.log("getDetail")
             detail.value = response.data.data
         })
         .catch(()=>{})
@@ -29,11 +28,11 @@ export const UseAttractionStore = defineStore('attraction', () => {
         axios
         .get(REST_ATTRACTION_API+'/fav/attr/'+userId)
         .then((response) => {
-            console.log("FAV :", response.data.data)
-
+            favs.value = response.data.data
+            console.log("FAV :", favs.value)
         })
         .catch(() => {})
     }
 
-    return {getDetail, detail, getFav}
+    return {getDetail, detail, getFav, favs}
 })
