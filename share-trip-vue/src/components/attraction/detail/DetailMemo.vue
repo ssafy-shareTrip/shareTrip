@@ -9,15 +9,14 @@ const store = UseAttractionStore();
 // 댓글 읽어오기
 const memos = ref([])
 
-
-    axios({
-        url: REST_ATTRACTION_API+"125266",
-    })
-    .then((response)=>{
-        memos.value = response.data.data.memos
-        console.log(memos.value)
-    })
-    .catch(()=>{})
+axios({
+    url: REST_ATTRACTION_API+"125266",
+})
+.then((response)=>{
+    memos.value = response.data.data.memos
+    console.log(memos.value)
+})
+.catch(()=>{})
 
 const memo = ref({
     detailId: store.detail.contentId,
@@ -35,7 +34,7 @@ const registMemo = function() {
         memo.value)
     .then((response) => {
         console.log("성공", response)
-        memos.value.push(response.data.data)
+        memos.value.unshift(response.data.data)
     })
     .catch(()=>{})
 }
@@ -49,7 +48,7 @@ const delMemo = (id) => {
     )
     .then((response) => {
         console.log("성공",response)
-        initRead();
+        // initRead();
     })
     .catch(()=>{})
 }

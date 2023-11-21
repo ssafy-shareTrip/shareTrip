@@ -60,7 +60,7 @@ const weatherShow = () => {
                 <span>
                     {{ store.detail.title }}
                 </span>
-                <span>하트</span>
+                <span><img>하트</span>
                 <span>별</span>
             </div>
             <div>
