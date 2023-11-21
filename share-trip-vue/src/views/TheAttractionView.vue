@@ -1,7 +1,7 @@
 <script setup>
 import KakaoMap from "../components/kakao/KakaoMap.vue";
 import VSelect from "@/components/common/VSelect.vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import axios from "axios";
 import AttractionDetail from "../components/attraction/AttractionDetail.vue";
 import { useRoute, useRouter } from 'vue-router'
@@ -22,7 +22,7 @@ const selectAttractionElement= ref([]);
 
 onMounted(() => {
     listSido();
-    // store.getFav("jeon");
+    store.getFav("jeon");
 });
 
 const listSido = () => {
@@ -113,7 +113,22 @@ const search = () => {
         .catch(function (error) {
             console.log("검색 실패");
         });
+
+    
+    favList();
 };
+const isLike = ref(false);
+const isStar = ref(false);
+const likeArr = ref([]);
+const starArr = ref([]);
+
+const favList = () => {
+    likeArr.value = store.favs
+    console.log("fav",attractionList.value)
+    for (var i = 0; i < attractionList.value.length; i++){
+        // if (likeArr.find(attractionList.value))
+    }
+}
 
 const mvDet = (contentId) => {
     router.push({
@@ -159,13 +174,29 @@ const mvDet = (contentId) => {
 
         <KakaoMap :attractionList="attractionList"></KakaoMap>
 
+        <!-- {{ store.favs[0].favId }}
+        {{ store.favs }} -->
         <!-- 검색한 관광지 리스트 보여주기 -->
-        <div v-for="element in attractionList" :key="element.title">
+        <div v-for="(element,index) in attractionList" :key="element.title">
             <span @click="mvDet(element.contentId)">
                 <img :src="element.firstImage" style="width: 200px; height: 200px" />
                 <h3>{{ element.title }}</h3>
                 <p>{{ element.addr1 }}</p>
                 <p>{{ element.addr2 }}</p>
+            </span>
+            <span v-for="fav in store.favs" :key="fav.favId">
+                <span v-show="fav.favId != element.contentId && fav.category === 0">
+                    <img :src="`/public/icon/like_false.png`" width="15" @click="f1">
+                </span >
+                <span v-show="fav.favId == element.contentId && fav.category === 0">
+                    <img :src="`/public/icon/like_true.png`" width="15">
+                </span >
+                <span v-show="fav.favId != element.contentId && fav.category === 1"> 
+                    <img :src="`/public/icon/star_false.png`" width="15">
+                </span>
+                <span v-show="fav.favId == element.contentId && fav.category === 1"> 
+                    <img :src="`/public/icon/star_true.png`" width="15">
+                </span>
             </span>
         </div>
     </div>
