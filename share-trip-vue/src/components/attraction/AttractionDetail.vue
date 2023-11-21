@@ -1,12 +1,12 @@
 <script setup>
 import { RouterView, useRoute, useRouter } from 'vue-router'
-import { onMounted, provide } from 'vue';
-import { ref } from 'vue'
+import { onMounted,ref,watch  } from 'vue';
 import { UseAttractionStore } from '@/stores/Attraction';
 import DetailInfo from '@/components/attraction/detail/DetailInfo.vue'
 import DetailMap from '@/components/attraction/detail/DetailMap.vue'
 import DetailWeather from '@/components/attraction/detail/DetailWeather.vue'
 import DetailMemo from '@/components/attraction/detail/DetailMemo.vue';
+import KakaoMap from '../kakao/KakaoMap.vue';
 import axios from 'axios';
 
 const route = useRoute()
@@ -15,9 +15,9 @@ const store = UseAttractionStore();
 
 const idx = route.params.idx; //125266
 const userId = "jeon"
-const info = ref(true);
-const map = ref(false);
-const weather = ref(false);
+const infoItem = ref(true);
+const mapItem = ref(false);
+const weatherItem = ref(false);
 
 onMounted(() => {
     console.log(idx);
@@ -25,21 +25,20 @@ onMounted(() => {
     store.getFav(userId);
 });
 
-
 const infoShow = () => {
-    info.value = true;
-    map.value = false;
-    weather.value = false;
+    infoItem.value = true;
+    mapItem.value = false;
+    weatherItem.value = false;
 }
 const mapShow = () => {
-    info.value = false;
-    map.value = true;
-    weather.value = false;
+    infoItem.value = false;
+    mapItem.value = true;
+    weatherItem.value = false;
 }
 const weatherShow = () => {
-    info.value = false;
-    map.value = false;
-    weather.value = true;
+    infoItem.value = false;
+    mapItem.value = false;
+    weatherItem.value = true;
 }
 
 </script>
@@ -77,13 +76,15 @@ const weatherShow = () => {
                 <div>
                     <span @click="infoShow">설명</span>
                     <span @click="mapShow">지도</span>
-                    <span @click="weatherShow">날씨</span>
+                    <!-- <span @click="weatherShow">날씨</span> -->
                 </div>
                 <hr>
                 <div>
-                    <DetailInfo v-show="info" :over-view="store.detail.overview"></DetailInfo>
-                    <DetailMap v-show="map" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailMap>
-                    <DetailWeather v-show="weather" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailWeather>
+                    {{ attractionList }}
+                    <DetailInfo v-show="infoItem" :over-view="store.detail.overview"></DetailInfo>
+                    <!-- <KakaoMap v-show="mapItem" :attractionList="attractionList"></KakaoMap> -->
+                    <DetailMap v-if="mapItem" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailMap>
+                    <!-- <DetailWeather v-show="weatherItem" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailWeather> -->
                 </div>
             </div>
             <div>
