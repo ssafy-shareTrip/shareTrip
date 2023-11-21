@@ -1,5 +1,6 @@
 <script setup>
 import { onMounted, ref } from "vue";
+const attractiontElement = defineProps({ attractionList: Object });
 
 let map = null;
 const initMap = function () {
@@ -10,7 +11,7 @@ const initMap = function () {
     }; //지도 객체 등록
     map = new kakao.maps.Map(container, options);
     //지도에 여러개의 마커를 띄움
-    // displayMarkers();
+    displayMarkers();
 };
 
 onMounted(() => {
@@ -45,25 +46,11 @@ if (navigator.geolocation) {
     });
 }
 
-// // 마커를 표시할 위치와 title 객체 배열입니다
-var positions = [
-    {
-        title: "카카오",
-        latlng: new kakao.maps.LatLng(33.450705, 126.570677),
-    },
-    {
-        title: "생태연못",
-        latlng: new kakao.maps.LatLng(33.450936, 126.569477),
-    },
-    {
-        title: "텃밭",
-        latlng: new kakao.maps.LatLng(33.450879, 126.56994),
-    },
-    {
-        title: "근린공원",
-        latlng: new kakao.maps.LatLng(33.451393, 126.570738),
-    },
-];
+// positions 배열에 받아온 attractionList를 저장
+var positions = attractiontElement.attractionList.map((attraction) => ({
+    title: attraction.title,
+    latlng: new kakao.maps.LatLng(attraction.latitude, attraction.longitude),
+}));
 
 // // 마커 이미지의 이미지 주소입니다
 var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png";
