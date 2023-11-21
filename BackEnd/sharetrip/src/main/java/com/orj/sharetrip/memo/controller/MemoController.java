@@ -64,7 +64,7 @@ public class MemoController {
 	@DeleteMapping("/attr/{contentId}")
 	public ResponseEntity<Map<String, Object>> deleteAttrMemo(
 			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
-			@RequestParam @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
+			@RequestBody @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
 		log.info("관광지 댓글 삭제");
 		log.debug(" info : {}, {}", contentId, id);
 		
@@ -114,7 +114,7 @@ public class MemoController {
 	@DeleteMapping("/board/{boardNo}")
 	public ResponseEntity<Map<String, Object>> deleteBoardMemo(
 			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) String boardNo,
-			@RequestParam @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
+			@RequestBody @ApiParam(value = "댓글 ID.", required = true)Integer id) throws Exception {
 		log.info("게시글 댓글 삭제");
 		log.debug(" info : {}, {}", boardNo, id);
 		
