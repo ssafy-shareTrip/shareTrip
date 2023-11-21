@@ -3,20 +3,29 @@ import TheHeadingNavBar from "./components/layout/TheHeadingNavBar.vue";
 </script>
 
 <template>
-	<the-heading-nav-bar></the-heading-nav-bar>
+	<v-layout class="rounded rounded-md">
+		<the-heading-nav-bar></the-heading-nav-bar>
 
-	<!-- <router-view></router-view> -->
+		<!-- <v-navigation-drawer>
+			<v-list>
+				<v-list-item title="Drawer left"></v-list-item>
+			</v-list>
+		</v-navigation-drawer> -->
+
+		<!-- <v-navigation-drawer location="right">
+			<v-list>
+				<v-list-item title="Drawer right"></v-list-item>
+			</v-list>
+		</v-navigation-drawer> -->
+
+		<v-main class="d-flex align-center justify-center" style="min-height: 300px">
+			<router-view></router-view>
+		</v-main>
+	</v-layout>
 </template>
 
-<style>
-a {
-	text-decoration: none;
-	color: inherit;
-}
-html {
-	min-height: 100%;
-}
-body {
-	min-height: 100vh;
+<style scope>
+.nav {
+	background-color: rgb(218, 239, 255);
 }
 </style>
