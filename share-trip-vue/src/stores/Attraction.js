@@ -5,7 +5,9 @@ import axios from 'axios';
 const REST_ATTRACTION_API = `http://localhost:80/sharetrip/map/attr/`
 
 export const UseAttractionStore = defineStore('attraction', () => {
-    const detail = ref({});
+    const detail = ref({
+        memos:[]
+    });
 
     const getDetail = (idx) => {
         axios({

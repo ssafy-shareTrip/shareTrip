@@ -6,7 +6,7 @@ const props = defineProps({
     mapLat: Number,
     mapLong: Number,
 })
-console.log(props.mapLat);
+
 const tmp = ref();
 const sky = ref();
 const pty = ref();

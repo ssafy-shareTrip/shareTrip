@@ -6,14 +6,15 @@ const store = UseAttractionStore();
 const idx = 125266;
 const props = defineProps({
     mapLat : Number,
-    mapLong : Number
+    mapLng : Number,
 })
-
+const mapLat = store.detail.latitude;
+const mapLng = store.detail.longitude;
 var map;
 const initMap = () =>{
     console.log("init")
     console.log(props.mapLat)
-    console.log(props.mapLong)
+    console.log(props.mapLng)
 
     const container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
     
@@ -29,8 +30,6 @@ const initMap = () =>{
 onMounted(() => {
     if (window.kakao && window.kakao.maps) {
         initMap();
-        // setTimeout(()=>{initMap()}, 100)
-        map.relayout();
     } else {
         const script = document.createElement('script'); 
         //autoload=false 스크립트를 동적으로 로드하기 위해서 사용
@@ -40,16 +39,18 @@ onMounted(() => {
         /* global kakao */ 
         script.onload = () => kakao.maps.load(() => initMap());
         document.head.appendChild(script); //헤드태그에 추가
-        // map.relayout();
     }
 });
-    
+
+function f1(){
+    map.relayout();
+}
 
 </script>
 
 <template>
     <div>
-        <div id="map" ></div>
+        <div id="map" ></div><button @click="f1">f1</button>
     </div>
 </template>
 

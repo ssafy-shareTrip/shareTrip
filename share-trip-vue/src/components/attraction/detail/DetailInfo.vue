@@ -1,14 +1,12 @@
 <script setup>
-
-defineProps({
-    overView : String
-})
+import { UseAttractionStore } from '@/stores/Attraction';
+const store = UseAttractionStore();
 
 </script>
 
 <template>
     <div>
-        {{ overView }}
+        {{ store.detail.overview }}
     </div>
 </template>
 

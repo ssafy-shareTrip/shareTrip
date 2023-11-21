@@ -13,8 +13,7 @@ const router = useRouter()
 const store = UseAttractionStore();
 
 const idx = route.params.idx; //125266
-const outline = ref(true);
-const info = ref(false);
+const info = ref(true);
 const map = ref(false);
 const weather = ref(false);
 
@@ -36,27 +35,17 @@ const overView = (e) => {
     })
 }
 
-const outlineShow = () => {
-    outline.value = true;
-    info.value = false;
-    map.value = false;
-    weather.value = false;
-
-}
 const infoShow = () => {
-    outline.value = false;
     info.value = true;
     map.value = false;
     weather.value = false;
 }
 const mapShow = () => {
-    outline.value = false;
     info.value = false;
     map.value = true;
     weather.value = false;
 }
 const weatherShow = () => {
-    outline.value = false;
     info.value = false;
     map.value = false;
     weather.value = true;
@@ -100,12 +89,12 @@ const weatherShow = () => {
                 <hr>
                 <div>
                     <DetailInfo v-show="info" :over-view="store.detail.overview"></DetailInfo>
-                    <DetailMap v-show="map" :map-lat="store.detail.latitude" :map-long="store.detail.longitude"></DetailMap>
-                    <DetailWeather v-show="weather" :map-lat="store.detail.latitude" :map-long="store.detail.longitude"></DetailWeather>
+                    <DetailMap v-show="map" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailMap>
+                    <DetailWeather v-show="weather" :map-lat="store.detail.latitude" :map-lng="store.detail.longitude"></DetailWeather>
                 </div>
             </div>
             <div>
-                <DetailMemo :det-idx="idx"></DetailMemo>
+                <DetailMemo></DetailMemo>
             </div>
         </main>
 </template>

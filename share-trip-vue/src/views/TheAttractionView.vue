@@ -1,6 +1,6 @@
 <script setup>
 import AttractionDetail from '../components/attraction/AttractionDetail.vue';
-import KakaoMap from '../components/kakao/KakaoMap.vue';
+// import KakaoMap from '../components/kakao/KakaoMap.vue';
 
 </script>
 
