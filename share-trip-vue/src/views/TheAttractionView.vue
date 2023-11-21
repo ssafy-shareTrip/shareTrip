@@ -5,11 +5,11 @@ import { ref, onMounted } from "vue";
 import axios from "axios";
 
 var selectedSido = ref("");
-var selectedGugun = ref("");
+var selectedGugun = ref();
 var searchTitle = ref("");
 
 const sidoList = ref([]);
-const gugunList = ref([]);
+const gugunList = ref([{ text: "구군선택", value: "" }]);
 const contentTypeId = ref([]);
 
 var attractionList = ref([]);
@@ -39,10 +39,10 @@ const listSido = () => {
         });
 };
 
-const listGugun = (params) => {
+const listGugun = (param) => {
     //군 정보를 가져오는 리스트
     axios
-        .get("http://192.168.31.55:80/sharetrip/map/gugun", { params })
+        .get("http://192.168.31.55:80/sharetrip/map/gugun", { params: param })
         .then(function (data) {
             data = data.data.data;
             console.log(data);
@@ -74,12 +74,12 @@ const search = () => {
     let url = new URL("http://192.168.31.55:80/sharetrip/map/attr");
     const params = new URLSearchParams();
 
-    if (selectedSido.value !== "") {
+    if (selectedSido.value !== "" && selectedSido.value != 0) {
         params.append("sido", selectedSido.value);
-    }
 
-    if (selectedGugun.value !== "") {
-        params.append("gugun", selectedGugun.value);
+        if (selectedGugun.value !== "") {
+            params.append("gugun", selectedGugun.value);
+        }
     }
 
     if (contentTypeId.value.length > 0) {
