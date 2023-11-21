@@ -61,17 +61,16 @@ public class MemoController {
 	}
 
 	@ApiOperation(value = "관광지 댓글 삭제", notes = "관광지에 대한 댓글 삭제 기능", response = Map.class)
-	@DeleteMapping("/attr/{contentId}")
+	@DeleteMapping("/attr/{id}")
 	public ResponseEntity<Map<String, Object>> deleteAttrMemo(
-			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
-			@RequestBody Map<String,Object> map) throws Exception {
+			@PathVariable("id") @ApiParam(value = "댓글 번호.", required = true) Integer id) throws Exception {
 		log.info("관광지 댓글 삭제");
-		log.debug(" info : {}, {}", contentId, map);
+		log.debug(" info : {}", id);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			MemoService.deletetAttrMemo(map);
+			MemoService.deletetAttrMemo(id);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -111,17 +110,16 @@ public class MemoController {
 	}
 
 	@ApiOperation(value = "게시글 댓글 삭제", notes = "게시글에 대한 댓글 삭제 기능", response = Map.class)
-	@DeleteMapping("/board/{boardNo}")
+	@DeleteMapping("/board/{id}")
 	public ResponseEntity<Map<String, Object>> deleteBoardMemo(
-			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) String boardNo,
-			@RequestBody Map<String,Object> map) throws Exception {
+			@PathVariable("id") @ApiParam(value = "댓글 번호.", required = true) Integer id) throws Exception {
 		log.info("게시글 댓글 삭제");
-		log.debug(" info : {}, {}", boardNo, map);
+		log.debug(" info : {}, {}", id);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			MemoService.deletetBoardMemo(map);
+			MemoService.deletetBoardMemo(id);
 			resultMap.put("message", "관광지 댓글 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
