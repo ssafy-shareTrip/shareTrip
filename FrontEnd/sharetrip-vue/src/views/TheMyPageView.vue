@@ -1,11 +1,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
-import { useRouter } from "vue-router";
 import { localAxios } from "@/util/http-commons";
 import { useUserStore } from "@/stores/user";
 import MyInfo from "@/components/MyInfo.vue";
 
-const router = useRouter();
 const store = useUserStore();
 const axios = localAxios();
 const tab = ref(1);
@@ -45,6 +43,12 @@ onMounted(() => {
 		<v-row>
 			<v-window v-model="tab" style="width: 100%">
 				<v-window-item :value="1">
+					<my-info :user-info="userInfo"></my-info>
+				</v-window-item>
+				<v-window-item :value="2">
+					<my-info :user-info="userInfo"></my-info>
+				</v-window-item>
+				<v-window-item :value="3">
 					<my-info :user-info="userInfo"></my-info>
 				</v-window-item>
 

@@ -1,5 +1,7 @@
 <script setup>
-defineProps(["userInfo"]);
+defineProps({
+	userInfo: Object,
+});
 </script>
 
 <template>
@@ -19,10 +21,18 @@ defineProps(["userInfo"]);
 				<v-list lines="two" class="rounded-lg" elevation="13">
 					<v-list-item>이름 : {{ userInfo.name }}</v-list-item>
 					<v-divider :thickness="5" color="info"></v-divider>
-					<v-list-item
-						>생년월일 :
-						<template v-if="userInfo.birth == null">미공개</template>
-						<template v-else>{{ userInfo.brith }}</template>
+					<v-list-item>
+						<v-row>
+							<v-col>
+								생년월일 :
+								<template v-if="userInfo.birth == null">비공개</template>
+								<template v-else>{{ userInfo.brith }}</template> </v-col
+							><v-col>
+								성별 :
+								<template v-if="userInfo.gender == null">비공개</template>
+								<template v-else>{{ userInfo.gender }}</template>
+							</v-col>
+						</v-row>
 					</v-list-item>
 					<v-divider :thickness="5" color="info"></v-divider>
 					<v-list-item>

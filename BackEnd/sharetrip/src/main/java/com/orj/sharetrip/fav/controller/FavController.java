@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.orj.sharetrip.board.model.BoardDto;
 import com.orj.sharetrip.fav.model.FavoriteDto;
 import com.orj.sharetrip.fav.model.service.FavService;
+import com.orj.sharetrip.map.model.AttractionDto;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -68,13 +70,13 @@ public class FavController {
 	@GetMapping("/attr/{userId}")
 	public ResponseEntity<Map<String, Object>> getAttrFav(
 			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestParam(name = "category", required = false) Integer category) throws Exception {
+			@RequestParam(name = "category", required = true) Integer category) throws Exception {
 		log.info("관광지 좋아요 상태  조회");
 		log.debug(" info : {}", userId);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		List<FavoriteDto> list = null;
+		List<AttractionDto> list = null;
 		
 		try {
 			list = FavService.getAttrFav(userId, category);
@@ -170,13 +172,13 @@ public class FavController {
 	@GetMapping("/board/{userId}")
 	public ResponseEntity<Map<String, Object>> getBoardFav(
 			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestParam(name = "category", required = false) Integer category) throws Exception {
+			@RequestParam(name = "category", required = true) Integer category) throws Exception {
 		log.info("관광지 좋아요 상태  조회");
 		log.debug(" info : {}", userId);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		List<FavoriteDto> list = null;
+		List<BoardDto> list = null;
 		
 		try {
 			list = FavService.getBoardFav(userId, category);
