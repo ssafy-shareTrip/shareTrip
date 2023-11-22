@@ -8,7 +8,7 @@ import com.orj.sharetrip.fav.model.FavoriteDto;
 public interface FavService {
 	List<FavoriteDto> getAttrFav(String userId, Integer category);
 
-	void deleteAttrFav(String userId,Integer contentId);
+	void deleteAttrFav(String userId,Integer contentId, Integer category);
 
 	void registAttrFav(Map<String, Object> map);
 
@@ -16,7 +16,7 @@ public interface FavService {
 
 	void registBoardFav(Map<String, Object> map);
 
-	void deleteBoardFav(String userId,Integer boardNo);
+	void deleteBoardFav(String userId,Integer boardNo, Integer category);
 
 	int getAttrFavCount(Integer contentId, Integer category);
 

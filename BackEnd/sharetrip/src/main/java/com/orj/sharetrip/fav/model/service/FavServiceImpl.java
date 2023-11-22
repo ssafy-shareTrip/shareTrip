@@ -26,8 +26,8 @@ public class FavServiceImpl implements FavService {
 
 
 	@Override
-	public void deleteAttrFav(String userId,Integer contentId) {
-		FavMapper.deleteAttrFav(userId,contentId);
+	public void deleteAttrFav(String userId,Integer contentId, Integer category) {
+		FavMapper.deleteAttrFav(userId,contentId,category);
 	}
 
 
@@ -50,8 +50,8 @@ public class FavServiceImpl implements FavService {
 
 
 	@Override
-	public void deleteBoardFav(String userId,Integer boardNo) {
-		FavMapper.deleteBoardFav(userId,boardNo);
+	public void deleteBoardFav(String userId,Integer boardNo, Integer category) {
+		FavMapper.deleteBoardFav(userId,boardNo,category);
 	}
 
 

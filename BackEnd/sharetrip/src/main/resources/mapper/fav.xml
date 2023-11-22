@@ -15,7 +15,7 @@
 
 	<select id="getAttrFav" parameterType="map" resultType="favoriteDto">
 		select content_id as favId, category
-		from attraction_fav
+		from attraction_fav join attraction_info on using(content_id)
 		where user_id = #{userId}
 		<if test="category != null">
 			and category = #{category}
@@ -32,6 +32,7 @@
 		where 1=1
 		and user_id = #{userId}
 		and content_id = #{contentId}
+		and category = #{category}
 	</delete>
 	
 	<select id="getBoardFavCount" parameterType="map" resultType="int">
@@ -62,6 +63,7 @@
 		where 1=1
 		and user_id = #{userId}
 		and board_no = #{boardNo}
+		and category = #{category}
 	</delete>
 	
 </mapper>
