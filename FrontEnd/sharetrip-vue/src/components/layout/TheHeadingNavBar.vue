@@ -17,35 +17,6 @@ const navToggle = ref(false);
 
 <template>
 	<div>
-<<<<<<< HEAD
-		<v-app-bar title="ShareTrip" class="nav">
-			<router-link :to="{ name: 'board' }" class="navItem">게시판</router-link>
-			<router-link :to="{ name: 'attr' }" class="navItem">관광지</router-link>
-			<router-link :to="{ name: 'mypage' }" class="navItem">마이페이지</router-link>
-			<span @click="navToggle = !navToggle">유저이미지</span>
-		</v-app-bar>
-
-		<v-navigation-drawer location="right" v-model="navToggle" temporary>
-			<v-list density="compact" nav>
-				<v-list-item
-					><v-btn variant="plain" @click="mvPage('mypage')" class="dBtn"
-						>회원프로필이미지</v-btn
-					></v-list-item
-				>
-				<v-divider></v-divider>
-				<v-list-item
-					><v-btn variant="plain" @click="mvPage('main')" class="dBtn"
-						><v-icon color="success" icon="mdi-antenna" size="large"></v-icon>
-						로그인</v-btn
-					></v-list-item
-				>
-
-				<v-list-item>
-					<v-btn variant="plain" @click="mvPage('main')" class="dBtn">
-						회원가입
-					</v-btn></v-list-item
-				>
-=======
 		<v-app-bar color="blue-lighten-4">
 			<v-app-bar-title
 				><router-link :to="{ name: 'main' }" class="navItem"
@@ -53,7 +24,13 @@ const navToggle = ref(false);
 				></v-app-bar-title
 			>
 
-			<v-tabs color="blue lighten-4" align-with-title>
+			<v-tabs
+				color="blue lighten-4"
+				align-with-title
+				next-icon="mdi-arrow-right-bold-box-outline"
+				prev-icon="mdi-arrow-left-bold-box-outline"
+				show-arrows
+			>
 				<router-link :to="{ name: 'path' }" class="navItem"
 					><v-tab
 						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
@@ -112,7 +89,6 @@ const navToggle = ref(false);
 						></v-list-item
 					>
 				</template>
->>>>>>> 3635fc4767cedcae1f0984a60941494243ab9e37
 			</v-list>
 		</v-navigation-drawer>
 	</div>

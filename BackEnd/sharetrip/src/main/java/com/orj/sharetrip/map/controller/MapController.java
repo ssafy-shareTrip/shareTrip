@@ -89,9 +89,10 @@ public class MapController {
 			@RequestParam(name = "contentTypeId", required = false) @ApiParam(value = "관광타입(12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점) ID.", example = "12, 14, 25") List<String> contentTypeId,
 			@RequestParam(name = "keyword", required = false) @ApiParam(value = "검색 키워드.") String keyword,
 			@RequestParam(name = "mapX", required = false) @ApiParam(value = "GPS X좌표(WGS84 경도좌표).") Double mapX,
-			@RequestParam(name = "mapY", required = false) @ApiParam(value = "GPS Y좌표(WGS84 위도좌표).") Double mapY) throws Exception {
+			@RequestParam(name = "mapY", required = false) @ApiParam(value = "GPS Y좌표(WGS84 위도좌표).") Double mapY,
+			@RequestParam(name = "userId", required = false) @ApiParam(value = "로그인한 유저의 아이디.") String userId) throws Exception {
 		log.info("관광지 조회");
-		log.debug(" info : {}, {}, {}, {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword, mapX, mapY);
+		log.debug(" info : {}, {}, {}, {}, {}, {}",sidoCode,gugunCode,contentTypeId, keyword, mapX, mapY,userId);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
@@ -104,6 +105,7 @@ public class MapController {
 		map.put("keyword", keyword);
 		map.put("mapX", mapX);
 		map.put("mapY", mapY);
+		map.put("userId", userId);
 		
 		try {
 			list = MapService.getAttrList(map);
