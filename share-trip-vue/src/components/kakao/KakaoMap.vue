@@ -1,26 +1,15 @@
 <script setup="setup">
     import {onMounted, watch, ref} from "vue";
+    import AttractionDetail from "../attraction/AttractionDetail.vue";
     const props = defineProps(
-        {attractionList: Array, selectAttractionElement: Object}
+        {attractionList: Array, selectAttractionElement: Object, change : Boolean,}
     );
+    const emit= defineEmits(['changeCenterPosition']);
+   
 
     var map;
     const positions = ref([]);
     const markers = ref([]);
-
-    watch(() => props.attractionList.value, () => {
-        // 이동할 위도 경도 위치를 생성합니다
-        var moveLatLon = new kakao
-            .maps
-            .LatLng(
-                props.selectAttractionElement.latitude,
-                props.selectAttractionElement.longitude
-            );
-
-        // 지도 중심을 부드럽게 이동시킵니다 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-        map.panTo(moveLatLon);
-    }, {deep: true});
-
     watch(() => props.attractionList.value, () => {
         positions.value = [];
         props
@@ -31,9 +20,9 @@
                     .maps
                     .LatLng(attraction.latitude, attraction.longitude);
                 obj.title = attraction.title;
-                obj.addr1= attraction.addr1;
-                obj.addr2= attraction.addr2;
-                obj.firstImage= attraction.firstImage;
+                obj.addr1 = attraction.addr1;
+                obj.addr2 = attraction.addr2;
+                obj.firstImage = attraction.firstImage;
 
                 positions
                     .value
@@ -59,41 +48,54 @@
                 .head
                 .appendChild(script);
         }
+
+        // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+        kakao
+            .maps
+            .event
+            .addListener(map, 'dragend', function () {
+
+                // 지도 중심좌표를 얻어옵니다
+                var latlng = map.getCenter();
+
+                //emit를 날려서 attractionList를 수정함
+                emit('changeCenterPosition',latlng.getLat(), latlng.getLng());
+
+            });
+
     });
 
     const initMap = function () {
+        // 현재 내 위치 기준으로 마커띄우기
+        let myCenter = new kakao
+            .maps
+            .LatLng(33.450701, 126.570667);
+        if (navigator.geolocation) {
+            navigator
+                .geolocation
+                .getCurrentPosition((position) => {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    myCenter = new kakao
+                        .maps
+                        .LatLng(lat, lon);
+                    new kakao
+                        .maps
+                        .Marker({map, position: myCenter});
+                    map.setCenter(myCenter);
+                });
+        }
+
         const container = document.getElementById("map");
         const options = {
-            center: new kakao
-                .maps
-                .LatLng(33.450701, 126.570667),
+            center: myCenter,
             level: 5
         }; //지도 객체 등록
         map = new kakao
             .maps
             .Map(container, options);
-        //지도에 여러개의 마커를 띄움 loadMarkers();
-    };
 
-    // 현재 내 위치 기준으로 마커띄우기
-    let myCenter = new kakao
-        .maps
-        .LatLng(33.450701, 126.570667);
-    if (navigator.geolocation) {
-        navigator
-            .geolocation
-            .getCurrentPosition((position) => {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-                myCenter = new kakao
-                    .maps
-                    .LatLng(lat, lon);
-                new kakao
-                    .maps
-                    .Marker({map, position: myCenter});
-                map.setCenter(myCenter);
-            });
-    }
+    };
 
     const loadMarkers = () => {
         // 현재 표시되어있는 marker들이 있다면 map에 등록된 marker를 제거한다.
@@ -165,7 +167,8 @@
 
                         var img = document.createElement('img');
                         img.src = position.firstImage;
-                        if(position.firstImage === "") img.src= '../icon/basic_map_overlay.png'
+                        if (position.firstImage) 
+                            img.src = `public/icon/basic_map_overlay.png`
                         img.width = 73;
                         img.height = 70;
 
@@ -187,7 +190,6 @@
                             .classList
                             .add('jibun', 'ellipsis');
                         ellipsis2Div.textContent = position.addr2;
-
 
                         descDiv.appendChild(ellipsis1Div);
                         descDiv.appendChild(ellipsis2Div);
@@ -221,8 +223,8 @@
                 (bounds, position) => bounds.extend(position.latlng),
                 new kakao.maps.LatLngBounds()
             );
-
-        map.setBounds(bounds);
+        if(props.change)
+            map.setBounds(bounds);
     };
 
     const deleteMarkers = () => {
@@ -236,7 +238,6 @@
 
 <template>
     <div>
-
         <div id="map"></div>
     </div>
 </template>
