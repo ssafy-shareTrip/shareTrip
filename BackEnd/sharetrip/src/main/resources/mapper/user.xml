@@ -15,7 +15,27 @@
 		<result column="gender" property="gender"/>
 		<result column="profile_image" property="profileImage"/>
 		<result column="token" property="Token"/>
+		<result column="following" property="following"/>
+		<result column="follower" property="follower"/>
 	</resultMap>
+	
+	<resultMap type="userDto" id="viewUser" extends="user">
+		<collection property="followingList" column="id" javaType="list" ofType="string" select="followingList"></collection>
+		<collection property="followerList" column="id" javaType="list" ofType="string" select="followerList"></collection>
+	</resultMap>
+	
+	<select id="followingList" resultType="string">
+		select id_to
+		from user_follow
+		where id_from = #{id}
+	</select>
+	
+	<select id="followerList" resultType="string">
+		select id_from
+		from user_follow
+		where id_to = #{id}
+	</select>
+	
 
 	<insert id="joinUser" parameterType="userDto" >
 		insert into user
@@ -28,8 +48,10 @@
 		where id = #{id} and password = #{password}
 	</select>
 	
-	<select id="userInfo" parameterType="string" resultMap="user">
-		select name, id, email_id, email_domain, join_date
+	<select id="userInfo" parameterType="string" resultMap="viewUser">
+		select name, id, email_id, email_domain, join_date, birth, gender, profile_image, 
+		(select count(*) from user_follow where id_from = #{id}) following, 
+		(select count(*) from user_follow where id_to = #{id}) follower
 		from user
 		where id = #{id}
 	</select>

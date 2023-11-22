@@ -6,9 +6,7 @@ import LoginView from "@/components/user/LoginView.vue"
 import JoinView from "@/components/user/JoinView.vue"
 import TheMypageView from "@/views/TheMypageView.vue"
 import AttractionDetail from "@/components/attraction/AttractionDetail.vue"
-import DetailInfo from '@/components/attraction/detail/DetailInfo.vue'
-import DetailMap from '@/components/attraction/detail/DetailMap.vue'
-import DetailWeather from '@/components/attraction/detail/DetailWeather.vue'
+import RouteBoardWrite from '@/components/board/RouteBoardWrite.vue'
 
 //api받으면 path 수정해야함
 const router = createRouter({
@@ -68,23 +66,12 @@ const router = createRouter({
       path: '/attrDet/:idx',
       name: 'attrDet',
       component: AttractionDetail,
-      children: [
-        {
-          path: 'detInfo',
-          name: 'detInfo',
-          component: DetailInfo
-        },
-        {
-          path: 'detMap',
-          name: 'detMap',
-          component: DetailMap
-        },
-        {
-          path: 'detWeather',
-          name: 'detWeather',
-          component: DetailWeather
-        },
-      ]
+    },
+
+    {
+      path: '/routeReg',
+      name: 'routeReg',
+      component: RouteBoardWrite,
     },
 
   ]

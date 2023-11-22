@@ -5,55 +5,69 @@
 <mapper namespace="com.orj.sharetrip.map.model.mapper.MapMapper">
 
 	<resultMap type="sidoGugunCodeDto" id="sidoGugun">
-		<result column="sido_code" property="sidoCode"/>
-		<result column="sido_name" property="sidoName"/>
-		<result column="gugun_code" property="gugunCode"/>
-		<result column="gugun_name" property="gugunName"/>
+		<result column="sido_code" property="sidoCode" />
+		<result column="sido_name" property="sidoName" />
+		<result column="gugun_code" property="gugunCode" />
+		<result column="gugun_name" property="gugunName" />
 	</resultMap>
-	
+
 	<resultMap type="AttractionDto" id="attraction">
-		<result column="content_id" property="contentId"/>
-		<result column="content_type_id" property="contentTypeId"/>
-		<result column="title" property="title"/>
-		<result column="addr1" property="addr1"/>
-		<result column="addr2" property="addr2"/>
-		<result column="tel" property="tel"/>
-		<result column="first_image" property="firstImage"/>
-		<result column="first_image2" property="firstImage2"/>
-		<result column="sido_code" property="sidoCode"/>
-		<result column="gugun_code" property="gugunCode"/>
-		<result column="latitude" property="latitude"/>
-		<result column="longitude" property="longitude"/>
+		<result column="content_id" property="contentId" />
+		<result column="content_type_id" property="contentTypeId" />
+		<result column="title" property="title" />
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="tel" property="tel" />
+		<result column="first_image" property="firstImage" />
+		<result column="first_image2" property="firstImage2" />
+		<result column="sido_code" property="sidoCode" />
+		<result column="gugun_code" property="gugunCode" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+		<result column="isLike" property="isLike" />
+		<result column="isBookmark" property="isBookmark" />
 	</resultMap>
-	
+
 	<resultMap type="memoDto" id="memo">
-		<result column="id" property="id"/>
-		<result column="user_id" property="userId"/>
-		<result column="content" property="content"/>
-		<result column="regist_time" property="registTime"/>
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="content" property="content" />
+		<result column="regist_time" property="registTime" />
 	</resultMap>
-	
-	<resultMap type="AttractionDto" id="viewAttraction" extends="attraction">
+
+	<resultMap type="AttractionDto" id="viewAttraction"
+		extends="attraction">
 		<result column="overview" property="overview" />
-		<collection property="memos" column="content_id" javaType="list" ofType="memoDto" select="memoList"></collection>
+		<collection property="memos" column="content_id"
+			javaType="list" ofType="memoDto" select="memoList"></collection>
 	</resultMap>
 
 	<select id="getSido" resultMap="sidoGugun">
-		select left(sido_code,2) sido_code, sido_name
+		select left(sido_code,2)
+		sido_code, sido_name
 		from sido
 		order by sido_code
 	</select>
-	
-	<select id="getGugunInSido" parameterType="string" resultMap="sidoGugun">
+
+	<select id="getGugunInSido" parameterType="string"
+		resultMap="sidoGugun">
 		select left(gugun_code,5) gugun_code, gugun_name
 		from gugun
 		where sido_code = #{sido}
 		order by gugun_code
 	</select>
-	
-	<select id="getAttrList" parameterType="map" resultMap="attraction">
+
+	<select id="getAttrList" parameterType="map"
+		resultMap="attraction">
 		select *
-		from attraction_info
+		<if test="userId != null">
+			,
+			(select count(*) from attraction_fav where content_id = a.content_id and
+			user_id = #{userId} and category = 0) isLike,
+			(select count(*) from attraction_fav where content_id = a.content_id and
+			user_id = #{userId} and category = 1) isBookmark
+		</if>
+		from attraction_info a
 		where 1=1
 		<if test="sidoCode != null">
 			and sido_code = #{sidoCode}
@@ -62,34 +76,42 @@
 			</if>
 		</if>
 		<if test="contentTypeId != null">
-			and content_type_id in <foreach collection="contentTypeId" item="TypeId" separator=", " open="(" close=")">#{TypeId}</foreach>
+			and content_type_id in
+			<foreach collection="contentTypeId" item="TypeId"
+				separator=", " open="(" close=")">#{TypeId}</foreach>
 		</if>
 		<if test="keyword != null">
 			and title like concat('%',#{keyword},'%')
 		</if>
 		<if test="mapX != null and mapY != null">
-			order by (#{mapX} - latitude) * (#{mapX} - latitude) + (#{mapY} - longitude) * (#{mapY} - longitude)
+			order by (#{mapX} - latitude) * (#{mapX} - latitude) +
+			(#{mapY} - longitude) * (#{mapY} - longitude)
 		</if>
 		limit 30;
 	</select>
-	
+
 	<select id="getAttrInfo" resultMap="viewAttraction">
 		select *
-		from attraction_info i join attraction_description d using(content_id)
-		where content_id = #{contentId}
+		from attraction_info
+		i join attraction_description d using(content_id)
+		where content_id =
+		#{contentId}
 	</select>
-	
+
 	<select id="memoList" resultMap="memo">
-		select id, content, user_id, regist_time
+		select id, content, user_id,
+		regist_time
 		from attraction_memo
 		where content_id = #{contentId}
-		order by regist_time desc;
+		order by
+		regist_time desc;
 	</select>
-	
+
 	<select id="getAttrFav" parameterType="string" resultType="int">
 		select content_id, category
 		from attraction_fav
-		where user_id = #{userId};
+		where user_id =
+		#{userId};
 	</select>
-	
+
 </mapper>

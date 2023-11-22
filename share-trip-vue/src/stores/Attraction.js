@@ -28,8 +28,8 @@ export const UseAttractionStore = defineStore('attraction', () => {
         axios
         .get(REST_ATTRACTION_API+'/fav/attr/'+userId)
         .then((response) => {
-            console.log("FAV :", response.data.data)
             favs.value = response.data.data
+            console.log("FAV :", favs.value)
         })
         .catch(() => {})
     }
