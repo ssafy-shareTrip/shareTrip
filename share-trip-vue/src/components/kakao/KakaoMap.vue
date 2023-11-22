@@ -31,6 +31,9 @@
                     .maps
                     .LatLng(attraction.latitude, attraction.longitude);
                 obj.title = attraction.title;
+                obj.addr1= attraction.addr1;
+                obj.addr2= attraction.addr2;
+                obj.firstImage= attraction.firstImage;
 
                 positions
                     .value
@@ -140,8 +143,7 @@
                         titleDiv
                             .classList
                             .add('title');
-                        titleDiv.textContent = '카카오 스페이스닷원';
-
+                        titleDiv.textContent = position.title;
                         var closeDiv = document.createElement('div');
                         closeDiv
                             .classList
@@ -162,7 +164,8 @@
                             .add('img');
 
                         var img = document.createElement('img');
-                        img.src = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png';
+                        console.log('이미지 주소는 잘오나', position.firstImage);
+                        img.src = position.firstImage;
                         img.width = 73;
                         img.height = 70;
 
@@ -177,28 +180,17 @@
                         ellipsis1Div
                             .classList
                             .add('ellipsis');
-                        ellipsis1Div.textContent = '제주특별자치도 제주시 첨단로 242';
+                        ellipsis1Div.textContent = position.addr1;
 
                         var ellipsis2Div = document.createElement('div');
                         ellipsis2Div
                             .classList
                             .add('jibun', 'ellipsis');
-                        ellipsis2Div.textContent = '(우) 63309 (지번) 영평동 2181';
+                        ellipsis2Div.textContent = position.addr2;
 
-                        var linkDiv = document.createElement('div');
-                        var link = document.createElement('a');
-                        link.href = 'https://www.kakaocorp.com/main';
-                        link.target = '_blank';
-                        link
-                            .classList
-                            .add('link');
-                        link.textContent = '홈페이지';
-
-                        linkDiv.appendChild(link);
 
                         descDiv.appendChild(ellipsis1Div);
                         descDiv.appendChild(ellipsis2Div);
-                        descDiv.appendChild(linkDiv);
 
                         bodyDiv.appendChild(imgDiv);
                         bodyDiv.appendChild(descDiv);
