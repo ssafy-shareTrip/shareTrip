@@ -3,6 +3,7 @@ import { ref, onMounted } from "vue";
 import { localAxios } from "@/util/http-commons";
 import { useUserStore } from "@/stores/user";
 import MyInfo from "@/components/MyInfo.vue";
+import BookmarkAttr from "@/components/BookmarkAttr.vue";
 
 const store = useUserStore();
 const axios = localAxios();
@@ -29,8 +30,8 @@ onMounted(() => {
 				color="blue lighten-4"
 				density="comfortable"
 				style="margin: 0 auto"
-				next-icon="mdi-arrow-right-bold-box-outline"
-				prev-icon="mdi-arrow-left-bold-box-outline"
+				next-icon="mdi-chevron-right"
+				prev-icon="mdi-chevron-left"
 				show-arrows
 			>
 				<v-tab :value="1">내 정보</v-tab>
@@ -46,7 +47,7 @@ onMounted(() => {
 					<my-info :user-info="userInfo"></my-info>
 				</v-window-item>
 				<v-window-item :value="2">
-					<my-info :user-info="userInfo"></my-info>
+					<bookmark-attr :user-info="userInfo"></bookmark-attr>
 				</v-window-item>
 				<v-window-item :value="3">
 					<my-info :user-info="userInfo"></my-info>

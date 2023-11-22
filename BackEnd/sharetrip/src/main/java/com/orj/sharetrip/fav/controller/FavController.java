@@ -41,7 +41,7 @@ public class FavController {
 	@ApiOperation(value = "관광지 좋아요 개수 조회", notes = "관광지가 좋아요 또는 북마크된 개수를 가져온다.", response = Map.class)
 	@GetMapping("/attrcnt/{contentId}")
 	public ResponseEntity<Map<String, Object>> getAttrFavCount(
-			@PathVariable("contentId") @ApiParam(value = "유저 ID.", required = true) Integer contentId,
+			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) Integer contentId,
 			@RequestParam(name = "category", required = false) Integer category) throws Exception {
 		log.info("관광지 좋아요 개수 조회");
 		log.debug(" info : {}", contentId);
@@ -145,7 +145,7 @@ public class FavController {
 	@ApiOperation(value = "게시글 좋아요 개수 조회", notes = "게시글가 좋아요 또는 북마크된 개수를 가져온다.", response = Map.class)
 	@GetMapping("/boardcnt/{boardNo}")
 	public ResponseEntity<Map<String, Object>> getBoardFavCount(
-			@PathVariable("boardNo") @ApiParam(value = "유저 ID.", required = true) Integer boardNo,
+			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) Integer boardNo,
 			@RequestParam(name = "category", required = false) Integer category) throws Exception {
 		log.info("게시글 좋아요 개수 조회");
 		log.debug(" info : {}, {}", boardNo, category);
