@@ -164,8 +164,8 @@
                             .add('img');
 
                         var img = document.createElement('img');
-                        console.log('이미지 주소는 잘오나', position.firstImage);
                         img.src = position.firstImage;
+                        if(position.firstImage === "") img.src= '../icon/basic_map_overlay.png'
                         img.width = 73;
                         img.height = 70;
 
