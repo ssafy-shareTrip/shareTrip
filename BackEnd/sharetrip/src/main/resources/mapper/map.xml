@@ -63,6 +63,9 @@
 		<if test="userId != null">
 			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1) isBookmark
 		</if>
+		<if test="userId == null">
+			, 0 isLike, 0 isBookmark
+		</if>
 		from attraction_info a
 		<if test="userId != null">
 			left outer join (
