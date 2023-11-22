@@ -29,8 +29,8 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	public BoardDto getArticle(int boardNo) throws Exception {
-		return BoardMapper.getArticle(boardNo);
+	public BoardDto getArticle(int boardNo,String userId) throws Exception {
+		return BoardMapper.getArticle(boardNo,userId);
 	}
 
 	@Override

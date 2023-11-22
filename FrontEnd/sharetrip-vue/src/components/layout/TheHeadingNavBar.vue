@@ -27,8 +27,8 @@ const navToggle = ref(false);
 			<v-tabs
 				color="blue lighten-4"
 				align-with-title
-				next-icon="mdi-arrow-right-bold-box-outline"
-				prev-icon="mdi-arrow-left-bold-box-outline"
+				next-icon="mdi-chevron-right"
+				prev-icon="mdi-chevron-left"
 				show-arrows
 			>
 				<router-link :to="{ name: 'path' }" class="navItem"

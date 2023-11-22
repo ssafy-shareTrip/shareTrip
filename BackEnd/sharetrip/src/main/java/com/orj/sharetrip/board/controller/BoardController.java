@@ -88,15 +88,16 @@ public class BoardController {
 	@ApiOperation(value = "게시판 글보기", notes = "글번호에 해당하는 게시글의 정보를 반환한다.", response = Map.class)
 	@GetMapping("/{boardNo}")
 	public ResponseEntity<Map<String, Object>> getArticle(
-			@PathVariable("boardNo") @ApiParam(value = "얻어올 글의 글번호.", required = true) int boardNo)
+			@PathVariable("boardNo") @ApiParam(value = "얻어올 글의 글번호.", required = true) int boardNo,
+			@RequestParam(name = "userId", required = false) @ApiParam(value = "로그인한 유저의 아이디.") String userId)
 			throws Exception {
-		log.info("getArticle - 호출 : " + boardNo);
+		log.info("getArticle - 호출 : " + boardNo,userId);
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		
 		try {
 			BoardService.updateHit(boardNo);
-			BoardDto boardDto = BoardService.getArticle(boardNo);
+			BoardDto boardDto = BoardService.getArticle(boardNo,userId);
 			resultMap.put("data", boardDto);
 			resultMap.put("message", "글 상세 조회 성공");
 		}catch (Exception e) {
@@ -119,7 +120,7 @@ public class BoardController {
 		HttpStatus status = HttpStatus.ACCEPTED;
 		
 		try {
-			BoardDto boardDto = BoardService.getArticle(boardNo);
+			BoardDto boardDto = BoardService.getArticle(boardNo, null);
 			resultMap.put("data", boardDto);
 			resultMap.put("message", "글 수정 조회 성공");
 		} catch (Exception e) {

@@ -15,8 +15,8 @@ defineProps({
 					src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
 					style="border-radius: 100%"
 					cover
-				></v-img
-			></v-col>
+				></v-img>
+			</v-col>
 			<v-col>
 				<v-list lines="two" class="rounded-lg" elevation="13">
 					<v-list-item>이름 : {{ userInfo.name }}</v-list-item>

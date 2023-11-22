@@ -20,6 +20,8 @@
 		<result column="regist_time" property="registTime"/>
 		<result column="hit" property="hit"/>
 		<result column="name" property="name"/>
+		<result column="isLike" property="isLike" />
+		<result column="isBookmark" property="isBookmark" />
 	</resultMap>
 	
 	<resultMap type="boardDto" id="viewBoard" extends="board">
@@ -34,15 +36,31 @@
 	
 	<select id="listArticle" parameterType="map" resultMap="board">
 		select *
+		<if test="userId != null">
+			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1) isBookmark
+		</if>
+		<if test="userId == null">
+			, 0 isLike, 0 isBookmark
+		</if>
 		from board
+		<if test="userId != null">
+			left outer join (
+				select board_no, user_id lid from attraction_fav where user_id = #{userId} and category = 0
+				) l
+			using (board_no)
+			left outer join (
+				select board_no, user_id bid from attraction_fav where user_id = #{userId} and category = 1
+				) b
+			using (board_no)
+		</if>
 		order by board_no desc
 	</select>
 	
 		
 	<select id="getArticle" parameterType="int" resultMap="viewBoard">
 		select b.board_no, b.user_id, b.trip_no ,b.subject, b.content, b.hit, b.regist_time, u.name 
-		from board b, user u
-		where b.user_id = u.id
+		from board b join user u on b.user_id = u.id
+		where 1=1
 		and b.board_no = #{boardNo}
 	</select>
 	
