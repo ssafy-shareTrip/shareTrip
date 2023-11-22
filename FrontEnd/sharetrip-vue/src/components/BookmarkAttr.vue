@@ -99,7 +99,6 @@ const page = [
 							:src="item.firstImage ? item.firstImage : '/public/nature.png'"
 							height="64"
 							cover
-							@click="overlayImg(item.firstImage)"
 						>
 							<v-overlay
 								activator="parent"
