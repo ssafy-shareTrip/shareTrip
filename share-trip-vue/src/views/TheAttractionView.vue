@@ -113,6 +113,21 @@
 
         url.search = params.toString();
 
+        console.log(url);
+
+        axios
+        .get(url.toString())
+        .then(function (data) {
+            data = data.data.data;
+            console.log(data);
+            //검색 성공했으면 다시 마커를 띄워줘야 함
+            attractionList.value = data;
+        })
+        .catch(function (error) {
+            console.log("검색 실패");
+        });
+
+        
     /* 사용자 별 좋아요, 북마크는 userId 보내줘야 함.
         if문 // 로그인 아이디가 있다면 아이디 담기
         */
