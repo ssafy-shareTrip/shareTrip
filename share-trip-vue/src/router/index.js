@@ -63,7 +63,7 @@ const router = createRouter({
     },
 
     {
-      path: '/attrDet/:idx',
+      path: '/attrDet/:idx/:isLike/:isBookmark',
       name: 'attrDet',
       component: AttractionDetail,
     },

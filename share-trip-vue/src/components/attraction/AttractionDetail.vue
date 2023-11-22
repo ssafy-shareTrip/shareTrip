@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView, useRoute, useRouter } from 'vue-router'
-import { onMounted,ref,watch  } from 'vue';
+import { onMounted,ref,computed  } from 'vue';
 import { UseAttractionStore } from '@/stores/Attraction';
 import DetailInfo from '@/components/attraction/detail/DetailInfo.vue'
 import DetailMap from '@/components/attraction/detail/DetailMap.vue'
@@ -9,8 +9,8 @@ import DetailMemo from '@/components/attraction/detail/DetailMemo.vue';
 import KakaoMap from '../kakao/KakaoMap.vue';
 import axios from 'axios';
 
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 const store = UseAttractionStore();
 
 const idx = route.params.idx; //125266
@@ -18,11 +18,12 @@ const userId = "jeon"
 const infoItem = ref(true);
 const mapItem = ref(false);
 const weatherItem = ref(false);
+const isLike = ref(route.params.isLike);
+const isBookmark = ref(route.params.isBookmark);
 
 onMounted(() => {
     console.log(idx);
     store.getDetail(idx);
-    store.getFav(userId);
 });
 
 const infoShow = () => {
@@ -41,6 +42,49 @@ const weatherShow = () => {
     weatherItem.value = true;
 }
 
+const favReg = (category, status) => {
+    console.log(category, status);
+
+    const url = "http://localhost:80/sharetrip/fav/attr/jeon";
+    if (status == '0'){ // 미등록 -> 등록
+        axios
+            .post("http://localhost:80/sharetrip/fav/attr/jeon",
+            {
+                "contentId":idx,
+                "category":category
+            })
+            .then(({data})=>{
+                console.log("favReg : 성공");
+                if (category == 0){ // isLike
+                    isLike.value = '1'
+                } else { //isBookmark
+                    isBookmark.value = '1'
+                }
+            })
+            .catch(()=>{
+                console.log("favReg 등록 : 실패");
+            })
+    } else { //등록 -> 미등록
+        axios
+            .delete(url,
+                {params : {
+                    "contentId":idx,
+                    "category":category
+                }
+            })
+            .then(({data})=>{
+                console.log("favDel : 성공");
+                if (category == 0){ // isLike
+                    isLike.value = '0'
+                } else { //isBookmark
+                    isBookmark.value = '0'
+                }
+            })
+            .catch(()=>{
+                console.log("favDel : 실패");
+            })
+    }
+}
 </script>
 
 <template>
@@ -50,10 +94,10 @@ const weatherShow = () => {
                 <span>
                     {{ store.detail.title }}
                 </span>
-                <span><img src="/public/icon/like_none.png" width="30"></span>
-                <span><img src="/public/icon/like_push.png" width="30"></span>
-                <span><img src="/public/icon/star_none.png" width="30"></span>
-                <span><img src="/public/icon/star_push.png" width="30"></span>
+                <span>
+                    <img :src="`/public/icon/like_${isLike}.png`" width="25" @click="favReg(0, isLike)">
+                    <img :src="`/public/icon/star_${isBookmark}.png`" width="25" @click="favReg(1, isBookmark)">
+                </span>
             </div>
             <div>
                 <span>

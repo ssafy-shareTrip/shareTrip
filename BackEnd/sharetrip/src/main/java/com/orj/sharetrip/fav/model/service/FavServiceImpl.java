@@ -5,8 +5,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Service;
 
+import com.orj.sharetrip.board.model.BoardDto;
 import com.orj.sharetrip.fav.model.FavoriteDto;
 import com.orj.sharetrip.fav.model.mapper.FavMapper;
+import com.orj.sharetrip.map.model.AttractionDto;
 
 @Service
 public class FavServiceImpl implements FavService {
@@ -20,14 +22,14 @@ public class FavServiceImpl implements FavService {
 
 
 	@Override
-	public List<FavoriteDto> getAttrFav(String userId,Integer category) {
+	public List<AttractionDto> getAttrFav(String userId,Integer category) {
 		return FavMapper.getAttrFav(userId,category);
 	}
 
 
 	@Override
-	public void deleteAttrFav(String userId,Integer contentId) {
-		FavMapper.deleteAttrFav(userId,contentId);
+	public void deleteAttrFav(String userId,Integer contentId, Integer category) {
+		FavMapper.deleteAttrFav(userId,contentId,category);
 	}
 
 
@@ -38,7 +40,7 @@ public class FavServiceImpl implements FavService {
 
 
 	@Override
-	public List<FavoriteDto> getBoardFav(String userId, Integer category) {
+	public List<BoardDto> getBoardFav(String userId, Integer category) {
 		return FavMapper.getBoardFav(userId, category);
 	}
 
@@ -50,8 +52,8 @@ public class FavServiceImpl implements FavService {
 
 
 	@Override
-	public void deleteBoardFav(String userId,Integer boardNo) {
-		FavMapper.deleteBoardFav(userId,boardNo);
+	public void deleteBoardFav(String userId,Integer boardNo, Integer category) {
+		FavMapper.deleteBoardFav(userId,boardNo,category);
 	}
 
 

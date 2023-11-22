@@ -4,6 +4,34 @@
 
 <mapper namespace="com.orj.sharetrip.fav.model.mapper.FavMapper">
 
+	<resultMap type="AttractionDto" id="attraction">
+		<result column="content_id" property="contentId" />
+		<result column="content_type_id" property="contentTypeId" />
+		<result column="title" property="title" />
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="tel" property="tel" />
+		<result column="first_image" property="firstImage" />
+		<result column="first_image2" property="firstImage2" />
+		<result column="sido_code" property="sidoCode" />
+		<result column="gugun_code" property="gugunCode" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+		<result column="isLike" property="isLike" />
+		<result column="isBookmark" property="isBookmark" />
+	</resultMap>
+	
+	<resultMap type="boardDto" id="board">
+		<result column="board_no" property="boardNo"/>
+		<result column="user_id" property="userId"/>
+		<result column="trip_no" property="tripNo"/>
+		<result column="subject" property="subject"/>
+		<result column="content" property="content"/>
+		<result column="regist_time" property="registTime"/>
+		<result column="hit" property="hit"/>
+		<result column="name" property="name"/>
+	</resultMap>
+
 	<select id="getAttrFavCount" parameterType="map" resultType="int">
 		select count(user_id)
 		from attraction_fav
@@ -13,9 +41,9 @@
 		</if>
 	</select>
 
-	<select id="getAttrFav" parameterType="map" resultType="favoriteDto">
-		select content_id as favId, category
-		from attraction_fav
+	<select id="getAttrFav" parameterType="map" resultMap="attraction">
+		select *
+		from attraction_fav join attraction_info using(content_id)
 		where user_id = #{userId}
 		<if test="category != null">
 			and category = #{category}
@@ -32,6 +60,7 @@
 		where 1=1
 		and user_id = #{userId}
 		and content_id = #{contentId}
+		and category = #{category}
 	</delete>
 	
 	<select id="getBoardFavCount" parameterType="map" resultType="int">
@@ -43,7 +72,7 @@
 		</if>
 	</select>
 	
-	<select id="getBoardFav" parameterType="map" resultType="favoriteDto">
+	<select id="getBoardFav" parameterType="map" resultMap="board">
 		select board_no as favId, category
 		from board_fav
 		where user_id = #{userId}
@@ -62,6 +91,7 @@
 		where 1=1
 		and user_id = #{userId}
 		and board_no = #{boardNo}
+		and category = #{category}
 	</delete>
 	
 </mapper>

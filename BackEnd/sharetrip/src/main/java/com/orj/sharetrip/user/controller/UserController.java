@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.orj.sharetrip.user.model.UserDto;
@@ -224,15 +225,14 @@ public class UserController {
 	@PostMapping("/follow/{idTo}")
 	public ResponseEntity<Map<String, Object>> followUser(
 			@PathVariable("idTo") @ApiParam(value = "팔로우할 회원 아이디.", required = true) String idTo,
-			@RequestBody @ApiParam(value = "현재 로그인된 아이디.", required = true) Map<String, Object> map) throws Exception {
+			@RequestParam("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String idFrom) throws Exception {
 		log.info("유저 팔로우");
-		log.debug(" info : {}, {}", idTo, map);
+		log.debug(" info : {}, {}", idTo, idFrom);
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("idTo", idTo);
 		try {
-			UserService.followUser(map);
+			UserService.followUser(idTo,idFrom);
 			resultMap.put("message", "팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -249,16 +249,15 @@ public class UserController {
 	@DeleteMapping("/follow/{idTo}")
 	public ResponseEntity<Map<String, Object>> unFollowUser(
 			@PathVariable("idTo") @ApiParam(value = "언팔로우할 회원 아이디.", required = true) String idTo,
-			@RequestBody @ApiParam(value = "idTo : 대상 ID, userId : 로그인한 ID.", required = true) Map<String, Object> map)
+			@RequestParam("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String idFrom)
 			throws Exception {
 		log.info("유저 팔로우");
-		log.debug(" info : {}, {}", idTo, map);
+		log.debug(" info : {}, {}", idTo, idFrom);
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("idTo", idTo);
 		try {
-			UserService.unFollowUser(map);
+			UserService.unFollowUser(idTo, idFrom);
 			resultMap.put("message", "언팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
