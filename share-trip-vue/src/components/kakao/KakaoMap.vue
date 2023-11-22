@@ -2,14 +2,59 @@
     import {onMounted, watch, ref} from "vue";
     import AttractionDetail from "../attraction/AttractionDetail.vue";
     const props = defineProps(
-        {attractionList: Array, selectAttractionElement: Object, change : Boolean,}
+        {attractionList: Array, selectAttractionElement: Object, change: Boolean}
     );
-    const emit= defineEmits(['changeCenterPosition']);
-   
+    const emit = defineEmits(['changeCenterPosition']);
 
     var map;
     const positions = ref([]);
     const markers = ref([]);
+
+    var clickMarker = null;
+
+    watch(() => props.selectAttractionElement.value, () => {
+        // 이동할 위도 경도 위치를 생성합니다
+        var moveLatLon = new kakao
+            .maps
+            .LatLng(
+                props.selectAttractionElement.latitude,
+                props.selectAttractionElement.longitude
+            );
+        // 지도 중심을 부드럽게 이동시킵니다 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+        map.panTo(moveLatLon);
+
+        var imageSrc = 'public/icon/click_map_marker.png' // 마커이미지의 주소입니다
+        var imageSize = new kakao
+            .maps
+            .Size(35, 35);
+
+        //기존의 마커를 삭제한다
+        if (clickMarker) {
+            clickMarker.setMap(null);
+        }
+
+        // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+        var markerImage = new kakao
+                .maps
+                .MarkerImage(imageSrc, imageSize),
+            markerPosition = new kakao
+                .maps
+                .LatLng(
+                    props.selectAttractionElement.latitude,
+                    props.selectAttractionElement.longitude
+                ); // 마커가 표시될 위치입니다
+
+        // 마커를 생성합니다
+        clickMarker = new kakao
+            .maps
+            .Marker({
+                position: markerPosition, image: markerImage // 마커이미지 설정
+            });
+        // 마커가 지도 위에 표시되도록 설정합니다
+        clickMarker.setMap(map);
+
+    }, {deep: true});
+
     watch(() => props.attractionList.value, () => {
         positions.value = [];
         props
@@ -49,20 +94,6 @@
                 .appendChild(script);
         }
 
-        // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
-        kakao
-            .maps
-            .event
-            .addListener(map, 'dragend', function () {
-
-                // 지도 중심좌표를 얻어옵니다
-                var latlng = map.getCenter();
-
-                //emit를 날려서 attractionList를 수정함
-                emit('changeCenterPosition',latlng.getLat(), latlng.getLng());
-
-            });
-
     });
 
     const initMap = function () {
@@ -94,6 +125,20 @@
         map = new kakao
             .maps
             .Map(container, options);
+
+        // 마우스 드래그로 지도 이동이 완료되었을 때 마지막 파라미터로 넘어온 함수를 호출하도록 이벤트를 등록합니다
+        kakao
+            .maps
+            .event
+            .addListener(map, 'dragend', function () {
+
+                // 지도 중심좌표를 얻어옵니다
+                var latlng = map.getCenter();
+
+                //emit를 날려서 attractionList를 수정함
+                emit('changeCenterPosition', latlng.getLat(), latlng.getLng());
+
+            });
 
     };
 
@@ -223,10 +268,10 @@
                 (bounds, position) => bounds.extend(position.latlng),
                 new kakao.maps.LatLngBounds()
             );
-        if(props.change)
+        if (props.change) 
             map.setBounds(bounds);
-    };
-
+        };
+    
     const deleteMarkers = () => {
         if (markers.value.length > 0) {
             markers

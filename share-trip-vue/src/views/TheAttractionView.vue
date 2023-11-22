@@ -130,8 +130,8 @@
     /* 사용자 별 좋아요, 북마크는 userId 보내줘야 함.
         if문 // 로그인 아이디가 있다면 아이디 담기
         */
-    const userId = 'jeon'
-    url = "http://localhost:80/sharetrip/map/attr?userId="+userId;
+    // const userId = 'jeon'
+    // url = "http://localhost:80/sharetrip/map/attr?userId="+userId;
     axios
         .get(url.toString())
         .then(function (data) {
@@ -177,16 +177,16 @@ const changeCenter = (x,y) => {
     
 }
 
-const mvDet = (contentId, isLike, isBookmark) => {
-    router.push({
-        name: 'attrDet',
-        params: {
-            idx: contentId,
-            isLike:isLike,
-            isBookmark:isBookmark
-        }
-    })
-}
+// const mvDet = (contentId, isLike, isBookmark) => {
+//     router.push({
+//         name: 'attrDet',
+//         params: {
+//             idx: contentId,
+//             isLike:isLike,
+//             isBookmark:isBookmark
+//         }
+//     })
+// }
 
 const favReg = (category, contentId, status, index) => {
     console.log(contentId, category, status, index);
@@ -278,12 +278,17 @@ const favReg = (category, contentId, status, index) => {
             :key="element.title"
             @click="clickSelectAttraction(element)">
 
-            <span @click="mvDet(element.contentId)">
+            <img :src="element.firstImage" style="width: 200px; height: 200px" onerror="this.src= `public/icon/basic_map_overlay.png`"/>
+                <h3>{{ element.title }}</h3>
+                <p>{{ element.addr1 }}</p>
+                <p>{{ element.addr2 }}</p>
+
+            <!-- <span @click="mvDet(element.contentId)">
                 <img :src="element.firstImage" style="width: 200px; height: 200px" onerror="this.src= `public/icon/basic_map_overlay.png`"/>
                 <h3>{{ element.title }}</h3>
                 <p>{{ element.addr1 }}</p>
                 <p>{{ element.addr2 }}</p>
-            </span>
+            </span> -->
             
             <img :src="`/public/icon/like_${element.isLike}.png`" width="25" @click="favReg(0, element.contentId, element.isLike, index)">
             <img :src="`/public/icon/star_${element.isBookmark}.png`" width="25" @click="favReg(1, element.contentId, element.isBookmark, index)">
