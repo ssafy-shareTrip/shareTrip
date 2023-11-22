@@ -55,13 +55,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void followUser(Map<String,Object> map) {
-		UserMapper.followUser(map);
+	public void followUser(String idTo,String idFrom) {
+		UserMapper.followUser( idTo, idFrom);
 	}
 
 	@Override
-	public void unFollowUser(Map<String,Object> map) {
-		UserMapper.unFollowUser(map);
+	public void unFollowUser(String idTo,String idFrom) {
+		UserMapper.unFollowUser(idTo,idFrom);
 	}
 
 	@Override

@@ -3,6 +3,8 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { localAxios } from "@/util/http-commons";
 import { useUserStore } from "@/stores/user";
+import MyInfo from "@/components/MyInfo.vue";
+
 const router = useRouter();
 const store = useUserStore();
 const axios = localAxios();
@@ -36,45 +38,14 @@ onMounted(() => {
 				<v-tab :value="1">내 정보</v-tab>
 				<v-tab :value="2">즐겨찾기한 관광지</v-tab>
 				<v-tab :value="3">즐겨찾기한 경로</v-tab>
-				<v-tab :value="4">작성 글</v-tab>
-				<v-tab :value="5">작성 댓글</v-tab>
+				<v-tab :value="4">팔로잉 목록</v-tab>
+				<v-tab :value="5">팔로워 목록</v-tab>
 			</v-tabs>
 		</v-row>
 		<v-row>
 			<v-window v-model="tab" style="width: 100%">
 				<v-window-item :value="1">
-					<v-container>
-						<v-row align="center">
-							<v-col cols="4"
-								><v-img
-									class="bg-white"
-									width="100%"
-									:aspect-ratio="1"
-									src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-									style="border-radius: 100%"
-									cover
-								></v-img
-							></v-col>
-							<v-col>
-								<v-list lines="two" class="rounded-lg" elevation="13">
-									<v-list-item>이름 : {{ userInfo.name }}</v-list-item>
-									<v-divider :thickness="5" color="info"></v-divider>
-									<v-list-item
-										>생년월일 :
-										<template v-if="userInfo.birth == null">미공개</template>
-										<template v-else>{{ userInfo.brith }}</template>
-									</v-list-item>
-									<v-divider :thickness="5" color="info"></v-divider>
-									<v-list-item>
-										<v-row>
-											<v-col> 팔로우 : {{ userInfo.follower }} </v-col
-											><v-col>팔로워 : {{ userInfo.following }}</v-col>
-										</v-row>
-									</v-list-item>
-								</v-list>
-							</v-col>
-						</v-row>
-					</v-container>
+					<my-info :user-info="userInfo"></my-info>
 				</v-window-item>
 
 				<v-window-item v-for="n in 7" :key="n" :value="n">
