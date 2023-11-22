@@ -263,7 +263,7 @@ const favReg = (category, contentId, status, index) => {
             :key="element.title"
             @click="clickSelectAttraction(element)">
 
-            <span @click="mvDet(element.contentId, element.isLike, element.isBookmark)">
+            <span @click="mvDet(element.contentId)">
                 <img :src="element.firstImage" style="width: 200px; height: 200px" onerror="this.src= `public/icon/basic_map_overlay.png`"/>
                 <h3>{{ element.title }}</h3>
                 <p>{{ element.addr1 }}</p>
@@ -275,6 +275,7 @@ const favReg = (category, contentId, status, index) => {
         </div>
     </div>
 </template>
+
 
 <style scoped="scoped">
 </style>
