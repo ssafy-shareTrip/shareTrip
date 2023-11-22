@@ -225,14 +225,14 @@ public class UserController {
 	@PostMapping("/follow/{idTo}")
 	public ResponseEntity<Map<String, Object>> followUser(
 			@PathVariable("idTo") @ApiParam(value = "팔로우할 회원 아이디.", required = true) String idTo,
-			@RequestParam("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String idFrom) throws Exception {
+			@RequestParam("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String userId) throws Exception {
 		log.info("유저 팔로우");
-		log.debug(" info : {}, {}", idTo, idFrom);
+		log.debug(" info : {}, {}", idTo, userId);
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			UserService.followUser(idTo,idFrom);
+			UserService.followUser(idTo,userId);
 			resultMap.put("message", "팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -249,15 +249,15 @@ public class UserController {
 	@DeleteMapping("/follow/{idTo}")
 	public ResponseEntity<Map<String, Object>> unFollowUser(
 			@PathVariable("idTo") @ApiParam(value = "언팔로우할 회원 아이디.", required = true) String idTo,
-			@RequestParam("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String idFrom)
+			@RequestParam("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String userId)
 			throws Exception {
 		log.info("유저 팔로우");
-		log.debug(" info : {}, {}", idTo, idFrom);
+		log.debug(" info : {}, {}", idTo, userId);
 
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			UserService.unFollowUser(idTo, idFrom);
+			UserService.unFollowUser(idTo, userId);
 			resultMap.put("message", "언팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {

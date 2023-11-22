@@ -7,6 +7,7 @@ import TheMyPageView from "@/views/TheMyPageView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheJoinView from "@/views/TheJoinView.vue";
 import ThePathView from "@/views/ThePathView.vue";
+import AttractionDetail from "@/components/attraction/AttractionDetail.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -49,6 +50,11 @@ const router = createRouter({
 			path: "/join",
 			name: "join",
 			component: TheJoinView,
+		},
+		{
+			path: "/attrDet/:idx",
+			name: "attrDet",
+			component: AttractionDetail,
 		},
 	],
 });

@@ -15,6 +15,6 @@ public interface MapMapper {
 
 	List<AttractionDto> getAttrList(Map<String, Object> map);
 
-	AttractionDto getAttrInfo(String contentId);
+	AttractionDto getAttrInfo(String contentId,String userId);
 
 }

@@ -125,15 +125,16 @@ public class MapController {
 	@ApiOperation(value = "관광지 정보", notes = "관광지에 대한 상세 정보를 반환한다.", response = Map.class)
 	@GetMapping("/attr/{contentId}")
 	public ResponseEntity<Map<String, Object>> getAttrInfo(
-			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId) throws Exception {
+			@PathVariable("contentId") @ApiParam(value = "관광지 ID.", required = true) String contentId,
+			@RequestParam(name = "userId", required = false) @ApiParam(value = "로그인한 유저의 아이디.") String userId) throws Exception {
 		log.info("관광지 상세 조회");
-		log.debug(" info : {}", contentId);
+		log.debug(" info : {}, {}", contentId, userId);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		List<AttractionDto> list = null;
 		try {
-			AttractionDto attr = MapService.getAttrInfo(contentId);
+			AttractionDto attr = MapService.getAttrInfo(contentId, userId);
 			resultMap.put("data", attr);
 			resultMap.put("message", "상세 조회 성공");
 			status = HttpStatus.OK;

@@ -43,7 +43,11 @@ public class AttractionDto {
 	private List<MemoDto> memos;
 	@ApiModelProperty(value = "유저의 좋아요 판단")
 	private Integer isLike;
+	@ApiModelProperty(value = "총 좋아요 개수")
+	private Integer totalLike;
 	@ApiModelProperty(value = "유저의 북마크 판단")
 	private Integer isBookmark;
+	@ApiModelProperty(value = "총 북마크 개수")
+	private Integer totalBookmark;
 	
 }
