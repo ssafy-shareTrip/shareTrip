@@ -1,31 +1,14 @@
-<script setup>
-import { onMounted, watch, ref } from "vue";
-const props = defineProps({ attractionList: Array, selectAttractionElement: Object });
+<script setup="setup">
+    import {onMounted, watch, ref} from "vue";
+    const props = defineProps(
+        {attractionList: Array, selectAttractionElement: Object}
+    );
 
-var map;
-const positions = ref([]);
-const markers = ref([]);
+    var map;
+    const positions = ref([]);
+    const markers = ref([]);
 
-
-
-watch(
-  () => props.selectAttractionElement.value,
-  () => {
-    console.log("watch 감시 완료");
-    // 이동할 위도 경도 위치를 생성합니다
-    var moveLatLon = new kakao.maps.LatLng(props.selectAttractionElement.latitude, props.selectAttractionElement.longitude);
-
-    // 지도 중심을 부드럽게 이동시킵니다
-    // 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
-    map.panTo(moveLatLon);
-  },
-  { deep: true }
-);
-
-
-watch(
-    () => props.attractionList.value,
-    () => {
+    watch(() => props.attractionList.value, () => {
         // 이동할 위도 경도 위치를 생성합니다
         var moveLatLon = new kakao
             .maps
@@ -62,8 +45,7 @@ watch(
         } else {
             const script = document.createElement("script");
             script.src = `//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=${
-            //autoload= false 스크립트를 동적으로 로드하기 위해 필요
-            import.meta.env.VITE_KAKAO_API_KEY}`;
+            import.meta.env.VITE_KAKAO_MAP_SERVICE_KEY}&libraries=services,clusterer`;
             /* global kakao */
             script.addEventListener("load", () => {
                 kakao
@@ -143,21 +125,98 @@ watch(
                         console.log("클릭!!");
 
                         // 커스텀 오버레이에 표시할 컨텐츠 입니다 커스텀 오버레이는 아래와 같이 사용자가 자유롭게 컨텐츠를 구성하고 이벤트를 제어할 수 있기 때문에
-                        // 별도의 이벤트 메소드를 제공하지 않습니다
-                        var content = '<div class="wrap">    <div class="info">        <div class="title">           ' +
-                                ' 카카오 스페이스닷원            <div class="close" onclick="closeOverlay()" title="닫기">' +
-                                '</div>        </div>        <div class="body">            <div class="img">   ' +
-                                '             <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapido' +
-                                'c/thumnail.png" width="73" height="70">           </div>            <div class' +
-                                '="desc">                <div class="ellipsis">제주특별자치도 제주시 첨단로 242</div>       ' +
-                                '         <div class="jibun ellipsis">(우) 63309 (지번) 영평동 2181</div>            ' +
-                                '    <div><a href="https://www.kakaocorp.com/main" target="_blank" class="link"' +
-                                '>홈페이지</a></div>            </div>        </div>    </div></div>';
+                        // 별도의 이벤트 메소드를 제공하지 않습니다 커스텀 오버레이에 표시할 컨텐츠를 생성합니다
+                        var content = document.createElement('div');
+                        content
+                            .classList
+                            .add('wrap');
 
-                        // 마커 위에 커스텀오버레이를 표시합니다 마커를 중심으로 커스텀 오버레이를 표시하기위해 CSS를 이용해 위치를 설정했습니다
+                        var infoDiv = document.createElement('div');
+                        infoDiv
+                            .classList
+                            .add('info');
+
+                        var titleDiv = document.createElement('div');
+                        titleDiv
+                            .classList
+                            .add('title');
+                        titleDiv.textContent = '카카오 스페이스닷원';
+
+                        var closeDiv = document.createElement('div');
+                        closeDiv
+                            .classList
+                            .add('close');
+                        closeDiv.title = '닫기';
+                        closeDiv.addEventListener('click', closeOverlay);
+
+                        titleDiv.appendChild(closeDiv);
+
+                        var bodyDiv = document.createElement('div');
+                        bodyDiv
+                            .classList
+                            .add('body');
+
+                        var imgDiv = document.createElement('div');
+                        imgDiv
+                            .classList
+                            .add('img');
+
+                        var img = document.createElement('img');
+                        img.src = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/thumnail.png';
+                        img.width = 73;
+                        img.height = 70;
+
+                        imgDiv.appendChild(img);
+
+                        var descDiv = document.createElement('div');
+                        descDiv
+                            .classList
+                            .add('desc');
+
+                        var ellipsis1Div = document.createElement('div');
+                        ellipsis1Div
+                            .classList
+                            .add('ellipsis');
+                        ellipsis1Div.textContent = '제주특별자치도 제주시 첨단로 242';
+
+                        var ellipsis2Div = document.createElement('div');
+                        ellipsis2Div
+                            .classList
+                            .add('jibun', 'ellipsis');
+                        ellipsis2Div.textContent = '(우) 63309 (지번) 영평동 2181';
+
+                        var linkDiv = document.createElement('div');
+                        var link = document.createElement('a');
+                        link.href = 'https://www.kakaocorp.com/main';
+                        link.target = '_blank';
+                        link
+                            .classList
+                            .add('link');
+                        link.textContent = '홈페이지';
+
+                        linkDiv.appendChild(link);
+
+                        descDiv.appendChild(ellipsis1Div);
+                        descDiv.appendChild(ellipsis2Div);
+                        descDiv.appendChild(linkDiv);
+
+                        bodyDiv.appendChild(imgDiv);
+                        bodyDiv.appendChild(descDiv);
+
+                        infoDiv.appendChild(titleDiv);
+                        infoDiv.appendChild(bodyDiv);
+
+                        content.appendChild(infoDiv);
+
+                        // 마커 위에 커스텀 오버레이를 표시합니다
                         var overlay = new kakao
                             .maps
                             .CustomOverlay({content: content, map: map, position: marker.getPosition()});
+
+                        // 커스텀 오버레이를 닫기 위해 호출되는 함수입니다
+                        function closeOverlay() {
+                            overlay.setMap(null);
+                        }
 
                     });
 
