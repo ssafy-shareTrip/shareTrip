@@ -120,15 +120,13 @@ public class FavController {
 	@DeleteMapping("/attr/{userId}")
 	public ResponseEntity<Map<String, Object>> deleteAttrFav(
 			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestBody Map<String, Object> map) throws Exception {
+			@RequestParam("contentId")  @ApiParam(value = "관광지 ID.", required = true) Integer contentId) throws Exception {
 		log.info("관광지 좋아요 상태 삭제");
-		log.debug(" info : {}", map);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("userId", userId);
 		try {
-			FavService.deleteAttrFav(map);
+			FavService.deleteAttrFav(userId, contentId);
 			resultMap.put("message", "관광지 좋아요 정보 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -223,15 +221,14 @@ public class FavController {
 	@DeleteMapping("/board/{userId}")
 	public ResponseEntity<Map<String, Object>> deleteBoardFav(
 			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestBody Map<String, Object> map) throws Exception {
+			@RequestParam("boardNo")  @ApiParam(value = "글 번호.", required = true) Integer boardNo) throws Exception {
 		log.info("게시글 좋아요 상태 삭제");
-		log.debug(" info : {}", map);
+		log.debug(" info : {}, {}", userId, boardNo);
 		
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("userId", userId);
 		try {
-			FavService.deleteBoardFav(map);
+			FavService.deleteBoardFav(userId, boardNo);
 			resultMap.put("message", "게시글 좋아요 정보 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
