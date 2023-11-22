@@ -24,11 +24,11 @@ axios
         <p>경로</p>
         <p>{{ item.content }}</p>
         <span>
-            <img :src="`public/icon/like_true.png`" width="30">
+            <img :src="`public/icon/like_0.png`" width="30">
             개수
         </span>
         <span>
-            <img :src="`public/icon/star_true.png`" width="30">
+            <img :src="`public/icon/star_0.png`" width="30">
             개수
         </span>
         <span>

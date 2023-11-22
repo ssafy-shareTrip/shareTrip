@@ -22,7 +22,6 @@ const selectAttractionElement= ref([]);
 
 onMounted(() => {
     listSido();
-    store.getFav("jeon");
 });
 
 const listSido = () => {
@@ -106,6 +105,13 @@ const search = () => {
 
     url.search = params.toString();
 
+
+    
+    /* 사용자 별 좋아요, 북마크는 userId 보내줘야 함.
+        if문 // 로그인 아이디가 있다면 아이디 담기
+        */
+    const userId = 'jeon'
+    url = "http://localhost:80/sharetrip/map/attr?userId="+userId;
     axios
         .get(url.toString())
         .then(function (data) {
@@ -118,21 +124,7 @@ const search = () => {
             console.log("검색 실패");
         });
 
-    
-    favList();
 };
-const isLike = ref(false);
-const isStar = ref(false);
-const likeArr = ref([]);
-const starArr = ref([]);
-
-const favList = () => {
-    likeArr.value = store.favs
-    console.log("fav",attractionList.value)
-    for (var i = 0; i < attractionList.value.length; i++){
-        // if (likeArr.find(attractionList.value))
-    }
-}
 
 
 const clickSelectAttraction= (selectAttraction)=>{
@@ -141,13 +133,59 @@ const clickSelectAttraction= (selectAttraction)=>{
     selectAttractionElement.value= selectAttraction;
 }
 
-
-const mvDet = (contentId) => {
+const mvDet = (contentId, isLike, isBookmark) => {
     router.push({
         name: 'attrDet',
         params: { 
-            idx: contentId}
+            idx: contentId,
+            isLike:isLike,
+            isBookmark:isBookmark
+        }
     })
+}
+
+const favReg = (category, contentId, status, index) => {
+    console.log(contentId, category, status, index);
+
+    const url = "http://localhost:80/sharetrip/fav/attr/jeon";
+    if (status == 0){ // 미등록 -> 등록
+        axios
+            .post("http://localhost:80/sharetrip/fav/attr/jeon",
+            {
+                "contentId":contentId,
+                "category":category
+            })
+            .then(({data})=>{
+                console.log("favReg : 성공");
+                if (category == 0){ // isLike
+                    attractionList.value[index].isLike = 1
+                } else { //isBookmark
+                    attractionList.value[index].isBookmark = 1
+                }
+            })
+            .catch(()=>{
+                console.log("favReg 등록 : 실패");
+            })
+    } else { //등록 -> 미등록
+        axios
+            .delete(url,
+                {params : {
+                    "contentId":contentId,
+                    "category":category
+                }
+            })
+            .then(({data})=>{
+                console.log("favDel : 성공");
+                if (category == 0){ // isLike
+                    attractionList.value[index].isLike = 0
+                } else { //isBookmark
+                    attractionList.value[index].isBookmark = 0
+                }
+            })
+            .catch(()=>{
+                console.log("favDel : 실패");
+            })
+    }
 }
 
 </script>
@@ -186,35 +224,19 @@ const mvDet = (contentId) => {
 
         <KakaoMap :attractionList="attractionList" :selectAttractionElement="selectAttractionElement"></KakaoMap>
 
-        <!-- {{ store.favs[0].favId }}
-        {{ store.favs }} -->
         <!-- 검색한 관광지 리스트 보여주기 -->
         <div v-for="(element,index) in attractionList" 
         :key="element.title"
         @click="clickSelectAttraction(element)">
 
-            <span @click="mvDet(element.contentId)">
+            <span @click="mvDet(element.contentId, element.isLike, element.isBookmark)">
                 <img :src="element.firstImage" style="width: 200px; height: 200px" />
                 <h3>{{ element.title }}</h3>
                 <p>{{ element.addr1 }}</p>
                 <p>{{ element.addr2 }}</p>
             </span>
-
-            <span v-for="fav in store.favs" :key="fav.favId">
-                <span v-show="fav.favId != element.contentId && fav.category === 0">
-                    <img :src="`/public/icon/like_false.png`" width="15" @click="f1">
-                </span >
-                <span v-show="fav.favId == element.contentId && fav.category === 0">
-                    <img :src="`/public/icon/like_true.png`" width="15">
-                </span >
-                <span v-show="fav.favId != element.contentId && fav.category === 1"> 
-                    <img :src="`/public/icon/star_false.png`" width="15">
-                </span>
-                <span v-show="fav.favId == element.contentId && fav.category === 1"> 
-                    <img :src="`/public/icon/star_true.png`" width="15">
-                </span>
-            </span>
-        
+            <img :src="`/public/icon/like_${element.isLike}.png`" width="25" @click="favReg(0, element.contentId, element.isLike, index)">
+            <img :src="`/public/icon/star_${element.isBookmark}.png`" width="25" @click="favReg(1, element.contentId, element.isBookmark, index)">
         </div>
     </div>
 </template>
