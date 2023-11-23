@@ -21,6 +21,7 @@ const router = createRouter({
 			name: "attr",
 			component: TheAttractionView,
 		},
+		
 		{
 			path: "/board",
 			name: "board",

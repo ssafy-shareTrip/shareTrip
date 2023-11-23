@@ -4,13 +4,12 @@ import KakaoMap from "@/components/kakao/KakaoMap.vue";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 // import AttractionDetail from "../components/attraction/AttractionDetail.vue";
-import { useRouter } from "vue-router";
-import { UseAttractionStore } from "@/stores/Attraction";
+import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
-const store = UseAttractionStore();
 const router = useRouter();
+const route= useRoute();
 const sidoList = ref([]);
 const selectSido = ref(null);
 const selectGugun = ref(null);
@@ -29,6 +28,21 @@ const selectAttractionElement = ref([]);
 
 onMounted(() => {
 	listSido();
+
+		
+if(route.query.keyword){
+	keyword.value = route.query.keyword;
+	search();
+}
+
+		
+if(route.query.contentTypeId){
+	selectType.value.push(route.query.contentTypeId);
+	search();
+}
+
+
+
 });
 
 const listSido = () => {
@@ -137,11 +151,18 @@ const search = () => {
 
 const change = ref(false);
 const changeCenter = (x, y) => {
+	if (!move.value) return;
+
 	console.log("센터 바뀐거 어트랙션뷰에서 수신완료");
 	let url = new URL("http://localhost:80/sharetrip/map/attr");
 
 	const params = new URLSearchParams();
 	change.value = false;
+	if (selectType.value.length > 0) {
+		selectType.value.forEach((id) => {
+			params.append("contentTypeId", id);
+		});
+	}
 	params.append("mapX", x);
 	params.append("mapY", y);
 	url.search = params.toString();
@@ -162,7 +183,12 @@ const changeCenter = (x, y) => {
 		});
 };
 
+const clickSelectAttraction = (event, { item }) => {
+	selectAttractionElement.value = item;
+};
+
 const mvDet = (contentId) => {
+	console.log("상세페이지 이동!");
 	router.push({
 		name: "attrDet",
 		params: {
@@ -204,6 +230,7 @@ const headers = [
 	{ key: "type", title: "분류" },
 	{ key: "firstImage", title: "사진" },
 	{ key: "isLike", title: "소셜" },
+	{ key: "contentId", title: "상세설명" },
 ];
 const page = [
 	{ value: 4, title: "4" },
@@ -212,17 +239,8 @@ const page = [
 	{ value: 16, title: "16" },
 ];
 
-const items = [
-	{
-		name: "African Elephant",
-		species: "Loxodonta africana",
-		diet: "Herbivore",
-		habitat: "Savanna, Forests",
-	},
-	// ... more items
-];
-
 const favReg = (category, item, status) => {
+	if (userStore.userId == null) return;
 	console.log(item, category, status);
 	let contentId = item.contentId;
 	const url = "http://localhost:80/sharetrip/fav/attr/" + userStore.userId;
@@ -273,6 +291,7 @@ const favReg = (category, item, status) => {
 
 const rail = ref(true);
 const slider = ref(250);
+const move = ref(true);
 </script>
 
 <template>
@@ -313,8 +332,11 @@ const slider = ref(250);
 				clearable
 				label="검색 키워드"
 				v-model="keyword"
-				variant="underlined"
+				variant="solo-filled"
 			></v-text-field>
+		</v-col>
+		<v-col cols="1">
+			<v-switch v-model="move" color="info"></v-switch>
 		</v-col>
 		<v-col cols="1" style="height: 100%">
 			<v-btn icon="mdi-magnify" @click="search"></v-btn>
@@ -327,8 +349,8 @@ const slider = ref(250);
 		@change-center-position="changeCenter"
 	></KakaoMap>
 	<!-- <v-navigation-drawer location="bottom" rail expand-on-hover width="430" permanent> -->
+	<!-- v-model="drawer" -->
 	<v-navigation-drawer
-		v-model="drawer"
 		:rail="rail"
 		permanent
 		@click="rail = false"
@@ -336,6 +358,7 @@ const slider = ref(250);
 		location="bottom"
 	>
 		<v-list-item>
+			<span>조회 관광지</span>
 			<v-slider
 				v-show="!rail"
 				v-model="slider"
@@ -354,54 +377,67 @@ const slider = ref(250);
 		</v-list-item>
 
 		<v-divider></v-divider>
-		<v-data-table
-			:headers="headers"
-			:items="attractionList"
-			:items-per-page-options="page"
-			:items-per-page="4"
-			hover
-		>
-			<template #item.firstImage="{ item }">
-				<v-card class="my-2" elevation="2" rounded>
-					<v-img
-						:src="item.firstImage ? item.firstImage : '/nature.png'"
-						height="64"
-						cover
-					>
-						<v-overlay
-							activator="parent"
-							location-strategy="connected"
-							scroll-strategy="block"
-							location="start top"
-							origin="overlap"
-						>
-							<img :src="item.firstImage ? item.firstImage : '/nature.png'" alt="" />
-						</v-overlay>
-					</v-img>
-				</v-card>
-			</template>
-			<template #item.isLike="{ item }">
-				<v-row>
-					<v-col>
+		<v-list-item v-show="!rail">
+			<v-data-table
+				:headers="headers"
+				:items="attractionList"
+				:items-per-page-options="page"
+				:items-per-page="4"
+				@click:row="clickSelectAttraction"
+				hover
+			>
+				<template #item.firstImage="{ item }">
+					<v-card class="my-2" elevation="2" rounded>
 						<v-img
-							:src="`/icon/like_${item.isLike}.png`"
-							height="100%"
+							:src="item.firstImage ? item.firstImage : '/nature.png'"
+							height="64"
 							cover
-							@click="favReg(0, item, item.isLike)"
 						>
-						</v-img></v-col
-					><v-col>
-						<v-img
-							:src="`/icon/star_${item.isBookmark}.png`"
-							height="100%"
-							cover
-							@click="favReg(1, item, item.isBookmark)"
-						>
-						</v-img
-					></v-col>
-				</v-row>
-			</template>
-		</v-data-table>
+							<v-overlay
+								activator="parent"
+								location-strategy="connected"
+								scroll-strategy="block"
+								location="start top"
+								origin="overlap"
+							>
+								<img
+									:src="item.firstImage ? item.firstImage : '/nature.png'"
+									alt=""
+								/>
+							</v-overlay>
+						</v-img>
+					</v-card>
+				</template>
+				<template #item.isLike="{ item }">
+					<v-row>
+						<v-col>
+							<v-img
+								:src="`/icon/like_${item.isLike}.png`"
+								height="100%"
+								cover
+								@click="favReg(0, item, item.isLike)"
+							>
+							</v-img></v-col
+						><v-col>
+							<v-img
+								:src="`/icon/star_${item.isBookmark}.png`"
+								height="100%"
+								cover
+								@click="favReg(1, item, item.isBookmark)"
+							>
+							</v-img
+						></v-col>
+					</v-row>
+				</template>
+				<template #item.contentId="{ item }">
+					<v-icon
+						icon="mdi-chevron-right"
+						style="width: 100%"
+						@click="mvDet(item.contentId)"
+					></v-icon>
+				</template>
+			</v-data-table>
+		</v-list-item>
 	</v-navigation-drawer>
 </template>
 
