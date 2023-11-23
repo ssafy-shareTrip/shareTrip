@@ -13,7 +13,7 @@ public interface TripMapper {
 
 	void pickAttr(TripDto tripDto);
 
-//	void joinGroup(TripDto tripDto);
+	void joinGroup(TripDto tripDto);
 
 	void initTrip(TripDto tripDto);
 
@@ -30,6 +30,7 @@ public interface TripMapper {
 	TripDto detailTrip(Integer tripNo);
 
 	List<TripDto> getTrip(String userId);
+
 
 	
 }

@@ -47,6 +47,7 @@
 		select *
 		from user_trip
 		where user_id = #{userId}
+		order by trip_no desc
 	</select>
 
 	<select id="detailTrip" parameterType="int" resultMap="trip">
@@ -72,7 +73,7 @@
 
 	<insert id="initTrip" parameterType="tripDto">
 		insert into user_trip
-		values (0, #{userId}, #{title}, now(), 0)
+		values (0, #{userId}, #{title}, now(), #{isShared})
 		<selectKey resultType="int" keyProperty="tripNo"
 			order="AFTER">
 			select last_insert_id()

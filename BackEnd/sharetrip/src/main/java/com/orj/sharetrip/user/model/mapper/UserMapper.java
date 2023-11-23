@@ -9,11 +9,11 @@ import com.orj.sharetrip.user.model.UserDto;
 
 @Mapper
 public interface UserMapper {
-	UserDto login(UserDto UserDto) throws SQLException;
-	UserDto userInfo(String userId) throws SQLException;
-	void saveRefreshToken(Map<String, String> map) throws SQLException;
-	Object getRefreshToken(String userid) throws SQLException;
-	void deleteRefreshToken(Map<String, String> map) throws SQLException;
+	UserDto login(UserDto UserDto) ;
+	UserDto userInfo(String userId);
+	void saveRefreshToken(Map<String, String> map) ;
+	Object getRefreshToken(String userid) ;
+	void deleteRefreshToken(Map<String, String> map);
 	void joinUser(UserDto userDto);
 	void followUser(String idTo,String userId);
 	void unFollowUser(String idTo,String userId);

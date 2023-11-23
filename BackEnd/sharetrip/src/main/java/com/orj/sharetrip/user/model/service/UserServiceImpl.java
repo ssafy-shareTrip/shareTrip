@@ -55,8 +55,9 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public void followUser(String idTo,String userId) {
+	public UserDto followUser(String idTo,String userId) {
 		UserMapper.followUser( idTo, userId);
+		return UserMapper.userInfo(idTo);
 	}
 
 	@Override
@@ -73,5 +74,6 @@ public class UserServiceImpl implements UserService {
 	public void deleteUser(UserDto userDto) {
 		UserMapper.deleteUser(userDto);
 	}
+
 
 }

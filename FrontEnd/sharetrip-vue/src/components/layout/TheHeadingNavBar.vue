@@ -19,9 +19,26 @@ const navToggle = ref(false);
 <template>
 	<div>
 		<v-app-bar color="blue-lighten-4">
-			<v-app-bar-title
+			<v-app-bar-title style="margin-left: 3%"
 				><router-link :to="{ name: 'main' }" class="navItem"
-					><v-icon icon="mdi-plane-car"></v-icon>ShareTrip</router-link
+					><img
+						src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Airplane.png"
+						width="37"
+						height="37"
+					/><span
+						style="
+							font-family: 'PyeongChangPeace-Bold';
+							background-image: linear-gradient(
+								to right,
+								rgb(218, 169, 213),
+								rgb(129, 185, 207)
+							);
+							background-clip: text;
+							-webkit-background-clip: text;
+							color: transparent;
+						"
+						>&nbsp; ShareTrip</span
+					></router-link
 				></v-app-bar-title
 			>
 

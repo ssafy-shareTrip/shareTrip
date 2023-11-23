@@ -96,4 +96,10 @@
 		where id = #{id} and password = #{password}
 	</delete>
 	
+	<select id="bothFollow" resultType="user">
+		select *
+		from (select a.id_to id from user_follow a join user_follow b on a.id_to = b.id_from and b.id_to = a.id_from
+		where a.id_from = #{userId}) a join user using(id)
+	</select>
+	
 </mapper>

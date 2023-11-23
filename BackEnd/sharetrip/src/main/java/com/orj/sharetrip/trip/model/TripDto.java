@@ -15,7 +15,7 @@ public class TripDto {
 	private String userId;
 	private String title;
 	private String create_time;
-	private int isShared;
+	private Boolean isShared;
 	private List<AttractionDto> attractions;
 	private List<String> userIds;
 	

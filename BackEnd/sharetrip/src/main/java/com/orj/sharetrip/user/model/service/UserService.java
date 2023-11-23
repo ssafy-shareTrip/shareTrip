@@ -1,5 +1,6 @@
 package com.orj.sharetrip.user.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.orj.sharetrip.user.model.UserDto;
@@ -12,9 +13,10 @@ public interface UserService {
 	void saveRefreshToken(String userId, String refreshToken) throws Exception;
 	Object getRefreshToken(String userId) throws Exception;
 	void deleRefreshToken(String userId) throws Exception;
-	void followUser(String idTo,String userId);
+	UserDto followUser(String idTo,String userId);
 	void unFollowUser(String idTo,String userId);
 	void modifyUser(UserDto userDto);
 	void deleteUser(UserDto userDto);
+	List<UserDto> bothFollow(String userId);
 	
 }

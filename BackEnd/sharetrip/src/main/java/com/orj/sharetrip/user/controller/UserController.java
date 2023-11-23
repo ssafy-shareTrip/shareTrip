@@ -1,6 +1,7 @@
 package com.orj.sharetrip.user.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -232,7 +233,8 @@ public class UserController {
 		Map<String, Object> resultMap = new HashMap<String, Object>();
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
-			UserService.followUser(idTo,userId);
+			UserDto userDto = UserService.followUser(idTo,userId);
+			resultMap.put("data", userDto);
 			resultMap.put("message", "팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
@@ -258,6 +260,31 @@ public class UserController {
 		HttpStatus status = HttpStatus.ACCEPTED;
 		try {
 			UserService.unFollowUser(idTo, userId);
+			resultMap.put("message", "언팔로우 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
+	
+	@ApiOperation(value = "맞팔 조회", notes = "서로 팔로우한 유저를 조회한다", response = Map.class)
+	@GetMapping("/both/{userId}")
+	public ResponseEntity<Map<String, Object>> bothFollow(
+			@PathVariable("userId") @ApiParam(value = "현재 로그인한 아이디", required = true) String userId)
+			throws Exception {
+		log.info("유저 팔로우");
+		log.debug(" info : {}", userId);
+
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		try {
+			List<UserDto> userDto = UserService.bothFollow(userId);
+			resultMap.put("data", userDto);
 			resultMap.put("message", "언팔로우 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {

@@ -121,7 +121,7 @@ watch(
 const search = () => {
 	//let url = new URL("http://192.168.31.55:80/sharetrip/map/attr");
 	let url = new URL("http://localhost:80/sharetrip/map/attr");
-
+	lrail.value = false;
 	const params = new URLSearchParams();
 	change.value = true;
 	if (typeof selectSido.value !== "object" && selectSido.value != 0 && selectSido.value != null) {
@@ -310,8 +310,8 @@ const favReg = (category, item, status) => {
 
 const lrail = ref(true);
 const rrail = ref(true);
-const lslider = ref(250);
-const rslider = ref(250);
+const lslider = ref(500);
+const rslider = ref(500);
 
 const addAttraction = (item) => {
 	selectAttractionList.value.push(item);
@@ -373,7 +373,6 @@ const savePath = () => {
 
 <template>
 	<v-row style="position: absolute; width: 60%; top: 100px; z-index: 10">
-		{{ trip.tripNo }}
 		<v-col>
 			<v-select
 				label="시도"
@@ -496,16 +495,8 @@ const savePath = () => {
 					<v-row>
 						<v-col>
 							<v-img
-								:src="`/icon/like_${item.isLike}.png`"
-								height="100%"
-								cover
-								@click="favReg(0, item, item.isLike)"
-							>
-							</v-img></v-col
-						><v-col>
-							<v-img
 								:src="`/icon/star_${item.isBookmark}.png`"
-								height="100%"
+								width="30"
 								cover
 								@click="favReg(1, item, item.isBookmark)"
 							>
@@ -604,9 +595,15 @@ const savePath = () => {
 			></v-text-field
 		></v-list-item>
 		<v-list-item v-show="!rrail">
-			<v-btn variant="plain" @click="savePath" style="width: 100%"
-				><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장하기</v-btn
-			>
+			<v-row>
+				<v-col>
+					<v-btn variant="plain" @click="savePath" style="width: 100%"
+						><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장하기</v-btn
+					></v-col
+				><v-col cols="4"
+					><v-switch v-model="trip.isShared" color="info" label="공개 설정"></v-switch
+				></v-col>
+			</v-row>
 		</v-list-item>
 	</v-navigation-drawer>
 </template>

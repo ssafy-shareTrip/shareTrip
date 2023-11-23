@@ -22,13 +22,15 @@ public class TripServiceImpl implements TripService {
 		TripMapper.modifyTrip(tripDto);
 		TripMapper.deletePickAttr(tripDto.getTripNo());
 		TripMapper.pickAttr(tripDto);
-//		TripMapper.joinGroup(tripDto);
+		TripMapper.deleteGroup(tripDto.getTripNo());
+		TripMapper.joinGroup(tripDto);
 	}
 
 	@Override
 	public void initTrip(TripDto tripDto) {
 		TripMapper.initTrip(tripDto);
 		TripMapper.pickAttr(tripDto);
+		TripMapper.joinGroup(tripDto);
 	}
 
 	@Override

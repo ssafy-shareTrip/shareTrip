@@ -2,8 +2,10 @@
 import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 import { localAxios } from "@/util/http-commons";
+import { useUserStore } from "@/stores/user";
 const router = useRouter();
 const axios = localAxios();
+const userStore = useUserStore();
 const props = defineProps({
 	userInfo: Object,
 });
@@ -21,8 +23,9 @@ onMounted(() => {
 		.then(({ data }) => {
 			console.log(data);
 			attr.value = data.data;
-			attr.value.forEach((data) => {
-				data.type = convert[data.contentTypeId];
+			attr.value.forEach((at) => {
+				at.type = convert[at.contentTypeId];
+				at.isBookmark = 1;
 			});
 		})
 		.catch((err) => {
@@ -40,6 +43,7 @@ const headers = [
 	{ key: "addr1", title: "주소" },
 	{ key: "type", title: "분류" },
 	{ key: "firstImage", title: "사진" },
+	{ key: "action", title: "⭐" },
 ];
 
 const convert = {
@@ -63,12 +67,55 @@ const page = [
 	{ value: 30, title: "30" },
 ];
 
-// const overlay = ref(false);
-// const imgsrc = ref("");
-// const overlayImg = (src) => {
-// 	overlay.value = true;
-// 	imgsrc.value = src;
-// };
+const favReg = (category, item, status) => {
+	if (userStore.userId == null) return;
+	console.log(item, category, status);
+	let contentId = item.contentId;
+	const url = "http://localhost:80/sharetrip/fav/attr/" + userStore.userId;
+	if (status == 0) {
+		// 미등록 -> 등록
+		axios
+			.post("http://localhost:80/sharetrip/fav/attr/" + userStore.userId, {
+				contentId: contentId,
+				category: category,
+			})
+			.then(() => {
+				console.log("favReg : 성공");
+				if (category == 0) {
+					// isLike
+					item.isLike = 1;
+				} else {
+					//isBookmark
+					item.isBookmark = 1;
+				}
+			})
+			.catch(() => {
+				console.log("favReg 등록 : 실패");
+			});
+	} else {
+		//등록 -> 미등록
+		axios
+			.delete(url, {
+				params: {
+					contentId: contentId,
+					category: category,
+				},
+			})
+			.then(() => {
+				console.log("favDel : 성공");
+				if (category == 0) {
+					// isLike
+					item.isLike = 0;
+				} else {
+					//isBookmark
+					item.isBookmark = 0;
+				}
+			})
+			.catch(() => {
+				console.log("favDel : 실패");
+			});
+	}
+};
 </script>
 
 <template>
@@ -114,6 +161,15 @@ const page = [
 							</v-overlay>
 						</v-img>
 					</v-card>
+				</template>
+				<template #item.action="{ item }">
+					<v-img
+						:src="`/icon/star_${item.isBookmark}.png`"
+						width="30"
+						cover
+						@click="favReg(1, item, item.isBookmark)"
+					>
+					</v-img>
 				</template>
 			</v-data-table>
 			<!-- <v-overlay v-model="overlay">

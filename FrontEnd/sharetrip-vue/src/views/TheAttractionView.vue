@@ -35,7 +35,7 @@ onMounted(() => {
 	}
 
 	if (route.query.contentTypeId) {
-		selectType.value.push(route.query.contentTypeId);
+		selectType.value.push(Number(route.query.contentTypeId));
 		search();
 	}
 });
@@ -138,6 +138,7 @@ const search = () => {
 			attractionList.value = data;
 			attractionList.value.forEach((data) => {
 				data.type = convert[data.contentTypeId];
+				rail.value = false;
 			});
 		})
 		.catch(function (error) {
@@ -407,7 +408,7 @@ const move = ref(true);
 						<v-col>
 							<v-img
 								:src="`/icon/like_${item.isLike}.png`"
-								height="100%"
+								width="30"
 								cover
 								@click="favReg(0, item, item.isLike)"
 							>
@@ -415,7 +416,7 @@ const move = ref(true);
 						><v-col>
 							<v-img
 								:src="`/icon/star_${item.isBookmark}.png`"
-								height="100%"
+								width="30"
 								cover
 								@click="favReg(1, item, item.isBookmark)"
 							>
