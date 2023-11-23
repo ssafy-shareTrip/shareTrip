@@ -19,7 +19,7 @@ console.log(props.followList);
 						variant="solo-filled"
 						prepend-icon="mdi-account-heart"
 					></v-text-field>
-					<v-btn icon="mdi-magnify"> </v-btn>
+					<v-btn icon="mdi-magnify"></v-btn>
 				</v-row>
 			</v-list-item>
 			<v-list-item

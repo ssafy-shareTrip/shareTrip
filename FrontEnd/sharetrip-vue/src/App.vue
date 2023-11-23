@@ -18,7 +18,7 @@ import TheHeadingNavBar from "./components/layout/TheHeadingNavBar.vue";
 			</v-list>
 		</v-navigation-drawer> -->
 
-			<v-main class="d- align-center justify-center" style="min-height: 100px">
+			<v-main class="d-flex align-center justify-center" style="min-height: 100px">
 				<router-view></router-view>
 			</v-main>
 		</v-layout>
