@@ -119,7 +119,7 @@ const favReg = (category, item, status) => {
 </script>
 
 <template>
-	<v-container fluid>
+	<v-container fluid style="height: 70%" v-if="attr.length > 0">
 		<v-card flat>
 			<template v-slot:text>
 				<v-text-field
@@ -176,6 +176,23 @@ const favReg = (category, item, status) => {
 				<img :src="imgsrc" alt="" />
 			</v-overlay> -->
 		</v-card>
+	</v-container>
+	<v-container style="height: 70%" v-else>
+		<v-row>
+			<v-col>
+				<br /><br />
+				<h1>아직 즐겨찾기한 장소가 없어요..</h1>
+				<br />
+				<h2>한번 둘러보러 갈까요?</h2>
+				<br />
+				<router-link :to="{ name: 'attr' }"><h2>⭐북마크 하러가기</h2></router-link> </v-col
+			><v-col cols="3">
+				<v-img
+					src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Glowing%20Star.png"
+					alt="Glowing Star"
+					style="height: 80%; margin: 0 auto"
+			/></v-col>
+		</v-row>
 	</v-container>
 </template>
 

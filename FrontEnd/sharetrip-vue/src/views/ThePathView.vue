@@ -11,14 +11,7 @@ const axios = localAxios();
 const userStore = useUserStore();
 const route = useRoute();
 const trip = ref({
-	attractions: [
-		// {
-		// 	contentId: 0,
-		// 	day: 0,
-		// 	pickTime: "string",
-		// 	seq: 0,
-		// },
-	],
+	attractions: [],
 	create_time: "",
 	isShared: 0,
 	title: "",
@@ -42,9 +35,9 @@ const gugunList = ref([
 var attractionList = ref([]);
 var selectAttractionList = ref([]);
 const followList = ref();
-const groupUser = ref([]);
 const groupOptions = ref([]);
-
+const owner = ref(userStore.userId);
+const inGroup = ref(false);
 const selectAttractionElement = ref([]);
 onMounted(() => {
 	if (route.query.tripNo) {
@@ -53,8 +46,20 @@ onMounted(() => {
 			.then(({ data }) => {
 				console.log(data);
 				trip.value = data.data;
+				owner.value = trip.value.userId;
 				selectAttractionList.value = data.data.attractions;
-				groupUser.value = trip.value.userIds;
+				selectAttractionList.value.forEach((item) => {
+					item.type = convert[item.contentTypeId];
+				});
+
+				inGroup.value = trip.value.userIds.includes(userStore.userId);
+				if (!inGroup.value) {
+					trip.value.tripNo = 0;
+					trip.value.title += "(가져옴)";
+					trip.value.userIds = [userStore.userId];
+					trip.value.isShared = false;
+					trip.value.userId = userStore.userId;
+				}
 			})
 			.catch((err) => {
 				console.log(err);
@@ -270,9 +275,9 @@ const rheaders = [
 		sortable: true,
 		title: "이름",
 	},
-	{ key: "type", title: "분류" },
-	{ key: "firstImage", title: "사진" },
-	{ key: "action", title: "삭제" },
+	{ key: "type", title: "🚩" },
+	{ key: "firstImage", title: "🖼️" },
+	{ key: "action", title: "" },
 ];
 
 const favReg = (category, item, status) => {
@@ -344,12 +349,13 @@ const deleteAttraction = (item) => {
 
 const viewMyAttr = () => {
 	move.value = false;
+	change.value = true;
 	attractionList.value = selectAttractionList.value;
 };
 
 const move = ref(true);
-const alert = ref(false);
 const savePath = () => {
+	overlay.value = true;
 	if (selectAttractionList.value.length == 0) {
 		console.log("적어도 하나를 만들어주세요!");
 		return;
@@ -369,23 +375,34 @@ const savePath = () => {
 			.then(({ data }) => {
 				console.log(data);
 				trip.value.tripNo = data.data;
-				alert.value = true;
+				owner.value = userStore.userId;
+				inGroup.value = true;
+				overlayMsg.value = "성공적으로 수행되었습니다!";
+				alertType.value = true;
 			})
 			.catch((err) => {
 				console.log(err);
+				overlayMsg.value = "에러가 발생했어요..";
+				alertType.value = false;
 			});
 	} else {
 		axios
 			.put(`http://localhost:80/sharetrip/trip/modify/${trip.value.tripNo}`, trip.value)
 			.then((res) => {
 				console.log(res);
-				alert.value = true;
+				overlayMsg.value = "성공적으로 수행되었습니다!";
+				alertType.value = true;
 			})
 			.catch((err) => {
 				console.log(err);
+				overlayMsg.value = "에러가 발생했어요..";
+				alertType.value = false;
 			});
 	}
 };
+const overlay = ref(false);
+const overlayMsg = ref("성공적으로 수행되었습니다!");
+const alertType = ref(true);
 </script>
 
 <template>
@@ -442,11 +459,12 @@ const savePath = () => {
 		:change="change"
 		@change-center-position="changeCenter"
 	></KakaoMap>
+	<v-overlay v-model="overlay" location-strategy="connected" scroll-strategy="block">
+		<v-alert :title="overlayMsg" :type="alertType ? 'success' : 'warning'" width="400">
+		</v-alert>
+	</v-overlay>
 	<!-- <v-navigation-drawer location="bottom" rail expand-on-hover width="430" permanent> -->
 	<!-- v-model="drawer" -->
-	<template>
-		<v-alert type="success" title="저장 성공" v-model="alert"></v-alert>
-	</template>
 	<v-navigation-drawer
 		:rail="lrail"
 		permanent
@@ -557,7 +575,7 @@ const savePath = () => {
 					></v-slider>
 				</v-col>
 				<v-col cols="2">
-					<v-btn variant="text" icon="mdi-magnify" @click.stop="viewMyAttr"></v-btn>
+					<v-btn variant="text" icon="mdi-cart-check" @click.stop="viewMyAttr"></v-btn>
 				</v-col>
 			</v-row>
 		</v-list-item>
@@ -603,7 +621,7 @@ const savePath = () => {
 			</v-data-table>
 		</v-list-item>
 
-		<v-list-item v-show="!rrail"
+		<v-list-item v-show="!rrail && owner == userStore.userId"
 			><v-text-field
 				clearable
 				label="경로 이름"
@@ -613,8 +631,8 @@ const savePath = () => {
 		></v-list-item>
 		<v-list-item>
 			<v-select
-				v-show="!rrail"
-				v-model="groupUser"
+				v-show="!rrail && owner == userStore.userId"
+				v-model="trip.userIds"
 				:items="groupOptions"
 				label="그룹 유저"
 				item-title="text"
@@ -633,15 +651,18 @@ const savePath = () => {
 			</v-select>
 		</v-list-item>
 		<v-list-item v-show="!rrail">
-			<v-row>
-				<v-col>
-					<v-btn variant="plain" @click="savePath" style="width: 100%"
-						><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장</v-btn
-					></v-col
-				><v-col cols="4"
-					><v-switch v-model="trip.isShared" color="info" label="공개 설정"></v-switch
-				></v-col>
-			</v-row>
+			<v-switch
+				v-model="trip.isShared"
+				color="info"
+				label="공개 설정"
+				v-if="owner == userStore.userId"
+			></v-switch>
+			<v-btn variant="plain" @click="savePath" style="width: 100%" v-if="inGroup"
+				><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장</v-btn
+			>
+			<v-btn variant="plain" @click="savePath" style="width: 100%" v-else
+				><v-icon icon="mdi-cart-arrow-down"></v-icon>&nbsp; 내 경로로 가져오기</v-btn
+			>
 		</v-list-item>
 	</v-navigation-drawer>
 </template>

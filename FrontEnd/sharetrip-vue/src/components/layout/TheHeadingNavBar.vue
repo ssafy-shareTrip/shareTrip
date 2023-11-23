@@ -52,14 +52,14 @@ const navToggle = ref(false);
 				<router-link :to="{ name: 'main' }" class="navItem" replace
 					><v-tab><v-icon icon="mdi-home-circle"></v-icon>&nbsp; Main</v-tab></router-link
 				>
-				<router-link :to="{ name: 'path' }" class="navItem" replace
-					><v-tab
-						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
-					></router-link
-				>
 				<router-link :to="{ name: 'share' }" class="navItem" replace
 					><v-tab
 						><v-icon icon="mdi-share-variant"></v-icon>&nbsp; Share</v-tab
+					></router-link
+				>
+				<router-link :to="{ name: 'path' }" class="navItem" replace
+					><v-tab
+						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
 					></router-link
 				>
 				<router-link :to="{ name: 'attr' }" class="navItem" replace
