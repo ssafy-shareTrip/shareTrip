@@ -19,7 +19,7 @@ const isBookmark = ref(0);
 onMounted(() => {
 	console.log(idx);
 	axios
-		.get(`/map/attr/${idx}`)
+		.get(`/map/attr/${idx}`, { params: { userId: userStore.userId } })
 		.then(({ data }) => {
 			console.log(data);
 			detail.value = data.data;
@@ -171,12 +171,14 @@ const memo = ref({
 								</v-col>
 								<v-col cols="1"
 									><img
+										v-if="userStore.userId"
 										:src="`/icon/like_${isLike}.png`"
 										width="25"
 										@click="favReg(0, isLike)"
 								/></v-col>
 								<v-col cols="1">
 									<img
+										v-if="userStore.userId"
 										:src="`/icon/star_${isBookmark}.png`"
 										width="25"
 										@click="favReg(1, isBookmark)"
@@ -207,7 +209,11 @@ const memo = ref({
 							></v-textarea
 						></v-col>
 						<v-col cols="1" align="center" justify="center">
-							<v-btn icon="mdi-magnify" @click="registMemo"></v-btn>
+							<v-btn
+								icon="mdi-send-variant-outline"
+								variant="plain"
+								@click="registMemo"
+							></v-btn>
 						</v-col>
 					</v-row>
 					<v-row>

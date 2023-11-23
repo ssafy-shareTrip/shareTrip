@@ -101,11 +101,16 @@ const navToggle = ref(false);
 					<v-list-item>
 						<v-card align="center">
 							<template v-slot:title>
-								<v-btn variant="plain" @click="mvPage('mypage')" class="dBtn"
-									>회원 프로필 이미지</v-btn
-								>
+								<v-img
+									class="bg-white"
+									width="30%"
+									:aspect-ratio="1"
+									src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Cat%20with%20Wry%20Smile.png"
+									style="border-radius: 20%"
+									cover
+								></v-img>
 							</template>
-							<template v-slot:subtitle> {{ userStore.userId }} </template>
+							<template v-slot:subtitle> {{ userStore.userName }} </template>
 						</v-card>
 					</v-list-item>
 					<v-divider></v-divider>

@@ -42,21 +42,20 @@ defineProps({
 							><v-col>팔로워 : {{ userInfo.following }}</v-col>
 						</v-row>
 					</v-list-item>
-					
 				</v-list>
 			</v-col>
 		</v-row>
 	</v-container>
 	<div class="d-flex flex-row-reverse mb-6">
-		<router-link :to="{name: 'infoMod'}" class="mr-5 text-overline">
+		<router-link :to="{ name: 'infoMod' }" class="mr-5 text-overline">
 			회원 정보 수정<v-icon icon="mdi-chevron-right" end></v-icon>
 		</router-link>
 	</div>
 </template>
 
 <style scoped>
-a{
-	text-decoration:none; 
-	color: #00796B
+a {
+	text-decoration: none;
+	color: #00796b;
 }
 </style>

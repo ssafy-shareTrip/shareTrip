@@ -17,7 +17,7 @@ onMounted(() => {
 		.get(`/user/info/${store.userId}`)
 		.then(({ data }) => {
 			userInfo.value = data.data;
-			console.log(data);
+			store.setUser(data.data);
 		})
 		.catch((err) => {
 			console.log(err);

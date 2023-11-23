@@ -55,7 +55,11 @@ const alert = ref(false);
 						variant="solo-filled"
 						prepend-icon="mdi-account-heart"
 					></v-text-field>
-					<v-btn icon="mdi-magnify" variant="text" @click="followUser"></v-btn>
+					<v-btn
+						icon="mdi-plus-circle-outline"
+						variant="text"
+						@click="followUser"
+					></v-btn>
 				</v-row>
 			</v-list-item>
 			<v-divider :thickness="6" color="blue lighten-4"></v-divider>

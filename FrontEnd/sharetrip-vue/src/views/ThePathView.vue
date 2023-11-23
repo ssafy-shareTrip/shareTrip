@@ -37,7 +37,7 @@ var selectAttractionList = ref([]);
 const followList = ref();
 const groupOptions = ref([]);
 const owner = ref(userStore.userId);
-const inGroup = ref(false);
+const inGroup = ref(true);
 const selectAttractionElement = ref([]);
 onMounted(() => {
 	if (route.query.tripNo) {
@@ -340,9 +340,11 @@ const addAttraction = (item) => {
 };
 
 const deleteAttraction = (item) => {
+	let flag = true;
 	selectAttractionList.value.forEach((data, index) => {
-		if (data == item) {
+		if (data == item && flag) {
 			selectAttractionList.value.splice(index, 1);
+			flag = false;
 		}
 	});
 };
@@ -360,6 +362,7 @@ const savePath = () => {
 		console.log("적어도 하나를 만들어주세요!");
 		return;
 	}
+	if (trip.value.title == "") trip.value.title = "제목 없음";
 
 	trip.value.attractions = [];
 	selectAttractionList.value.forEach((attr, index) => {

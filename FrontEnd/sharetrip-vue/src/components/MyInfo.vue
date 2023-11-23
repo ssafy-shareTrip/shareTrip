@@ -45,6 +45,11 @@ defineProps({
 			</v-col>
 		</v-row>
 	</v-container>
+	<div class="d-flex flex-row-reverse mb-6">
+		<router-link :to="{ name: 'infoMod' }" class="mr-5 text-overline" style="color: #00796b">
+			회원 정보 수정<v-icon icon="mdi-chevron-right" end></v-icon>
+		</router-link>
+	</div>
 </template>
 
 <style scoped></style>

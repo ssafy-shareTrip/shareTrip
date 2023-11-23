@@ -128,7 +128,6 @@ const search = () => {
 	}
 
 	url.search = params.toString();
-
 	axios
 		.get(url.toString())
 		.then(function (data) {
@@ -162,6 +161,9 @@ const changeCenter = (x, y) => {
 	}
 	params.append("mapX", x);
 	params.append("mapY", y);
+	if (userStore.userId != null) {
+		params.append("userId", userStore.userId);
+	}
 	url.search = params.toString();
 
 	axios
@@ -226,9 +228,10 @@ const headers = [
 	{ key: "addr1", title: "🏢" },
 	{ key: "type", title: "🚩" },
 	{ key: "firstImage", title: "🖼️" },
-	{ key: "isLike", title: "❤️⭐" },
+	{ key: "action", title: "❤️⭐" },
 	{ key: "contentId", title: "" },
 ];
+
 const page = [
 	{ value: 4, title: "4" },
 	{ value: 8, title: "8" },
@@ -404,9 +407,9 @@ const move = ref(true);
 						</v-img>
 					</v-card>
 				</template>
-				<template #item.isLike="{ item }">
+				<template #item.action="{ item }" v-if="userStore.userId">
 					<v-row>
-						<v-col>
+						<v-col cols="3">
 							<v-img
 								:src="`/icon/like_${item.isLike}.png`"
 								width="30"
@@ -414,7 +417,7 @@ const move = ref(true);
 								@click="favReg(0, item, item.isLike)"
 							>
 							</v-img></v-col
-						><v-col>
+						><v-col cols="3">
 							<v-img
 								:src="`/icon/star_${item.isBookmark}.png`"
 								width="30"

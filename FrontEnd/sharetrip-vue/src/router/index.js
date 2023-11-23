@@ -8,6 +8,7 @@ import TheLoginView from "@/views/TheLoginView.vue";
 import TheJoinView from "@/views/TheJoinView.vue";
 import ThePathView from "@/views/ThePathView.vue";
 import AttractionDetail from "@/components/attraction/AttractionDetail.vue";
+import InfoModify from "@/components/InfoModify.vue";
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,11 @@ const router = createRouter({
 			path: "/attrDet/:idx",
 			name: "attrDet",
 			component: AttractionDetail,
+		},
+		{
+			path: "/infoMod",
+			name: "infoMod",
+			component: InfoModify,
 		},
 	],
 });

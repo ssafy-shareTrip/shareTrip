@@ -40,7 +40,43 @@ const login = () => {
 </script>
 
 <template>
-	<v-card class="mx-auto px-6 py-8" style="width: 30%; margin-top: 100px" color="blue-lighten-5">
+	<v-card class="mx-auto px-6 py-8" style="width: 40%; margin-top: 100px" color="blue-lighten-5">
+		<v-container
+			class="rounded-shaped"
+			style="
+				width: 100%;
+				padding-bottom: 30px;
+				margin-bottom: 20px;
+				background-image: linear-gradient(to right, rgb(41, 34, 40), rgb(140, 211, 239));
+			"
+		>
+			<router-link :to="{ name: 'main' }" class="navItem">
+				<v-img
+					src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Travel%20and%20places/Airplane.png"
+					width="100"
+					style="margin-left: auto"
+				/>
+				<span
+					style="
+						font-size: 50px;
+						line-height: 30px;
+						text-align: center;
+						text-decoration: underline;
+						font-family: 'PyeongChangPeace-Bold';
+						background-image: linear-gradient(
+							to right,
+							rgb(220, 164, 214),
+							rgb(168, 230, 208)
+						);
+						background-clip: text;
+						-webkit-background-clip: text;
+						color: transparent;
+					"
+				>
+					&nbsp; ShareTrip
+				</span>
+			</router-link>
+		</v-container>
 		<v-form v-model="form" @submit.prevent>
 			<v-text-field
 				v-model="user.id"
