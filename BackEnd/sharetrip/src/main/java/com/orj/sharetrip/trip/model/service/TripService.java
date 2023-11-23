@@ -20,4 +20,8 @@ public interface TripService {
 
 	List<TripDto> getTrip(String userId);
 
+	List<TripDto> getShareTrip();
+
+	List<TripDto> getGroupTrip(String userId);
+
 }

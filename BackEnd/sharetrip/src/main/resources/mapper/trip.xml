@@ -50,6 +50,23 @@
 		order by trip_no desc
 	</select>
 
+	<select id="getShareTrip" resultMap="trip">
+		select *
+		from user_trip
+		where
+		is_shared = 1
+		order by trip_no desc
+	</select>
+
+	<select id="getGroupTrip" parameterType="string"
+		resultMap="trip">
+		select *
+		from user_trip
+		where trip_no in (select trip_no from
+		trip_share where user_id = #{userId})
+		order by trip_no desc
+	</select>
+
 	<select id="detailTrip" parameterType="int" resultMap="trip">
 		select *
 		from user_trip
@@ -64,7 +81,8 @@
 
 	<select id="attrList" resultMap="attraction">
 		select *
-		from trip_attraction join
+		from trip_attraction
+		join
 		attraction_info using(content_id)
 		where trip_no = #{tripNo}
 		order by
@@ -73,7 +91,8 @@
 
 	<insert id="initTrip" parameterType="tripDto">
 		insert into user_trip
-		values (0, #{userId}, #{title}, now(), #{isShared})
+		values (0, #{userId}, #{title}, now(),
+		#{isShared})
 		<selectKey resultType="int" keyProperty="tripNo"
 			order="AFTER">
 			select last_insert_id()
@@ -126,9 +145,14 @@
 		where trip_no = #{tripNo}
 	</delete>
 
-	<!-- <insert id="joinGroup" parameterType="tripDto"> insert into trip_share 
-		values <foreach collection="userIds" item="userId" separator=" , "> (#{tripNo}, 
-		#{userId}, now()) </foreach> </insert> -->
+	<insert id="joinGroup" parameterType="tripDto">
+		insert into trip_share
+		values
+		<foreach collection="userIds" item="userId" open="" separator=" , ">
+			(#{tripNo},
+			#{userId}, now())
+		</foreach>
+	</insert>
 
 
 </mapper>

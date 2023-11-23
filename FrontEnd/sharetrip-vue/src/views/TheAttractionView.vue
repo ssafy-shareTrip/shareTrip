@@ -223,17 +223,18 @@ const headers = [
 		sortable: true,
 		title: "이름",
 	},
-	{ key: "addr1", title: "주소" },
-	{ key: "type", title: "분류" },
-	{ key: "firstImage", title: "사진" },
-	{ key: "isLike", title: "소셜" },
-	{ key: "contentId", title: "상세설명" },
+	{ key: "addr1", title: "🏢" },
+	{ key: "type", title: "🚩" },
+	{ key: "firstImage", title: "🖼️" },
+	{ key: "isLike", title: "❤️⭐" },
+	{ key: "contentId", title: "" },
 ];
 const page = [
 	{ value: 4, title: "4" },
 	{ value: 8, title: "8" },
 	{ value: 12, title: "12" },
 	{ value: 16, title: "16" },
+	{ value: -1, title: "All" },
 ];
 
 const favReg = (category, item, status) => {

@@ -4,20 +4,30 @@ import { localAxios } from "@/util/http-commons";
 import { useUserStore } from "@/stores/user";
 import MyInfo from "@/components/MyInfo.vue";
 import BookmarkAttr from "@/components/BookmarkAttr.vue";
-import MyTrip from "@/components/MyTrip.vue";
+import TripList from "@/components/TripList.vue";
 import FollowList from "../components/FollowList.vue";
 
 const store = useUserStore();
 const axios = localAxios();
 const tab = ref(1);
 const userInfo = ref({});
-
+const myTrip = ref();
 onMounted(() => {
 	axios
 		.get(`/user/info/${store.userId}`)
 		.then(({ data }) => {
 			userInfo.value = data.data;
 			console.log(data);
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+
+	axios
+		.get(`/trip/${store.userId}`)
+		.then(({ data }) => {
+			myTrip.value = data.data;
+			console.log(myTrip.value);
 		})
 		.catch((err) => {
 			console.log(err);
@@ -50,10 +60,10 @@ onMounted(() => {
 					<my-info :user-info="userInfo"></my-info>
 				</v-window-item>
 				<v-window-item :value="2">
-					<my-trip :user-info="userInfo"></my-trip>
+					<trip-list :trip-list="myTrip"></trip-list>
 				</v-window-item>
 				<v-window-item :value="3">
-					<bookmark-attr :user-info="userInfo"></bookmark-attr>
+					<bookmark-attr :user-info="userInfo"> </bookmark-attr>
 				</v-window-item>
 
 				<v-window-item :value="4">

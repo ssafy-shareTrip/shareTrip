@@ -1,6 +1,7 @@
 package com.orj.sharetrip.user.model.service;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -73,6 +74,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public void deleteUser(UserDto userDto) {
 		UserMapper.deleteUser(userDto);
+	}
+
+	@Override
+	public List<UserDto> bothFollow(String userId) {
+		return UserMapper.bothFollow(userId);
 	}
 
 

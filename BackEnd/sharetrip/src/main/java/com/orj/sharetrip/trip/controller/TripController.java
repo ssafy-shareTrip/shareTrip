@@ -37,7 +37,7 @@ public class TripController {
 		TripService = tripService;
 	}
 
-	@ApiOperation(value = "경로 정보 조회", notes = "저장되어있는 경로 정보를 조회합니다", response = Map.class)
+	@ApiOperation(value = "경로 정보 조회", notes = "사용자가 작성한 경로 정보를 조회합니다", response = Map.class)
 	@GetMapping("/{userId}")
 	public ResponseEntity<Map<String, Object>> getTrip(
 			@PathVariable("userId") @ApiParam(value = "유저 ID") String userId) throws Exception {
@@ -62,6 +62,53 @@ public class TripController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
+	
+	@ApiOperation(value = "공개 경로 정보 조회", notes = "공개인 경로 정보를 조회합니다", response = Map.class)
+	@GetMapping("/share")
+	public ResponseEntity<Map<String, Object>> getShareTrip() throws Exception {
+		log.info("공개 경로 정보 조회");
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			List<TripDto> list = TripService.getShareTrip();
+			resultMap.put("data", list);
+			resultMap.put("message", "상세 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}	
+	
+	@ApiOperation(value = "그룹 경로 정보 조회", notes = "그룹 경로 정보를 조회합니다", response = Map.class)
+	@GetMapping("/group/{userId}")
+	public ResponseEntity<Map<String, Object>> getGroupTrip(
+			@PathVariable("userId") @ApiParam(value = "유저 ID") String userId) throws Exception {
+		log.info("공개 경로 정보 조회");
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			List<TripDto> list = TripService.getGroupTrip(userId);
+			resultMap.put("data", list);
+			resultMap.put("message", "상세 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	
 	@ApiOperation(value = "경로 정보 조회", notes = "저장되어있는 경로 정보를 조회합니다", response = Map.class)
 	@GetMapping("/detail/{tripNo}")

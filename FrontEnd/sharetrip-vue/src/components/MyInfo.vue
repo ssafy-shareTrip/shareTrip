@@ -7,13 +7,13 @@ defineProps({
 <template>
 	<v-container>
 		<v-row align="center">
-			<v-col cols="4"
+			<v-col cols="4" style="margin: 0 auto"
 				><v-img
 					class="bg-white"
-					width="100%"
+					width="80%"
 					:aspect-ratio="1"
-					src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
-					style="border-radius: 100%"
+					src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Smilies/Cat%20with%20Wry%20Smile.png"
+					style="border-radius: 20%"
 					cover
 				></v-img>
 			</v-col>

@@ -1,6 +1,7 @@
 package com.orj.sharetrip.user.model.mapper;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -19,5 +20,6 @@ public interface UserMapper {
 	void unFollowUser(String idTo,String userId);
 	void modifyUser(UserDto userDto);
 	void deleteUser(UserDto userDto);
+	List<UserDto> bothFollow(String userId);
 	
 }

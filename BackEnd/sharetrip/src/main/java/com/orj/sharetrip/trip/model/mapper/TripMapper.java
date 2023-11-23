@@ -31,6 +31,10 @@ public interface TripMapper {
 
 	List<TripDto> getTrip(String userId);
 
+	List<TripDto> getShareTrip();
+
+	List<TripDto> getGroupTrip(String userId);
+
 
 	
 }

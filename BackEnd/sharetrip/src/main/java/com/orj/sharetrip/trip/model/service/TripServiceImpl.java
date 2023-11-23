@@ -60,4 +60,14 @@ public class TripServiceImpl implements TripService {
 		return TripMapper.getTrip(userId);
 	}
 
+	@Override
+	public List<TripDto> getShareTrip() {
+		return TripMapper.getShareTrip();
+	}
+
+	@Override
+	public List<TripDto> getGroupTrip(String userId) {
+		return TripMapper.getGroupTrip(userId);
+	}
+
 }

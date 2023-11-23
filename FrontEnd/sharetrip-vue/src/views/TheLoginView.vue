@@ -40,7 +40,7 @@ const login = () => {
 </script>
 
 <template>
-	<v-card class="mx-auto px-6 py-8" style="width: 50%; margin-top: 100px">
+	<v-card class="mx-auto px-6 py-8" style="width: 30%; margin-top: 100px" color="blue-lighten-5">
 		<v-form v-model="form" @submit.prevent>
 			<v-text-field
 				v-model="user.id"

@@ -40,9 +40,9 @@ const headers = [
 		sortable: true,
 		title: "이름",
 	},
-	{ key: "addr1", title: "주소" },
-	{ key: "type", title: "분류" },
-	{ key: "firstImage", title: "사진" },
+	{ key: "addr1", title: "🏢" },
+	{ key: "type", title: "🚩" },
+	{ key: "firstImage", title: "🖼️" },
 	{ key: "action", title: "⭐" },
 ];
 

@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useUserStore } from "@/stores/user";
 import TheMainView from "@/views/TheMainView.vue";
 import TheAttractionView from "@/views/TheAttractionView.vue";
-import TheBoardView from "@/views/TheBoardView.vue";
+import TheShareView from "@/views/TheShareView.vue";
 import TheMyPageView from "@/views/TheMyPageView.vue";
 import TheLoginView from "@/views/TheLoginView.vue";
 import TheJoinView from "@/views/TheJoinView.vue";
@@ -22,11 +22,11 @@ const router = createRouter({
 			name: "attr",
 			component: TheAttractionView,
 		},
-		
+
 		{
-			path: "/board",
-			name: "board",
-			component: TheBoardView,
+			path: "/share",
+			name: "share",
+			component: TheShareView,
 		},
 		{
 			path: "/path",

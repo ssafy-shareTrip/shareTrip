@@ -57,7 +57,7 @@ const navToggle = ref(false);
 						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
 					></router-link
 				>
-				<router-link :to="{ name: 'board' }" class="navItem" replace
+				<router-link :to="{ name: 'share' }" class="navItem" replace
 					><v-tab
 						><v-icon icon="mdi-share-variant"></v-icon>&nbsp; Share</v-tab
 					></router-link

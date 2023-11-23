@@ -2,13 +2,13 @@
 import KakaoMap from "@/components/kakao/KakaoMap.vue";
 // import VSelect from "@/components/common/VSelect.vue";
 import { ref, onMounted, watch } from "vue";
-import axios from "axios";
+import { localAxios } from "@/util/http-commons";
 // import AttractionDetail from "../components/attraction/AttractionDetail.vue";
-import { useRouter, useRoute } from "vue-router";
+import { useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
+const axios = localAxios();
 const userStore = useUserStore();
-const router = useRouter();
 const route = useRoute();
 const trip = ref({
 	attractions: [
@@ -41,6 +41,9 @@ const gugunList = ref([
 
 var attractionList = ref([]);
 var selectAttractionList = ref([]);
+const followList = ref();
+const groupUser = ref([]);
+const groupOptions = ref([]);
 
 const selectAttractionElement = ref([]);
 onMounted(() => {
@@ -51,11 +54,25 @@ onMounted(() => {
 				console.log(data);
 				trip.value = data.data;
 				selectAttractionList.value = data.data.attractions;
+				groupUser.value = trip.value.userIds;
 			})
 			.catch((err) => {
 				console.log(err);
 			});
 	}
+
+	axios
+		.get(`/user/both/${userStore.userId}`)
+		.then(({ data }) => {
+			followList.value = data.data;
+			console.log(followList.value);
+			followList.value.forEach((item) => {
+				groupOptions.value.push({ text: `${item.name}`, value: `${item.id}` });
+			});
+		})
+		.catch((err) => {
+			console.log(err);
+		});
 
 	listSido();
 });
@@ -231,10 +248,10 @@ const lheaders = [
 		sortable: true,
 		title: "이름",
 	},
-	{ key: "type", title: "분류" },
-	{ key: "firstImage", title: "사진" },
-	{ key: "isLike", title: "소셜" },
-	{ key: "action", title: "추가" },
+	{ key: "type", title: "🚩" },
+	{ key: "firstImage", title: "🖼️" },
+	{ key: "isLike", title: "⭐" },
+	{ key: "action", title: "" },
 ];
 
 const p = 6;
@@ -594,11 +611,32 @@ const savePath = () => {
 				variant="solo-filled"
 			></v-text-field
 		></v-list-item>
+		<v-list-item>
+			<v-select
+				v-show="!rrail"
+				v-model="groupUser"
+				:items="groupOptions"
+				label="그룹 유저"
+				item-title="text"
+				item-value="value"
+				prepend-inner-icon="mdi-human-greeting-proximity"
+				multiple
+			>
+				<template v-slot:selection="{ item, index }">
+					<v-chip v-if="index < 2">
+						<span>{{ item.title }}</span>
+					</v-chip>
+					<span v-if="index === 2" class="text-grey text-caption align-self-center">
+						(+{{ value.length - 2 }} others)
+					</span>
+				</template>
+			</v-select>
+		</v-list-item>
 		<v-list-item v-show="!rrail">
 			<v-row>
 				<v-col>
 					<v-btn variant="plain" @click="savePath" style="width: 100%"
-						><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장하기</v-btn
+						><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장</v-btn
 					></v-col
 				><v-col cols="4"
 					><v-switch v-model="trip.isShared" color="info" label="공개 설정"></v-switch

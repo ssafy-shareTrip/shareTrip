@@ -1,6 +1,6 @@
 <script setup>
-import { useRoute, useRouter } from "vue-router";
-import { onMounted, ref, computed } from "vue";
+import { useRoute } from "vue-router";
+import { onMounted, ref } from "vue";
 import { useUserStore } from "@/stores/user";
 import { localAxios } from "@/util/http-commons";
 import DetailMap from "@/components/attraction/detail/DetailMap.vue";
@@ -43,7 +43,7 @@ const favReg = (category, status) => {
 				contentId: idx,
 				category: category,
 			})
-			.then(({ data }) => {
+			.then(() => {
 				console.log("favReg : 성공");
 				if (category == 0) {
 					// isLike
@@ -65,7 +65,7 @@ const favReg = (category, status) => {
 					category: category,
 				},
 			})
-			.then(({ data }) => {
+			.then(() => {
 				console.log("favDel : 성공");
 				if (category == 0) {
 					// isLike
