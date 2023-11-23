@@ -187,12 +187,8 @@ const clickSelectAttraction = (event, { item }) => {
 	selectAttractionElement.value = item;
 };
 
-const clickSelectAttraction = (event, { item }) => {
-	selectAttractionElement.value = item;
-};
 
 const mvDet = (contentId) => {
-	console.log("상세페이지 이동!");
 	console.log("상세페이지 이동!");
 	router.push({
 		name: "attrDet",
@@ -339,7 +335,6 @@ const move = ref(true);
 				clearable
 				label="검색 키워드"
 				v-model="keyword"
-				variant="solo-filled"
 				variant="solo-filled"
 			></v-text-field>
 		</v-col>

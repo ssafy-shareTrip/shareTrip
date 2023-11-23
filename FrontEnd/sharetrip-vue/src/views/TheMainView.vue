@@ -42,14 +42,14 @@ User
     <!-- 메인 컨테이너 -->
     <!-- 큰 배경 이미지 -->
     <v-img
-        src="https://content.skyscnr.com/m/2303c3e4a5887ab4/original/shutterstock_790499734.jpg?crop=1224px:647px&quality=100&position=attention"
+        :src="`/icon/mainPageImage.jpg`"
         alt="Background Image"
-        class="cover">
+        >
         <!-- 이미지 위에 검색창 -->
-        <v-row justify="center">
-            <v-col cols="4" md="3" class="text-center">
+        <v-row justify="center" >
+            <v-col cols="4" md="4" class="text-center" style="margin-left: 150px;" >
                 <br/><br/>
-                <v-text-field v-model="keyword" label="검색어 입력" variant="underlined"></v-text-field>
+                <v-text-field v-model="keyword" label="검색어 입력" variant="solo-filled" style="background-color: transparent; opacity: 0.5;"></v-text-field>
                 
     <!-- 경고창을 위한 v-dialog -->
     <v-fade-transition hide-on-leave="hide-on-leave">
@@ -93,10 +93,10 @@ User
                 <v-btn icon="mdi-magnify" @click="MainPagesearch"></v-btn>
             </v-col>
         </v-row>
-    </v-img>
+        
+        
 
-
-        <v-row justify="center">
+        <v-row justify="center" class="my-4">
 
             <v-btn height="100" width="100" class="custom-btn" @click="contentTypeIdClickBtn(12)">
                 관광지
@@ -135,21 +135,23 @@ User
             </v-btn>
 
         </v-row>
-
+    </v-img>
 </template>
 
 <style scoped="scoped">
-    .cover {
-        max-height: 70vh;
-        width: 100%;
-    }
 
     .v-btn {
         margin: 4px;
     }
 
     .custom-btn {
-        background-color: transparent;
-        background-size: cover;
+        background-color: white;
+        opacity: 0.7
     }
+
+    .v-text-field{
+
+        margin-bottom: 300px;
+    }
+
 </style>
