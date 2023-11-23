@@ -2,11 +2,13 @@ import { createRouter, createWebHistory } from 'vue-router'
 import TheMainView from "@/views/TheMainView.vue"
 import TheAttractionView from "@/views/TheAttractionView.vue"
 import TheBoardView from "@/views/TheBoardView.vue"
-import LoginView from "@/components/user/LoginView.vue"
-import JoinView from "@/components/user/JoinView.vue"
-import TheMypageView from "@/views/TheMypageView.vue"
+import TheMyPageView from "@/views/TheMyPageView.vue";
+import TheLoginView from "@/views/TheLoginView.vue";
+import TheJoinView from "@/views/TheJoinView.vue";
+import ThePathView from "@/views/ThePathView.vue";
 import AttractionDetail from "@/components/attraction/AttractionDetail.vue"
 import RouteBoardWrite from '@/components/board/RouteBoardWrite.vue'
+import InfoModify from "@/components/user/InfoModify.vue"
 
 //api받으면 path 수정해야함
 const router = createRouter({
@@ -31,31 +33,35 @@ const router = createRouter({
       name: 'board',
       component: TheBoardView
     },
-
     {
-      path: '/login',
-      name: 'login',
-      component: LoginView
-    },
-
+			path: "/path",
+			name: "path",
+			component: ThePathView,
+		},
     {
-      path: '/join',
-      name: 'join',
-      component: JoinView
-    },
-
+			path: "/mypage",
+			name: "mypage",
+			component: TheMyPageView,
+			// beforeEnter: () => {
+			// 	const store = useUserStore();
+			// 	if (store.userId == null) return { name: "login" };
+			// },
+		},
+		{
+			path: "/login",
+			name: "login",
+			component: TheLoginView,
+		},
+		{
+			path: "/join",
+			name: "join",
+			component: TheJoinView,
+		},
     {
-      path: '/mypage',
-      name: 'mypage',
-      component: TheMypageView
-    },
-
-    {
-      path: '/logout',
-      name: 'logout',
-      component: TheMainView
-    },
-
+			path: "/infoMod",
+			name: "infoMod",
+			component: InfoModify,
+		},
     {
       path: '/kakao',
       name: 'kakao',

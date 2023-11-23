@@ -110,6 +110,12 @@
             params.append("keyword", searchTitle.value);
         }
 
+        //* 사용자 별 좋아요, 북마크는 userId 보내줘야 함.
+        const userId = 'ryu'
+        if (userId !== ""){
+            params.append("userId", userId);
+        }
+
         url.search = params.toString();
 
         console.log(url);
@@ -127,11 +133,6 @@
         });
 
         
-    /* 사용자 별 좋아요, 북마크는 userId 보내줘야 함.
-        if문 // 로그인 아이디가 있다면 아이디 담기
-        */
-    // const userId = 'jeon'
-    // url = "http://localhost:80/sharetrip/map/attr?userId="+userId;
     axios
         .get(url.toString())
         .then(function (data) {
@@ -191,10 +192,10 @@ const changeCenter = (x,y) => {
 const favReg = (category, contentId, status, index) => {
     console.log(contentId, category, status, index);
 
-    const url = "http://localhost:80/sharetrip/fav/attr/jeon";
+    const url = "http://localhost:80/sharetrip/fav/attr/ryu"; //임시 url
     if (status == 0){ // 미등록 -> 등록
         axios
-            .post("http://localhost:80/sharetrip/fav/attr/jeon",
+            .post(url,
             {
                 "contentId":contentId,
                 "category":category
