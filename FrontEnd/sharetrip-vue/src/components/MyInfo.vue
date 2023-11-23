@@ -6,6 +6,7 @@ defineProps({
 
 <template>
 	<v-container>
+		{{ userInfo }}
 		<v-row align="center">
 			<v-col cols="4" style="margin: 0 auto"
 				><v-img
@@ -25,8 +26,8 @@ defineProps({
 						<v-row>
 							<v-col>
 								생년월일 :
-								<template v-if="userInfo.birth == null">비공개</template>
-								<template v-else>{{ userInfo.brith }}</template> </v-col
+								<template v-if="!userInfo.birth">비공개</template>
+								<template v-else>{{ userInfo.birth }}</template> </v-col
 							><v-col>
 								성별 :
 								<template v-if="userInfo.gender == null">비공개</template>
