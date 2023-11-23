@@ -187,7 +187,12 @@ const clickSelectAttraction = (event, { item }) => {
 	selectAttractionElement.value = item;
 };
 
+const clickSelectAttraction = (event, { item }) => {
+	selectAttractionElement.value = item;
+};
+
 const mvDet = (contentId) => {
+	console.log("상세페이지 이동!");
 	console.log("상세페이지 이동!");
 	router.push({
 		name: "attrDet",
@@ -231,6 +236,7 @@ const headers = [
 	{ key: "firstImage", title: "사진" },
 	{ key: "isLike", title: "소셜" },
 	{ key: "contentId", title: "상세설명" },
+	{ key: "contentId", title: "상세설명" },
 ];
 const page = [
 	{ value: 4, title: "4" },
@@ -240,6 +246,7 @@ const page = [
 ];
 
 const favReg = (category, item, status) => {
+	if (userStore.userId == null) return;
 	if (userStore.userId == null) return;
 	console.log(item, category, status);
 	let contentId = item.contentId;
@@ -333,6 +340,7 @@ const move = ref(true);
 				label="검색 키워드"
 				v-model="keyword"
 				variant="solo-filled"
+				variant="solo-filled"
 			></v-text-field>
 		</v-col>
 		<v-col cols="1">
@@ -350,6 +358,7 @@ const move = ref(true);
 	></KakaoMap>
 	<!-- <v-navigation-drawer location="bottom" rail expand-on-hover width="430" permanent> -->
 	<!-- v-model="drawer" -->
+	<!-- v-model="drawer" -->
 	<v-navigation-drawer
 		:rail="rail"
 		permanent
@@ -358,6 +367,7 @@ const move = ref(true);
 		location="bottom"
 	>
 		<v-list-item>
+			<span>조회 관광지</span>
 			<span>조회 관광지</span>
 			<v-slider
 				v-show="!rail"

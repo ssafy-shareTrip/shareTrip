@@ -15,8 +15,8 @@ public interface UserMapper {
 	Object getRefreshToken(String userid) throws SQLException;
 	void deleteRefreshToken(Map<String, String> map) throws SQLException;
 	void joinUser(UserDto userDto);
-	void followUser(String idTo,String idFrom);
-	void unFollowUser(String idTo,String idFrom);
+	void followUser(String idTo,String userId);
+	void unFollowUser(String idTo,String userId);
 	void modifyUser(UserDto userDto);
 	void deleteUser(UserDto userDto);
 	

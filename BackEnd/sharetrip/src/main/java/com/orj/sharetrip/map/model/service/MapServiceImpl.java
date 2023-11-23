@@ -35,8 +35,8 @@ public class MapServiceImpl implements MapService {
 	}
 
 	@Override
-	public AttractionDto getAttrInfo(String contentId) {
-		return MapMapper.getAttrInfo(contentId);
+	public AttractionDto getAttrInfo(String contentId,String userId) {
+		return MapMapper.getAttrInfo(contentId,userId);
 	}
 
 }

@@ -12,8 +12,8 @@ public interface UserService {
 	void saveRefreshToken(String userId, String refreshToken) throws Exception;
 	Object getRefreshToken(String userId) throws Exception;
 	void deleRefreshToken(String userId) throws Exception;
-	void followUser(String idTo,String idFrom);
-	void unFollowUser(String idTo,String idFrom);
+	void followUser(String idTo,String userId);
+	void unFollowUser(String idTo,String userId);
 	void modifyUser(UserDto userDto);
 	void deleteUser(UserDto userDto);
 	

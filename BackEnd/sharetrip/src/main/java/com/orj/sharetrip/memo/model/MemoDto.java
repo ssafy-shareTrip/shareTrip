@@ -9,6 +9,7 @@ public class MemoDto {
 	private Object target;
 	private int id;
 	private String userId;
+	private String userName;
 	private String content;
 	private String registTime;
 	

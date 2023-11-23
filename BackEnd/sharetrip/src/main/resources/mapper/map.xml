@@ -31,6 +31,7 @@
 	<resultMap type="memoDto" id="memo">
 		<result column="id" property="id" />
 		<result column="user_id" property="userId" />
+		<result column="name" property="userName" />
 		<result column="content" property="content" />
 		<result column="regist_time" property="registTime" />
 	</resultMap>
@@ -40,6 +41,7 @@
 		<result column="overview" property="overview" />
 		<collection property="memos" column="content_id"
 			javaType="list" ofType="memoDto" select="memoList"></collection>
+		
 	</resultMap>
 
 	<select id="getSido" resultMap="sidoGugun">
@@ -99,18 +101,32 @@
 		limit 30;
 	</select>
 
-	<select id="getAttrInfo" resultMap="viewAttraction">
+	<select id="getAttrInfo" parameterType="map" resultMap="viewAttraction">
 		select *
-		from attraction_info
-		i join attraction_description d using(content_id)
+		<if test="userId != null">
+			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1) isBookmark
+		</if>
+		<if test="userId == null">
+			, 0 isLike, 0 isBookmark
+		</if>
+		from attraction_info i join attraction_description d using(content_id)
+		<if test="userId != null">
+			left outer join (
+				select content_id, user_id lid from attraction_fav where user_id = #{userId} and category = 0
+				) l
+			using (content_id)
+			left outer join (
+				select content_id, user_id bid from attraction_fav where user_id = #{userId} and category = 1
+				) b
+			using (content_id)
+		</if>
 		where content_id =
 		#{contentId}
 	</select>
 
 	<select id="memoList" resultMap="memo">
-		select id, content, user_id,
-		regist_time
-		from attraction_memo
+		select m.id, content, user_id, name, regist_time
+		from attraction_memo m join user u on m.user_id = u.id 
 		where content_id = #{contentId}
 		order by
 		regist_time desc;
