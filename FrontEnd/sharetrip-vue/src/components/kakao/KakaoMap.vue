@@ -23,6 +23,7 @@ watch(
 			props.selectAttractionElement.longitude
 		);
 		// 지도 중심을 부드럽게 이동시킵니다 만약 이동할 거리가 지도 화면보다 크면 부드러운 효과 없이 이동합니다
+		map.setLevel(3);
 		map.panTo(moveLatLon);
 
 		var imageSrc = "/icon/click_map_marker.png"; // 마커이미지의 주소입니다
@@ -110,7 +111,6 @@ const initMap = function () {
 	kakao.maps.event.addListener(map, "dragend", function () {
 		// 지도 중심좌표를 얻어옵니다
 		var latlng = map.getCenter();
-
 		//emit를 날려서 attractionList를 수정함
 		emit("changeCenterPosition", latlng.getLat(), latlng.getLng());
 	});

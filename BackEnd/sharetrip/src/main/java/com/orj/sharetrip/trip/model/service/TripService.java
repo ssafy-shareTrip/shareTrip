@@ -1,5 +1,7 @@
 package com.orj.sharetrip.trip.model.service;
 
+import java.util.List;
+
 import com.orj.sharetrip.trip.model.TripDto;
 
 public interface TripService {
@@ -15,5 +17,7 @@ public interface TripService {
 	void deleteGroupUser(Integer tripNo, String userId);
 
 	TripDto detailTrip(Integer tripNo);
+
+	List<TripDto> getTrip(String userId);
 
 }

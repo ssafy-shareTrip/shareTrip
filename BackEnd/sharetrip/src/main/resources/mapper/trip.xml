@@ -2,99 +2,132 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper	namespace="com.orj.sharetrip.trip.model.mapper.TripMapper">
-	
+<mapper
+	namespace="com.orj.sharetrip.trip.model.mapper.TripMapper">
+
 	<resultMap type="tripDto" id="trip">
-		<result column="trip_no" property="tripNo"/>
-		<result column="user_id" property="userId"/>
-		<result column="title" property="title"/>
-		<result column="create_time" property="create_time"/>
-		<result column="is_shared" property="isShared"/>
-		<collection property="attractions" column="trip_no" javaType="list" ofType="tripAttractionDto" select="attrList"></collection>
-		<collection property="userIds" column="trip_no" javaType="list" ofType="String" select="userList"></collection>
+		<result column="trip_no" property="tripNo" />
+		<result column="user_id" property="userId" />
+		<result column="title" property="title" />
+		<result column="create_time" property="create_time" />
+		<result column="is_shared" property="isShared" />
+		<collection property="attractions" column="trip_no"
+			javaType="list" ofType="AttractionDto" select="attrList"></collection>
+		<collection property="userIds" column="trip_no"
+			javaType="list" ofType="String" select="userList"></collection>
 	</resultMap>
-	
+
 	<resultMap type="tripAttractionDto" id="tripAttraction">
-		<result column="content_id" property="contentId"/>
-		<result column="day" property="day"/>
-		<result column="seq" property="seq"/>
-		<result column="pick_time" property="pickTime"/>
+		<result column="content_id" property="contentId" />
+		<result column="title" property="title" />
+		<result column="image" property="image" />
+		<result column="day" property="day" />
+		<result column="seq" property="seq" />
+		<result column="pick_time" property="pickTime" />
 	</resultMap>
-	
+
+	<resultMap type="AttractionDto" id="attraction">
+		<result column="content_id" property="contentId" />
+		<result column="content_type_id" property="contentTypeId" />
+		<result column="title" property="title" />
+		<result column="addr1" property="addr1" />
+		<result column="addr2" property="addr2" />
+		<result column="tel" property="tel" />
+		<result column="first_image" property="firstImage" />
+		<result column="first_image2" property="firstImage2" />
+		<result column="sido_code" property="sidoCode" />
+		<result column="gugun_code" property="gugunCode" />
+		<result column="latitude" property="latitude" />
+		<result column="longitude" property="longitude" />
+		<result column="isLike" property="isLike" />
+		<result column="isBookmark" property="isBookmark" />
+	</resultMap>
+
+	<select id="getTrip" parameterType="string" resultMap="trip">
+		select *
+		from user_trip
+		where user_id = #{userId}
+	</select>
+
 	<select id="detailTrip" parameterType="int" resultMap="trip">
 		select *
 		from user_trip
 		where trip_no = #{tripNo}
 	</select>
-	
+
 	<select id="userList" resultType="string">
 		select user_id
 		from trip_share
 		where trip_no = #{tripNo}
 	</select>
-	
-	<select id="attrList" resultMap="tripAttraction">
-		select content_id, day, seq, pick_time
-		from trip_attraction
+
+	<select id="attrList" resultMap="attraction">
+		select *
+		from trip_attraction join
+		attraction_info using(content_id)
 		where trip_no = #{tripNo}
-		order by day, seq
+		order by
+		day, seq
 	</select>
-	
+
 	<insert id="initTrip" parameterType="tripDto">
 		insert into user_trip
-		values (0, #{userId}, "제목 없음", now(), 0)
-		<selectKey resultType="int" keyProperty="tripNo" order="AFTER">
+		values (0, #{userId}, #{title}, now(), 0)
+		<selectKey resultType="int" keyProperty="tripNo"
+			order="AFTER">
 			select last_insert_id()
 		</selectKey>
 	</insert>
-	
+
 	<insert id="insertGroupUser" parameterType="map">
-		insert into trip_share
+		insert into
+		trip_share
 		values (#{tripNo}, #{userId},now())
 	</insert>
-	
+
 	<delete id="deleteGroupUser" parameterType="map">
-		delete from trip_share
+		delete from
+		trip_share
 		where trip_no = #{tripNo} and user_id = #{userId}
 	</delete>
-	
+
 	<update id="modifyTrip" parameterType="tripDto">
 		update user_trip
-		set title = #{title}, is_shared = #{isShared}
+		set title
+		= #{title}, is_shared = #{isShared}
 		where trip_no = #{tripNo}
 	</update>
-	
+
 	<delete id="deletePickAttr" parameterType="int">
-		delete from trip_attraction
+		delete from
+		trip_attraction
 		where trip_no = #{tripNo}
 	</delete>
 
 	<insert id="pickAttr" parameterType="tripDto">
 		insert into trip_attraction
 		values
-		<foreach collection="attractions" item="attraction"	separator=" , ">
+		<foreach collection="attractions" item="attraction"
+			separator=" , ">
 			(0, #{tripNo}, #{attraction.contentId},
-			#{attraction.day}, #{attraction.order}, now())
+			#{attraction.day},
+			#{attraction.seq}, now())
 		</foreach>
 	</insert>
-	
+
 	<delete id="deleteTrip" parameterType="map">
 		delete from user_trip
 		where trip_no = #{tripNo} and user_id = #{userId}
 	</delete>
-	
+
 	<delete id="deleteGroup" parameterType="int">
 		delete from trip_share
 		where trip_no = #{tripNo}
 	</delete>
-	
-<!-- 	<insert id="joinGroup" parameterType="tripDto">
-		insert into trip_share
-		values
-		<foreach collection="userIds" item="userId"	separator=" , ">
-			(#{tripNo}, #{userId}, now())
-		</foreach>
-	</insert> -->
+
+	<!-- <insert id="joinGroup" parameterType="tripDto"> insert into trip_share 
+		values <foreach collection="userIds" item="userId" separator=" , "> (#{tripNo}, 
+		#{userId}, now()) </foreach> </insert> -->
 
 
 </mapper>

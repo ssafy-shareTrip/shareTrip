@@ -32,25 +32,25 @@ const navToggle = ref(false);
 				prev-icon="mdi-chevron-left"
 				show-arrows
 			>
-				<router-link :to="{ name: 'main' }" class="navItem"
-					><v-tab><v-icon icon="mdil-home"></v-icon>&nbsp; Main</v-tab></router-link
+				<router-link :to="{ name: 'main' }" class="navItem" replace
+					><v-tab><v-icon icon="mdi-home-circle"></v-icon>&nbsp; Main</v-tab></router-link
 				>
-				<router-link :to="{ name: 'path' }" class="navItem"
+				<router-link :to="{ name: 'path' }" class="navItem" replace
 					><v-tab
 						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
 					></router-link
 				>
-				<router-link :to="{ name: 'board' }" class="navItem"
+				<router-link :to="{ name: 'board' }" class="navItem" replace
 					><v-tab
 						><v-icon icon="mdi-share-variant"></v-icon>&nbsp; Share</v-tab
 					></router-link
 				>
-				<router-link :to="{ name: 'attr' }" class="navItem"
+				<router-link :to="{ name: 'attr' }" class="navItem" replace
 					><v-tab
 						><v-icon icon="mdi-balloon"></v-icon>&nbsp;Attraction</v-tab
 					></router-link
 				>
-				<router-link :to="{ name: 'mypage' }" class="navItem"
+				<router-link :to="{ name: 'mypage' }" class="navItem" replace
 					><v-tab
 						><v-icon icon="mdi-badge-account"></v-icon>&nbsp; Mypage</v-tab
 					></router-link

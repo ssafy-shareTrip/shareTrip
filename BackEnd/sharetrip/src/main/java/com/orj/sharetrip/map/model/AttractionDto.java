@@ -49,5 +49,7 @@ public class AttractionDto {
 	private Integer isBookmark;
 	@ApiModelProperty(value = "총 북마크 개수")
 	private Integer totalBookmark;
+	private int day;
+	private int seq;
 	
 }

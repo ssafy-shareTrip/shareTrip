@@ -20,19 +20,19 @@
 	</resultMap>
 	
 	<resultMap type="userDto" id="viewUser" extends="user">
-		<collection property="followingList" column="id" javaType="list" ofType="string" select="followingList"></collection>
-		<collection property="followerList" column="id" javaType="list" ofType="string" select="followerList"></collection>
+		<collection property="followingList" column="id" javaType="list" ofType="userDto" select="followingList"></collection>
+		<collection property="followerList" column="id" javaType="list" ofType="userDto" select="followerList"></collection>
 	</resultMap>
 	
-	<select id="followingList" resultType="string">
-		select id_to
-		from user_follow
+	<select id="followingList" resultMap="user">
+		select id, name, birth, gender, email_id, email_domain
+		from user u join user_follow f on f.id_to = u.id
 		where id_from = #{id}
 	</select>
 	
-	<select id="followerList" resultType="string">
-		select id_from
-		from user_follow
+	<select id="followerList" resultMap="user">
+		select id, name, birth, gender, email_id, email_domain
+		from user u join user_follow f on f.id_from = u.id
 		where id_to = #{id}
 	</select>
 	

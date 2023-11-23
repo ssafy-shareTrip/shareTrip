@@ -1,6 +1,7 @@
 package com.orj.sharetrip.trip.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -36,8 +37,33 @@ public class TripController {
 		TripService = tripService;
 	}
 
+	@ApiOperation(value = "경로 정보 조회", notes = "저장되어있는 경로 정보를 조회합니다", response = Map.class)
+	@GetMapping("/{userId}")
+	public ResponseEntity<Map<String, Object>> getTrip(
+			@PathVariable("userId") @ApiParam(value = "유저 ID") String userId) throws Exception {
+		log.info("경로 정보 조회");
+		log.debug(" info : {}",userId);
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			List<TripDto> list = TripService.getTrip(userId);
+			resultMap.put("data", list);
+			resultMap.put("message", "상세 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("## 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	
-	@ApiOperation(value = "경로 정보 조회", notes = "저장되어있는 경로 정보를 저장합니다", response = Map.class)
+	
+	@ApiOperation(value = "경로 정보 조회", notes = "저장되어있는 경로 정보를 조회합니다", response = Map.class)
 	@GetMapping("/detail/{tripNo}")
 	public ResponseEntity<Map<String, Object>> detailTrip(
 			@PathVariable("tripNo") @ApiParam(value = "경로 ID") Integer tripNo) throws Exception {
@@ -100,6 +126,7 @@ public class TripController {
 		tripDto.setTripNo(tripNo);
 		try {
 			TripService.modifyTrip(tripDto);
+			resultMap.put("data", tripDto.getTripNo());
 			resultMap.put("message", "경로 수정 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {

@@ -14,5 +14,5 @@ export const useUserStore = defineStore(
 
 		return { userId, userName, setId };
 	},
-	{ persist: { storage: localStorage } }
+	{ persist: { storage: sessionStorage } }
 );

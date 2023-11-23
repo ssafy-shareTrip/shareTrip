@@ -1,5 +1,7 @@
 package com.orj.sharetrip.trip.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.orj.sharetrip.trip.model.TripDto;
@@ -26,6 +28,8 @@ public interface TripMapper {
 	void deleteGroupUser(Integer tripNo, String userId);
 
 	TripDto detailTrip(Integer tripNo);
+
+	List<TripDto> getTrip(String userId);
 
 	
 }

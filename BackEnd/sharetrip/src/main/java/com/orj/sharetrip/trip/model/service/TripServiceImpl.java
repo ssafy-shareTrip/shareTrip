@@ -1,5 +1,7 @@
 package com.orj.sharetrip.trip.model.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.orj.sharetrip.trip.model.TripDto;
@@ -26,7 +28,7 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public void initTrip(TripDto tripDto) {
 		TripMapper.initTrip(tripDto);
-		TripMapper.insertGroupUser(tripDto.getTripNo(), tripDto.getUserId());
+		TripMapper.pickAttr(tripDto);
 	}
 
 	@Override
@@ -49,6 +51,11 @@ public class TripServiceImpl implements TripService {
 	@Override
 	public TripDto detailTrip(Integer tripNo) {
 		return TripMapper.detailTrip(tripNo);
+	}
+
+	@Override
+	public List<TripDto> getTrip(String userId) {
+		return TripMapper.getTrip(userId);
 	}
 
 }

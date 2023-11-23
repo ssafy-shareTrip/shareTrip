@@ -31,6 +31,10 @@ const router = createRouter({
 			path: "/path",
 			name: "path",
 			component: ThePathView,
+			beforeEnter: () => {
+				const store = useUserStore();
+				if (store.userId == null) return { name: "login" };
+			},
 		},
 		{
 			path: "/mypage",

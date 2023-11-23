@@ -2,6 +2,8 @@ package com.orj.sharetrip.trip.model;
 
 import java.util.List;
 
+import com.orj.sharetrip.map.model.AttractionDto;
+
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
@@ -14,7 +16,7 @@ public class TripDto {
 	private String title;
 	private String create_time;
 	private int isShared;
-	private List<TripAttractionDto> attractions;
+	private List<AttractionDto> attractions;
 	private List<String> userIds;
 	
 }

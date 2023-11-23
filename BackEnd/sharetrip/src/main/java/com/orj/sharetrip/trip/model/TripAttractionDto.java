@@ -8,6 +8,8 @@ import lombok.Data;
 public class TripAttractionDto {
 	
 	private int contentId;
+	private String title;
+	private String image;
 	private int day;
 	private int seq;
 	private String pickTime;

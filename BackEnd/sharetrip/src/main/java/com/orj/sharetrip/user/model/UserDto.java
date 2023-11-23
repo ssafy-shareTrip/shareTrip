@@ -33,11 +33,11 @@ public class UserDto {
 	@ApiModelProperty(value = "팔로잉")
 	private Integer following;
 	@ApiModelProperty(value = "팔로잉 리스트")
-	private List<String> followingList;
+	private List<UserDto> followingList;
 	@ApiModelProperty(value = "팔로워")
 	private Integer follower;
 	@ApiModelProperty(value = "팔로워 리스트")
-	private List<String> followerList;
+	private List<UserDto> followerList;
 	
 	
 }

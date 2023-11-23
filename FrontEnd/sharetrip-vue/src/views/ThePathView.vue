@@ -4,11 +4,29 @@ import KakaoMap from "@/components/kakao/KakaoMap.vue";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 // import AttractionDetail from "../components/attraction/AttractionDetail.vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
 const router = useRouter();
+const route = useRoute();
+const trip = ref({
+	attractions: [
+		// {
+		// 	contentId: 0,
+		// 	day: 0,
+		// 	pickTime: "string",
+		// 	seq: 0,
+		// },
+	],
+	create_time: "",
+	isShared: 0,
+	title: "",
+	tripNo: 0,
+	userId: userStore.userId,
+	userIds: [userStore.userId],
+});
+
 const sidoList = ref([]);
 const selectSido = ref(null);
 const selectGugun = ref(null);
@@ -25,8 +43,20 @@ var attractionList = ref([]);
 var selectAttractionList = ref([]);
 
 const selectAttractionElement = ref([]);
-
 onMounted(() => {
+	if (route.query.tripNo) {
+		axios
+			.get(`http://localhost:80/sharetrip/trip/detail/${route.query.tripNo}`)
+			.then(({ data }) => {
+				console.log(data);
+				trip.value = data.data;
+				selectAttractionList.value = data.data.attractions;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+
 	listSido();
 });
 
@@ -136,11 +166,18 @@ const search = () => {
 
 const change = ref(false);
 const changeCenter = (x, y) => {
+	if (!move.value) return;
+
 	console.log("센터 바뀐거 어트랙션뷰에서 수신완료");
 	let url = new URL("http://localhost:80/sharetrip/map/attr");
 
 	const params = new URLSearchParams();
 	change.value = false;
+	if (selectType.value.length > 0) {
+		selectType.value.forEach((id) => {
+			params.append("contentTypeId", id);
+		});
+	}
 	params.append("mapX", x);
 	params.append("mapY", y);
 	url.search = params.toString();
@@ -165,16 +202,6 @@ const clickSelectAttraction = (event, { item }) => {
 	selectAttractionElement.value = item;
 };
 
-const mvDet = (contentId) => {
-	console.log("상세페이지 이동!");
-	router.push({
-		name: "attrDet",
-		params: {
-			idx: contentId,
-		},
-	});
-};
-
 const type = [
 	{ text: "관광지", value: 12 },
 	{ text: "문화시설", value: 14 },
@@ -197,7 +224,7 @@ const convert = {
 	39: "음식점",
 };
 
-const headers = [
+const lheaders = [
 	{
 		align: "start",
 		key: "title",
@@ -207,12 +234,28 @@ const headers = [
 	{ key: "type", title: "분류" },
 	{ key: "firstImage", title: "사진" },
 	{ key: "isLike", title: "소셜" },
+	{ key: "action", title: "추가" },
 ];
+
+const p = 6;
+
 const page = [
-	{ value: 4, title: "4" },
-	{ value: 8, title: "8" },
-	{ value: 12, title: "12" },
-	{ value: 16, title: "16" },
+	{ value: p * 1, title: `${p * 1}` },
+	{ value: p * 2, title: `${p * 2}` },
+	{ value: p * 3, title: `${p * 3}` },
+	{ value: p * 4, title: `${p * 4}` },
+];
+
+const rheaders = [
+	{
+		align: "start",
+		key: "title",
+		sortable: true,
+		title: "이름",
+	},
+	{ key: "type", title: "분류" },
+	{ key: "firstImage", title: "사진" },
+	{ key: "action", title: "삭제" },
 ];
 
 const favReg = (category, item, status) => {
@@ -269,10 +312,68 @@ const lrail = ref(true);
 const rrail = ref(true);
 const lslider = ref(250);
 const rslider = ref(250);
+
+const addAttraction = (item) => {
+	selectAttractionList.value.push(item);
+};
+
+const deleteAttraction = (item) => {
+	selectAttractionList.value.forEach((data, index) => {
+		if (data == item) {
+			selectAttractionList.value.splice(index, 1);
+		}
+	});
+};
+
+const viewMyAttr = () => {
+	move.value = false;
+	attractionList.value = selectAttractionList.value;
+};
+
+const move = ref(true);
+const alert = ref(false);
+const savePath = () => {
+	if (selectAttractionList.value.length == 0) {
+		console.log("적어도 하나를 만들어주세요!");
+		return;
+	}
+
+	trip.value.attractions = [];
+	selectAttractionList.value.forEach((attr, index) => {
+		attr.day = 1;
+		attr.seq = index + 1;
+		trip.value.attractions.push(attr);
+	});
+	console.log(trip.value);
+
+	if (trip.value.tripNo == 0) {
+		axios
+			.post("http://localhost:80/sharetrip/trip/init", trip.value)
+			.then(({ data }) => {
+				console.log(data);
+				trip.value.tripNo = data.data;
+				alert.value = true;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	} else {
+		axios
+			.put(`http://localhost:80/sharetrip/trip/modify/${trip.value.tripNo}`, trip.value)
+			.then((res) => {
+				console.log(res);
+				alert.value = true;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	}
+};
 </script>
 
 <template>
 	<v-row style="position: absolute; width: 60%; top: 100px; z-index: 10">
+		{{ trip.tripNo }}
 		<v-col>
 			<v-select
 				label="시도"
@@ -313,6 +414,9 @@ const rslider = ref(250);
 			></v-text-field>
 		</v-col>
 		<v-col cols="1">
+			<v-switch v-model="move" color="info"></v-switch>
+		</v-col>
+		<v-col cols="1">
 			<v-btn icon="mdi-magnify" @click="search"></v-btn>
 		</v-col>
 	</v-row>
@@ -324,6 +428,9 @@ const rslider = ref(250);
 	></KakaoMap>
 	<!-- <v-navigation-drawer location="bottom" rail expand-on-hover width="430" permanent> -->
 	<!-- v-model="drawer" -->
+	<template>
+		<v-alert type="success" title="저장 성공" v-model="alert"></v-alert>
+	</template>
 	<v-navigation-drawer
 		:rail="lrail"
 		permanent
@@ -353,12 +460,13 @@ const rslider = ref(250);
 		</v-list-item>
 
 		<v-divider></v-divider>
+
 		<v-list-item v-show="!lrail">
 			<v-data-table
-				:headers="headers"
+				:headers="lheaders"
 				:items="attractionList"
 				:items-per-page-options="page"
-				:items-per-page="4"
+				:items-per-page="p"
 				@click:row="clickSelectAttraction"
 				hover
 			>
@@ -405,6 +513,11 @@ const rslider = ref(250);
 						></v-col>
 					</v-row>
 				</template>
+				<template #item.action="{ item }">
+					<v-row>
+						<v-icon icon="mdi-plus-box-multiple" @click="addAttraction(item)"> </v-icon>
+					</v-row>
+				</template>
 			</v-data-table>
 		</v-list-item>
 	</v-navigation-drawer>
@@ -424,25 +537,31 @@ const rslider = ref(250);
 					@click.stop="rrail = !rrail"
 				></v-btn>
 			</template>
-			<div v-show="!rrail">
-				<span>관광지 경로 저장</span>
-				<v-slider
-					v-model="rslider"
-					class="align-center"
-					:max="500"
-					:min="100"
-					hide-details
-				></v-slider>
-			</div>
+			<v-row v-show="!rrail">
+				<v-col>
+					<span>관광지 경로 저장</span>
+					<v-slider
+						v-model="rslider"
+						class="align-center"
+						:max="500"
+						:min="100"
+						hide-details
+					></v-slider>
+				</v-col>
+				<v-col cols="2">
+					<v-btn variant="text" icon="mdi-magnify" @click.stop="viewMyAttr"></v-btn>
+				</v-col>
+			</v-row>
 		</v-list-item>
 
 		<v-divider></v-divider>
+
 		<v-list-item v-show="!rrail">
 			<v-data-table
-				:headers="headers"
+				:headers="rheaders"
 				:items="selectAttractionList"
 				:items-per-page-options="page"
-				:items-per-page="4"
+				:items-per-page="p"
 				@click:row="clickSelectAttraction"
 				hover
 			>
@@ -468,7 +587,26 @@ const rslider = ref(250);
 						</v-img>
 					</v-card>
 				</template>
+				<template #item.action="{ item }">
+					<v-row>
+						<v-icon icon="mdi-delete-empty" @click="deleteAttraction(item)"> </v-icon>
+					</v-row>
+				</template>
 			</v-data-table>
+		</v-list-item>
+
+		<v-list-item v-show="!rrail"
+			><v-text-field
+				clearable
+				label="경로 이름"
+				v-model="trip.title"
+				variant="solo-filled"
+			></v-text-field
+		></v-list-item>
+		<v-list-item v-show="!rrail">
+			<v-btn variant="plain" @click="savePath" style="width: 100%"
+				><v-icon icon="mdi-check-bold"></v-icon>&nbsp; 경로 저장하기</v-btn
+			>
 		</v-list-item>
 	</v-navigation-drawer>
 </template>
