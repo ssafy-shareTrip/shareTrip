@@ -21,16 +21,6 @@
 		<result column="isBookmark" property="isBookmark" />
 	</resultMap>
 	
-	<resultMap type="boardDto" id="board">
-		<result column="board_no" property="boardNo"/>
-		<result column="user_id" property="userId"/>
-		<result column="trip_no" property="tripNo"/>
-		<result column="subject" property="subject"/>
-		<result column="content" property="content"/>
-		<result column="regist_time" property="registTime"/>
-		<result column="hit" property="hit"/>
-		<result column="name" property="name"/>
-	</resultMap>
 
 	<select id="getAttrFavCount" parameterType="map" resultType="int">
 		select count(user_id)
@@ -63,35 +53,5 @@
 		and category = #{category}
 	</delete>
 	
-	<select id="getBoardFavCount" parameterType="map" resultType="int">
-		select count(user_id)
-		from board_fav
-		where board_no = #{boardNo}
-		<if test="category != null">
-			and category = #{category}
-		</if>
-	</select>
-	
-	<select id="getBoardFav" parameterType="map" resultMap="board">
-		select board_no as favId, category
-		from board_fav
-		where user_id = #{userId}
-		<if test="category != null">
-			and category = #{category}
-		</if>
-	</select>
-	
-	<insert id="registBoardFav" parameterType="map">
-		insert into board_fav (board_no, user_id, category, like_time)
-		values (#{boardNo}, #{userId}, #{category}, now())
-	</insert>
-	
-	<delete id="deleteBoardFav" parameterType="map">
-		delete from board_fav
-		where 1=1
-		and user_id = #{userId}
-		and board_no = #{boardNo}
-		and category = #{category}
-	</delete>
 	
 </mapper>

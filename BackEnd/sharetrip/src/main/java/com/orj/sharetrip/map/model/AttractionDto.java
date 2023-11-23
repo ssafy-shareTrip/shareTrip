@@ -51,5 +51,10 @@ public class AttractionDto {
 	private Integer totalBookmark;
 	private int day;
 	private int seq;
+	private int age;
+	private int cnt;
+	private String gender;
+	private int place;
+	private int readcount;
 	
 }

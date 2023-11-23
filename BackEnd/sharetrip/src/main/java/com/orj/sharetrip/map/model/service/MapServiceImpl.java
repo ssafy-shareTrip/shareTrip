@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.orj.sharetrip.map.model.AttractionDto;
 import com.orj.sharetrip.map.model.SidoGugunCodeDto;
+import com.orj.sharetrip.map.model.StatDto;
 import com.orj.sharetrip.map.model.mapper.MapMapper;
 
 @Service
@@ -37,6 +38,11 @@ public class MapServiceImpl implements MapService {
 	@Override
 	public AttractionDto getAttrInfo(String contentId,String userId) {
 		return MapMapper.getAttrInfo(contentId,userId);
+	}
+
+	@Override
+	public StatDto getStat() {
+		return MapMapper.getStat();
 	}
 
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.orj.sharetrip.map.model.AttractionDto;
 import com.orj.sharetrip.map.model.SidoGugunCodeDto;
+import com.orj.sharetrip.map.model.StatDto;
 import com.orj.sharetrip.map.model.service.MapService;
 
 import io.swagger.annotations.Api;
@@ -148,7 +149,28 @@ public class MapController {
 		return new ResponseEntity<Map<String, Object>>(resultMap, status);
 	}
 	
-
+	@ApiOperation(value = "관광지 통계", notes = "관광지에 대한 통계를 반환한다.", response = Map.class)
+	@GetMapping("/stat")
+	public ResponseEntity<Map<String, Object>> getStat() throws Exception {
+		log.info("관광지 통계 조회");
+		
+		Map<String, Object> resultMap = new HashMap<String, Object>();
+		HttpStatus status = HttpStatus.ACCEPTED;
+		
+		try {
+			StatDto stat = MapService.getStat();
+			resultMap.put("data", stat);
+			resultMap.put("message", "통계 조회 성공");
+			status = HttpStatus.OK;
+		} catch (Exception e) {
+			log.debug("통계 조회 에러 발생 : {}", e);
+			resultMap.put("message", e.getMessage());
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
+		}
+		
+		resultMap.put("status", status);
+		return new ResponseEntity<Map<String, Object>>(resultMap, status);
+	}
 	
 
 	

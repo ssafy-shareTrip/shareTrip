@@ -11,8 +11,7 @@ public class StatDto {
 	private List<AttractionDto> likeOrder;
 	private List<AttractionDto> bookmarkOrder;
 	private List<AttractionDto> pathOrder;
-	private List<AttractionDto> maleOrder;
-	private List<AttractionDto> femaleOrder;
+	private List<AttractionDto> genderOrder;
 	private List<AttractionDto> birthOrder;
 	
 }

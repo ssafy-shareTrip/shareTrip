@@ -6,6 +6,7 @@ import java.util.Map;
 
 import com.orj.sharetrip.map.model.AttractionDto;
 import com.orj.sharetrip.map.model.SidoGugunCodeDto;
+import com.orj.sharetrip.map.model.StatDto;
 
 public interface MapMapper {
 
@@ -16,5 +17,7 @@ public interface MapMapper {
 	List<AttractionDto> getAttrList(Map<String, Object> map);
 
 	AttractionDto getAttrInfo(String contentId,String userId);
+
+	StatDto getStat();
 
 }

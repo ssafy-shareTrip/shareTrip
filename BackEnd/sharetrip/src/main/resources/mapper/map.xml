@@ -26,6 +26,8 @@
 		<result column="longitude" property="longitude" />
 		<result column="isLike" property="isLike" />
 		<result column="isBookmark" property="isBookmark" />
+		<result column="totalLike" property="totalLike" />
+		<result column="totalBookmark" property="totalBookmark" />
 	</resultMap>
 
 	<resultMap type="memoDto" id="memo">
@@ -41,8 +43,121 @@
 		<result column="overview" property="overview" />
 		<collection property="memos" column="content_id"
 			javaType="list" ofType="memoDto" select="memoList"></collection>
-		
 	</resultMap>
+
+	<resultMap type="statDto" id="stat">
+		<collection property="readCntOrder" column="start"
+			javaType="list" ofType="AttractionDto" select="readCntList"></collection>
+		<collection property="likeOrder" column="start"
+			javaType="list" ofType="AttractionDto" select="likeList"></collection>
+		<collection property="bookmarkOrder" column="start"
+			javaType="list" ofType="AttractionDto" select="bookmarkList"></collection>
+		<collection property="pathOrder" column="start"
+			javaType="list" ofType="AttractionDto" select="pathList"></collection>
+		<collection property="genderOrder" column="start"
+			javaType="list" ofType="AttractionDto" select="genderList"></collection>
+		<collection property="birthOrder" column="start"
+			javaType="list" ofType="AttractionDto" select="birthList"></collection>
+	</resultMap>
+
+	<select id="getStat" resultMap="stat">
+		select 1 as start from dual;
+	</select>
+
+
+
+	<select id="birthList" resultMap="attraction">
+		select *
+		from attraction_info i
+		join (
+		select row_number() over(partition by floor((year(now()) -
+		year(birth)) /
+		10) order by count(*) desc) place,floor((year(now()) -
+		year(birth)) / 10)* 10
+		age, content_id, count(*) totalLike
+		from
+		attraction_fav f
+		join user u
+		on u.id = f.user_id
+		where category = 0
+		and
+		birth is not null
+		group by floor((year(now()) - year(birth)) / 10)
+		,content_id
+		) s
+		using (content_id)
+		where place &lt; 4
+		order by age, totalLike
+		desc, place
+	</select>
+
+	<select id="genderList" resultMap="attraction">
+		select *
+		from attraction_info i
+		join (
+		select row_number() over(partition by gender order by count(*)) place, gender,
+		content_id, count(*) totalLike
+		from attraction_fav f
+		join user u
+		on u.id = f.user_id
+		where category = 0
+		and gender in ('여성', '남성')
+		group by gender, content_id
+		) s
+		using (content_id)
+		where place &lt; 4
+		order by gender, totalLike desc, place;
+	</select>
+
+	<select id="pathList" resultMap="attraction">
+		select row_number() over(order by cnt desc) as place, content_Id, first_image, addr1, title, cnt
+		from attraction_info
+		join (select content_id, count(*) cnt from trip_attraction group by
+		content_id) s
+		using(content_id)
+		order by cnt desc, place
+		limit 3;
+	</select>
+
+	<select id="bookmarkList" resultMap="attraction">
+		select row_number() over(order by
+		totalBookmark desc) as place, content_Id, first_image, addr1, title, totalbookmark
+		from attraction_info
+		i
+		join (
+		select content_id, count(*) totalBookmark
+		from attraction_fav f
+		where category = 1
+		group by content_id
+		) s
+		using (content_id)
+		order by
+		totalBookmark desc, place
+		limit 3;
+	</select>
+
+	<select id="likeList" resultMap="attraction">
+		select row_number() over(order by totalLike
+		desc) as place, content_Id, first_image, addr1, title, totalLike
+		from attraction_info i
+		join (
+		select content_id, count(*) totalLike
+		from attraction_fav f
+		where
+		category = 0
+		group by content_id
+		) s
+		using (content_id)
+		order by totalLike
+		desc, place
+		limit 3;
+	</select>
+	<select id="readCntList" resultMap="attraction">
+		select row_number() over(order by readcount desc) as place, content_Id, first_image, addr1, title, readcount
+		from attraction_info
+		order by readcount desc, place
+		limit 3;
+	</select>
 
 	<select id="getSido" resultMap="sidoGugun">
 		select left(sido_code,2)
@@ -63,7 +178,8 @@
 		resultMap="attraction">
 		select *
 		<if test="userId != null">
-			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1) isBookmark
+			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1)
+			isBookmark
 		</if>
 		<if test="userId == null">
 			, 0 isLike, 0 isBookmark
@@ -71,13 +187,19 @@
 		from attraction_info a
 		<if test="userId != null">
 			left outer join (
-				select content_id, user_id lid from attraction_fav where user_id = #{userId} and category = 0
-				) l
-			using (content_id)
+			select content_id, user_id lid from
+			attraction_fav where user_id =
+			#{userId} and category = 0
+			) l
+			using
+			(content_id)
 			left outer join (
-				select content_id, user_id bid from attraction_fav where user_id = #{userId} and category = 1
-				) b
-			using (content_id)
+			select content_id, user_id bid from
+			attraction_fav where user_id =
+			#{userId} and category = 1
+			) b
+			using
+			(content_id)
 		</if>
 		where 1=1
 		<if test="sidoCode != null">
@@ -101,10 +223,23 @@
 		limit 30;
 	</select>
 
-	<select id="getAttrInfo" parameterType="map" resultMap="viewAttraction">
-		select *
+	<select id="getAttrInfo" parameterType="map"
+		resultMap="viewAttraction">
+		select *, (
+		select count(*) totalLike
+		from attraction_fav f
+		where
+		category = 0 and i.content_id = content_id
+		) totalLike,(
+		select count(*)
+		totalLike
+		from attraction_fav f
+		where category = 1 and i.content_id =
+		content_id
+		) totalBookmark
 		<if test="userId != null">
-			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1) isBookmark
+			, if(lid is null, 0, 1) isLike, if(bid is null, 0, 1)
+			isBookmark
 		</if>
 		<if test="userId == null">
 			, 0 isLike, 0 isBookmark
@@ -112,21 +247,29 @@
 		from attraction_info i join attraction_description d using(content_id)
 		<if test="userId != null">
 			left outer join (
-				select content_id, user_id lid from attraction_fav where user_id = #{userId} and category = 0
-				) l
-			using (content_id)
+			select content_id, user_id lid from
+			attraction_fav where user_id =
+			#{userId} and category = 0
+			) l
+			using
+			(content_id)
 			left outer join (
-				select content_id, user_id bid from attraction_fav where user_id = #{userId} and category = 1
-				) b
-			using (content_id)
+			select content_id, user_id bid from
+			attraction_fav where user_id =
+			#{userId} and category = 1
+			) b
+			using
+			(content_id)
 		</if>
 		where content_id =
 		#{contentId}
 	</select>
 
 	<select id="memoList" resultMap="memo">
-		select m.id, content, user_id, name, regist_time
-		from attraction_memo m join user u on m.user_id = u.id 
+		select m.id, content, user_id,
+		name, regist_time
+		from attraction_memo m join user u on m.user_id =
+		u.id
 		where content_id = #{contentId}
 		order by
 		regist_time desc;

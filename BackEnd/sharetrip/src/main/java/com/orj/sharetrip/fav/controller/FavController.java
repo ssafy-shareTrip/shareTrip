@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.orj.sharetrip.board.model.BoardDto;
 import com.orj.sharetrip.fav.model.FavoriteDto;
 import com.orj.sharetrip.fav.model.service.FavService;
 import com.orj.sharetrip.map.model.AttractionDto;
@@ -131,109 +130,6 @@ public class FavController {
 		try {
 			FavService.deleteAttrFav(userId, contentId,category);
 			resultMap.put("message", "관광지 좋아요 정보 삭제 성공");
-			status = HttpStatus.OK;
-		} catch (Exception e) {
-			log.debug("## 에러 발생 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		resultMap.put("status", status);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	
-	@ApiOperation(value = "게시글 좋아요 개수 조회", notes = "게시글가 좋아요 또는 북마크된 개수를 가져온다.", response = Map.class)
-	@GetMapping("/boardcnt/{boardNo}")
-	public ResponseEntity<Map<String, Object>> getBoardFavCount(
-			@PathVariable("boardNo") @ApiParam(value = "게시글 번호.", required = true) Integer boardNo,
-			@RequestParam(name = "category", required = false) Integer category) throws Exception {
-		log.info("게시글 좋아요 개수 조회");
-		log.debug(" info : {}, {}", boardNo, category);
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		
-		try {
-			int count = FavService.getBoardFavCount(boardNo, category);
-			resultMap.put("data", count);
-			resultMap.put("message", "게시글 Fav 정보 조회 성공");
-			status = HttpStatus.OK;
-		} catch (Exception e) {
-			log.debug("## 에러 발생 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		resultMap.put("status", status);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-
-	@ApiOperation(value = "유저의 게시글 좋아요 상태 조회", notes = "유저가 좋아요 또는 북마크한 게시글 정보를 가져온다.", response = Map.class)
-	@GetMapping("/board/{userId}")
-	public ResponseEntity<Map<String, Object>> getBoardFav(
-			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestParam(name = "category", required = true) Integer category) throws Exception {
-		log.info("관광지 좋아요 상태  조회");
-		log.debug(" info : {}", userId);
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		List<BoardDto> list = null;
-		
-		try {
-			list = FavService.getBoardFav(userId, category);
-			resultMap.put("data", list);
-			resultMap.put("message", "게시글 좋아요 조회 성공");
-			status = HttpStatus.OK;
-		} catch (Exception e) {
-			log.debug("## 에러 발생 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		resultMap.put("status", status);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	
-	@ApiOperation(value = "게시글 좋아요 상태 등록", notes = "유저가 좋아요 또는 북마크한 게시글 정보를 가져온다.", response = Map.class)
-	@PostMapping("/board/{userId}")
-	public ResponseEntity<Map<String, Object>> registBoardFav(
-			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestBody Map<String, Object> map) throws Exception {
-		log.info("게시글 좋아요 상태 등록");
-		log.debug(" info : {}", map);
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		map.put("userId", userId);
-		try {
-			FavService.registBoardFav(map);
-			resultMap.put("message", "게시글 좋아요 정보 등록 성공");
-			status = HttpStatus.OK;
-		} catch (Exception e) {
-			log.debug("## 에러 발생 : {}", e);
-			resultMap.put("message", e.getMessage());
-			status = HttpStatus.INTERNAL_SERVER_ERROR;
-		}
-		
-		resultMap.put("status", status);
-		return new ResponseEntity<Map<String, Object>>(resultMap, status);
-	}
-	
-	@ApiOperation(value = "게시글 좋아요 상태 삭제", notes = "유저가 좋아요 또는 북마크한 게시글 정보를 삭제한다.", response = Map.class)
-	@DeleteMapping("/board/{userId}")
-	public ResponseEntity<Map<String, Object>> deleteBoardFav(
-			@PathVariable("userId") @ApiParam(value = "유저 ID.", required = true) String userId,
-			@RequestParam("boardNo")  @ApiParam(value = "글 번호.", required = true) Integer boardNo,
-			@RequestParam("category")  @ApiParam(value = "카테고리.", required = true) Integer category) throws Exception {
-		log.info("게시글 좋아요 상태 삭제");
-		log.debug(" info : {}, {}", userId, boardNo,category);
-		
-		Map<String, Object> resultMap = new HashMap<String, Object>();
-		HttpStatus status = HttpStatus.ACCEPTED;
-		try {
-			FavService.deleteBoardFav(userId, boardNo,category);
-			resultMap.put("message", "게시글 좋아요 정보 삭제 성공");
 			status = HttpStatus.OK;
 		} catch (Exception e) {
 			log.debug("## 에러 발생 : {}", e);
