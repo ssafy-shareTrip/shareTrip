@@ -4,11 +4,12 @@ import KakaoMap from "@/components/kakao/KakaoMap.vue";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 // import AttractionDetail from "../components/attraction/AttractionDetail.vue";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/user";
 
 const userStore = useUserStore();
 const router = useRouter();
+const route= useRoute();
 const sidoList = ref([]);
 const selectSido = ref(null);
 const selectGugun = ref(null);
@@ -27,6 +28,21 @@ const selectAttractionElement = ref([]);
 
 onMounted(() => {
 	listSido();
+
+		
+if(route.query.keyword){
+	keyword.value = route.query.keyword;
+	search();
+}
+
+		
+if(route.query.contentTypeId){
+	selectType.value.push(route.query.contentTypeId);
+	search();
+}
+
+
+
 });
 
 const listSido = () => {
@@ -172,6 +188,7 @@ const clickSelectAttraction = (event, { item }) => {
 	selectAttractionElement.value = item;
 };
 
+
 const mvDet = (contentId) => {
 	console.log("상세페이지 이동!");
 	router.push({
@@ -216,6 +233,7 @@ const headers = [
 	{ key: "firstImage", title: "사진" },
 	{ key: "isLike", title: "소셜" },
 	{ key: "contentId", title: "상세설명" },
+	{ key: "contentId", title: "상세설명" },
 ];
 const page = [
 	{ value: 4, title: "4" },
@@ -225,6 +243,7 @@ const page = [
 ];
 
 const favReg = (category, item, status) => {
+	if (userStore.userId == null) return;
 	if (userStore.userId == null) return;
 	console.log(item, category, status);
 	let contentId = item.contentId;
@@ -335,6 +354,7 @@ const move = ref(true);
 	></KakaoMap>
 	<!-- <v-navigation-drawer location="bottom" rail expand-on-hover width="430" permanent> -->
 	<!-- v-model="drawer" -->
+	<!-- v-model="drawer" -->
 	<v-navigation-drawer
 		:rail="rail"
 		permanent
@@ -343,6 +363,7 @@ const move = ref(true);
 		location="bottom"
 	>
 		<v-list-item>
+			<span>조회 관광지</span>
 			<span>조회 관광지</span>
 			<v-slider
 				v-show="!rail"
