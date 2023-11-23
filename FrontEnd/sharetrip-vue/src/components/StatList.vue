@@ -65,7 +65,7 @@ const headers = ref([
 		</v-row>
 	</v-container>
 	<v-container style="height: 70%" v-else>
-		<v-data-table :headers="headers" :items="attr" hover>
+		<v-data-table :headers="headers" :items="attr" hover items-per-page="-1">
 			<template #item.firstImage="{ item }">
 				<v-card class="my-2" elevation="2" rounded>
 					<v-img
