@@ -31,6 +31,7 @@
 	<resultMap type="memoDto" id="memo">
 		<result column="id" property="id" />
 		<result column="user_id" property="userId" />
+		<result column="name" property="userName" />
 		<result column="content" property="content" />
 		<result column="regist_time" property="registTime" />
 	</resultMap>
@@ -124,9 +125,8 @@
 	</select>
 
 	<select id="memoList" resultMap="memo">
-		select id, content, user_id,
-		regist_time
-		from attraction_memo
+		select m.id, content, user_id, name, regist_time
+		from attraction_memo m join user u on m.user_id = u.id 
 		where content_id = #{contentId}
 		order by
 		regist_time desc;

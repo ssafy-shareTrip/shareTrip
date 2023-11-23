@@ -4,6 +4,7 @@ import { useRouter } from "vue-router";
 import { useUserStore } from "@/stores/user";
 const router = useRouter();
 const store = useUserStore();
+const userStore = useUserStore();
 const mvPage = (to) => {
 	navToggle.value = false;
 	router.push({ name: to });
@@ -31,6 +32,9 @@ const navToggle = ref(false);
 				prev-icon="mdi-chevron-left"
 				show-arrows
 			>
+				<router-link :to="{ name: 'main' }" class="navItem"
+					><v-tab><v-icon icon="mdil-home"></v-icon>&nbsp; Main</v-tab></router-link
+				>
 				<router-link :to="{ name: 'path' }" class="navItem"
 					><v-tab
 						><v-icon icon="mdi-map-marker-path"></v-icon>&nbsp; Path</v-tab
@@ -77,11 +81,16 @@ const navToggle = ref(false);
 					>
 				</template>
 				<template v-else>
-					<v-list-item
-						><v-btn variant="plain" @click="mvPage('mypage')" class="dBtn"
-							>회원 프로필 이미지</v-btn
-						></v-list-item
-					>
+					<v-list-item>
+						<v-card align="center">
+							<template v-slot:title>
+								<v-btn variant="plain" @click="mvPage('mypage')" class="dBtn"
+									>회원 프로필 이미지</v-btn
+								>
+							</template>
+							<template v-slot:subtitle> {{ userStore.userId }} </template>
+						</v-card>
+					</v-list-item>
 					<v-divider></v-divider>
 					<v-list-item
 						><v-btn variant="plain" @click="logout" class="dBtn"

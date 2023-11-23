@@ -3,7 +3,6 @@ import { useRoute, useRouter } from "vue-router";
 import { onMounted, ref, computed } from "vue";
 import { useUserStore } from "@/stores/user";
 import { localAxios } from "@/util/http-commons";
-import DetailInfo from "@/components/attraction/detail/DetailInfo.vue";
 import DetailMap from "@/components/attraction/detail/DetailMap.vue";
 
 const route = useRoute();
@@ -81,23 +80,54 @@ const favReg = (category, status) => {
 			});
 	}
 };
+// 댓글 작성 기능
+const registMemo = function () {
+	console.log(idx + "글의 댓글 작성");
+	axios
+		.post(`/memo/attr/${idx}`, memo.value)
+		.then((response) => {
+			console.log("성공", response);
+			response.data.data.userName = userStore.userName;
+			detail.value.memos.unshift(response.data.data);
+			memo.value.content = "";
+		})
+		.catch((err) => {
+			console.log(err);
+		});
+};
+// 댓글 삭제 기능
+const delMemo = (item) => {
+	console.log(idx + "글의 댓글 삭제", item.id);
+	axios
+		.delete(`/memo/attr/${item.id}`)
+		.then((response) => {
+			console.log("성공", response);
+			detail.value.memos.splice(
+				detail.value.memos.findIndex((i) => i.id == item.id),
+				1
+			);
+		})
+		.catch(() => {});
+};
 
 const tab = ref(1);
 
 const headers = [
 	{
 		align: "start",
-		key: "title",
+		key: "userName",
 		sortable: true,
 		title: "이름",
 	},
-	{ key: "addr1", title: "주소" },
-	{ key: "type", title: "분류" },
-	{ key: "firstImage", title: "사진" },
-	{ key: "isLike", title: "소셜" },
-	{ key: "contentId", title: "상세설명" },
+	{ key: "content", title: "내용" },
+	{ key: "registTime", title: "작성일시" },
+	{ key: "action", title: "" },
 ];
 const selcar = ref(0);
+const memo = ref({
+	userId: userStore.userId,
+	content: "",
+});
 </script>
 
 <template>
@@ -116,21 +146,20 @@ const selcar = ref(0);
 				<v-tab :value="2">지도</v-tab>
 			</v-tabs>
 		</v-row>
-		<v-row style="padding: 0">
-			<v-window v-model="tab">
+
+		<v-row style="padding: 0; width: 100%">
+			<v-window v-model="tab" style="width: 100%">
 				<v-window-item :value="1">
 					<v-row>
 						<v-col cols="4">
 							<v-carousel show-arrows="hover" style="height: 100%" v-model="selcar">
 								<v-carousel-item
-									v-if="detail.firstImage != null"
-									:src="detail.firstImage"
+									:src="detail.firstImage ? detail.firstImage : '/nature.png'"
 									cover
 								></v-carousel-item>
 
 								<v-carousel-item
-									v-if="detail.firstImage2 != null"
-									:src="detail.firstImage2"
+									:src="detail.firstImage2 ? detail.firstImage2 : '/nature.png'"
 									cover
 								></v-carousel-item>
 							</v-carousel>
@@ -165,9 +194,33 @@ const selcar = ref(0);
 									style="width: 95%"
 								></v-card>
 							</v-row>
-						</v-col> </v-row
-					><v-row>
-						<v-data-table :items="detail.memos"></v-data-table>
+						</v-col>
+					</v-row>
+					<v-row style="padding: 0 10%">
+						<v-col>
+							<v-textarea
+								v-model="memo.content"
+								clearable
+								label="댓글 작성"
+								prepend-icon="mdi-comment"
+								variant="outlined"
+							></v-textarea
+						></v-col>
+						<v-col cols="1" align="center" justify="center">
+							<v-btn icon="mdi-magnify" @click="registMemo"></v-btn>
+						</v-col>
+					</v-row>
+					<v-row>
+						<v-data-table :headers="headers" :items="detail.memos">
+							<template #item.action="{ item }">
+								<v-icon
+									v-if="userStore.userId == item.userId"
+									icon="mdi-trash-can-outline"
+									style="widows: 10"
+									@click="delMemo(item)"
+								></v-icon>
+							</template>
+						</v-data-table>
 					</v-row>
 				</v-window-item>
 				<v-window-item :value="2">

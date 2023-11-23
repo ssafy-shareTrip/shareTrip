@@ -331,6 +331,7 @@ const slider = ref(250);
 		location="bottom"
 	>
 		<v-list-item>
+			<span>조회 관광지</span>
 			<v-slider
 				v-show="!rail"
 				v-model="slider"
